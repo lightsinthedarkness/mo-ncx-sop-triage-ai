@@ -8,6 +8,20 @@
       "skillPath": "skills/agent-self-evaluation/SKILL.md",
       "computedHash": "bce84e436bb7bebc447e82fefd720dde9e1afdbe485ff0228045dc6fc96d83bb"
     },
+    "archify": {
+      "source": "tt-a1i/archify",
+      "commit": "d6b0f71f25a3337ed2fcd09c973cacf67be7baba",
+      "sourceType": "github",
+      "skillPath": "archify/SKILL.md",
+      "computedHash": "bb2089d6702a90407af959da82006a7b9115fbfeeba6654b5977da965bb3a791"
+    },
+    "archify-pr": {
+      "source": "tt-a1i/archify",
+      "commit": "d6b0f71f25a3337ed2fcd09c973cacf67be7baba",
+      "sourceType": "github",
+      "skillPath": "archify-pr/SKILL.md",
+      "computedHash": "cf807eab69cb635473e3eb1980dd74cd446d6377a8205d143aca280ed827f917"
+    },
     "deep-agents-memory": {
       "source": "langchain-ai/langchain-skills",
       "commit": "9002566fcf20fb3df65f42da4d316f5643f71c9e",

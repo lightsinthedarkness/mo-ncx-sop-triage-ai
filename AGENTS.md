@@ -25,8 +25,9 @@ Read `CONSTRAINTS.md` before writing code. Do not weaken it to make a change pas
 - **Build & Verify:** `incremental-implementation` + `test-driven-development` (RED → GREEN → REFACTOR) + `observability-and-instrumentation` + `verification-before-completion`
 - **Review & Ship:** `code-review-and-quality` + `security-and-hardening` + `code-simplification` + `documentation-and-adrs`
 
-## Project Domain Skills (`.agents/skills/` — 22 Installed)
+## Project Domain Skills (`.agents/skills/` — 24 Installed)
 - **Discovery:** `find-skills`
+- **Visual Documentation:** `archify`, `archify-pr`
 - **Module 1 (`sop-ingestion`):** `docling`
 - **Module 2 (`sop-memory-rag`):** `qdrant-search-quality`, `rag-implementation`, `hybrid-search-implementation`, `langchain-rag`, `deep-agents-memory`
 - **Module 3 (`triage-engine-api`):** `langgraph-fundamentals`, `langgraph-persistence`, `langgraph-human-in-the-loop`, `fastapi`, `vllm-deploy-docker`

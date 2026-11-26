@@ -1,0 +1,2 @@
+# Verified false positive: official Cloudflare workers-best-practices doc anti-pattern example ("Secret in version control")
+bbf6f5bec3d71cc129144e4591da541dfa040c17:.agents/skills/workers-best-practices/references/configuration.md:generic-api-key:82
