@@ -36,9 +36,9 @@
       "verification": ""
     },
     {
-      "id": "F4-dashboard-live-chat",
-      "module": "dashboard-live-chat",
-      "title": "OpenDesign Live Chat Widget (Hover-Peek Pill + Slide-Over Drawer + Admin SOP) in ncxall.my.id/dashboard",
+      "id": "F4-opendesign-web-portal",
+      "module": "opendesign-web-portal",
+      "title": "Standalone OpenDesign Web Portal (4-Stage Triage Chat, SOP Asset Viewer, & Admin Upload Panel)",
       "status": "pending",
       "depends_on": ["F3-triage-engine-api"],
       "verification": ""

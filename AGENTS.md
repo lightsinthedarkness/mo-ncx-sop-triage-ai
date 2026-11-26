@@ -21,7 +21,7 @@ Read `CONSTRAINTS.md` before writing code. Do not weaken it to make a change pas
 - **Define:** `interview-me` → `brainstorming` → `doubt-driven-development`
 - **Specify:** `spec-driven-development` + `api-and-interface-design` + `constraint-driven-development`
 - **Plan:** `planning-and-task-breakdown` + `writing-plans` + `source-driven-development`
-- **UI Design (Module 4):** **OpenDesign** local-first HTML/CSS/JS preview before integrating into `C:/Users/Administrator/web` (also obey `C:/Users/Administrator/web/AGENTS.md`)
+- **UI Design (Module 4):** **OpenDesign** standalone Web App (`opendesign-web-portal`, terpisah penuh dari `ncxall.my.id/dashboard`)
 - **Build & Verify:** `incremental-implementation` + `test-driven-development` (RED → GREEN → REFACTOR) + `observability-and-instrumentation` + `verification-before-completion`
 - **Review & Ship:** `code-review-and-quality` + `security-and-hardening` + `code-simplification` + `documentation-and-adrs`
 
@@ -31,7 +31,7 @@ Read `CONSTRAINTS.md` before writing code. Do not weaken it to make a change pas
 - **Module 1 (`sop-ingestion`):** `docling`
 - **Module 2 (`sop-memory-rag`):** `qdrant-search-quality`, `rag-implementation`, `hybrid-search-implementation`, `langchain-rag`, `deep-agents-memory`
 - **Module 3 (`triage-engine-api`):** `langgraph-fundamentals`, `langgraph-persistence`, `langgraph-human-in-the-loop`, `fastapi`, `vllm-deploy-docker`
-- **Module 4 (`dashboard-live-chat`):** `frontend-design`, `web-design-guidelines`, `design-brief`, `workers-best-practices`
+- **Module 4 (`opendesign-web-portal`):** `frontend-design`, `web-design-guidelines`, `design-brief`, `workers-best-practices`
 - **Observability, Testing & Eval:** `langfuse`, `python-testing-patterns`, `llm-evaluation`, `deepeval`, `agent-self-evaluation`, `promptfoo-evals`
 
 ## Verification Commands

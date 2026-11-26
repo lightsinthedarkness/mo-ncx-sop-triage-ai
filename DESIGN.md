@@ -5,8 +5,8 @@
 > 1. **Multimodal Technical SOP Grounding** (teks + CLI/XML utuh + puluhan *screenshot* `before/after` via Vision-LLM lokal).
 > 2. **Deterministic 4-Stage SOP Triage State Machine** (*Interview → Analisa → Konfirmasi → Loop Pengerucutan → Vonis SOP*).
 > 3. **Qdrant Hybrid Search + Reranker** (Dense `bge-m3` + Sparse BM25 + `bge-reranker-v2-m3`).
-> 4. **OpenDesign Live-Chat UI Integration** ke `https://ncxall.my.id/dashboard` (*Midnight Iris*, *Hover-Peek Pill → Slide-Over Drawer → Full View*, protokol SSE Streaming).
-> 5. **3-Tier Progressive Rollout** agar proyek RAG LLM pertama berjalan cepat, terukur, dan tumbuh bertahap menuju platform *Autonomous AI* penuh bergaya Kortix AI.
+> 4. **Standalone OpenDesign Web Portal (`opendesign-web-portal`)** yang berdiri sendiri (mis. `ai.ncxall.my.id` atau langsung dari VPS — terpisah penuh dari `https://ncxall.my.id/dashboard`) dengan protokol SSE Streaming.
+> 5. **3-Tier Progressive Rollout** menuju *Autonomous AI* modular berbasis stack *open-source top-star* terbaik per lapisan (**LangGraph**, **Docling**, **Qdrant**, **LiteLLM/vLLM**, **Langfuse/Promptfoo/DeepEval**, **OpenHands**, **Browser-Use**) tanpa ketergantungan vendor tunggal.
 
 ---
 
@@ -44,8 +44,8 @@ flowchart TD
     end
 
     subgraph LOOP1["LOOP 1: TRIAGE & DURABLE EXECUTION"]
-        UI["ncxall.my.id/dashboard (OpenDesign Hover-Peek Pill + Slide-Over Drawer + Admin SOP)"]
-        CFW["Cloudflare Worker /api/sop-ai/* (HTTPS Tunnel Proxy + Admin Auth)"]
+        UI["OpenDesign Web Portal (Standalone — ai.ncxall.my.id / VPS · Chat Triage + Admin SOP)"]
+        PROXY["HTTPS Reverse Proxy / Tunnel (Admin Auth & SSE Stream)"]
         LG["LangGraph Orchestrator (4-Stage Triage State Machine + Idempotency Key)"]
         TRIG["Kestra / Temporal (Cron, Webhook, Durable Jobs — Fase 3)"]
         GW["AgentGateway (MCP / A2A + CEL RBAC — Fase 3)"]
@@ -83,7 +83,7 @@ flowchart TD
     GRAPHITI --> LG
     ART --> UI
 
-    UI <--> CFW <--> LG
+    UI <--> PROXY <--> LG
     TRIG --> LG
     LG --> GW --> HL
     HL --> OH
@@ -146,7 +146,7 @@ stateDiagram-v2
 | **Triage Orchestrator** | **FastAPI** + **LangGraph** | `langchain-ai/langgraph` | State machine 4-tahap (`INTERVIEW → ANALYZE → CONFIRM → VERDICT`) + SSE Streaming API. |
 | **Private LLM Gateway** | **LiteLLM** → **Ollama** (lokal) / **vLLM** (GPU VPS) | `BerriAI/litellm`, `vllm-project/vllm` | Model Hugging Face privat (`Qwen3-8B/14B/32B` atau `Gemma 4`), pindah lokal ↔ GPU cukup ubah 1 env. |
 | **Observability** | **Langfuse** + OpenTelemetry | `langfuse/langfuse` | Trace *end-to-end* tiap sesi *triage* & latensi retrieval. |
-| **Frontend UI** | **OpenDesign** → `ncxall.my.id/dashboard` (`meadow-dashboard.html` + `cloudflare/worker.js`) | Repo lokal `web` | *Hover-Peek Pill*, *Slide-Over Drawer* (`[⤢]` full-view), *Guided Empty State*, panel Admin Upload SOP. |
+| **Frontend UI** | **OpenDesign** Standalone Web Portal (`opendesign-web-portal`) | Standalone di repo ini | Portal Web AI mandiri (mis. `ai.ncxall.my.id` / VPS — terpisah dari `ncxall.my.id/dashboard`): Chat Triage 4-tahap, penampil CLI/screenshot SOP, & Panel Admin Upload SOP. |
 
 ### Fase 2 — Hermes Continuous Evaluation & Bi-Temporal Memory
 - **Graphiti** (`getzep/graphiti`) untuk *bi-temporal knowledge graph* tersinkron dengan invalidasi Qdrant.

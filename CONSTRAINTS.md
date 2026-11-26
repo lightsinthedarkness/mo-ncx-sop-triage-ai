@@ -27,7 +27,7 @@ Last reviewed: 2026-11-26 by Owner + Agent (`constraint-driven-development`)
 | **Secrets Scan** | Zero detected secrets | `gitleaks dir . --redact --no-banner` *(or regex pre-commit check)* | every commit / task end |
 | **Triage State Guard** | 100% premature-verdict tests blocked (`INTERVIEW → ANALYZE → CONFIRM → VERDICT`) | `pytest tests/test_triage_state_machine.py` | task end & CI |
 | **Temporal SOP Isolation** | 0% expired (`is_active=false`) SOP chunks returned in retrieval | `pytest tests/test_memory_temporal.py` | task end & CI |
-| **Frontend Integration (`web`)** | Build Tailwind + Pages + Worker tests + QA E2E (desktop + mobile 390px) PASS | See `C:/Users/Administrator/web/AGENTS.md` | Module 4 (`dashboard-live-chat`) |
+| **Frontend UI (`opendesign-web-portal`)** | Standalone OpenDesign Web App build + responsive desktop & mobile 390px + a11y PASS | E2E / Playwright check | Module 4 (`opendesign-web-portal`) |
 
 ---
 

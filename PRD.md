@@ -45,14 +45,13 @@ Tim operasional **MO NCX** membutuhkan sistem AI internal privat (berbasis model
   3. **`CONFIRM`:** Menyajikan ringkasan analisa dan menanyakan konfirmasi pengguna (*"Apakah analisa ini sudah sesuai dengan kondisi di lapangan?"*). Jika pengguna menjawab **"Belum/Tidak sesuai"**, sistem kembali ke **`INTERVIEW`** untuk mengerucutkan konteks.
   4. **`VERDICT`:** Hanya dapat dicapai setelah konfirmasi **"Ya/Sesuai"**. Menampilkan langkah resmi berurutan, blok *command* utuh (tombol *copy*), gambar referensi SOP dari MinIO, dan sitasi dokumen resmi.
 
-### FR-4: OpenDesign Live Chat UI di `ncxall.my.id/dashboard` (Fase 1)
-* Komponen UI diiterasi terlebih dahulu menggunakan **OpenDesign** (pratinjau HTML/CSS/JS nyata selaras tema *Midnight Iris* & palet terkunci [AGENTS.md](file:///C:/Users/Administrator/web/AGENTS.md)) sebelum diintegrasikan ke `meadow-dashboard.html`.
-* Interaksi 3 tahap:
-  1. **Idle:** Tombol kapsul kaca kecil di pojok kanan bawah (tidak menghalangi KPI/tabel).
-  2. **Hover (~150ms):** Melebar halus (*Hover-Peek Pill*) menampilkan status & label SOP AI (tidak membuka panel besar secara tidak sengaja).
-  3. **Klik:** Membuka *Slide-Over Drawer* (~420px di kanan) dengan tombol perbesar `[⤢]` (*Full Workspace*) untuk membaca blok *command* panjang, gambar *screenshot*, serta tab **Admin Upload SOP**.
-* Layar pembuka (*Guided Empty State*) menampilkan identitas AI khusus SOP MO NCX, indikator tahap `① Interview → ② Analisa → ③ Konfirmasi → ④ Solusi SOP`, dan tombol pilih cepat segmen (`EBIS`, `RETAIL`, `WIBS`).
-* Komunikasi UI ↔ Backend melalui **Cloudflare Worker** (`/api/sop-ai/*`) dengan *SSE Streaming* menuju VM/GPU VPS via HTTPS terproteksi.
+### FR-4: Standalone OpenDesign Web Portal (`opendesign-web-portal` — Fase 1)
+* Antarmuka dibangun sebagai **Web App Mandiri berbasis OpenDesign** (mis. diakses di `ai.ncxall.my.id` atau langsung dari VM/VPS — **terpisah penuh dan tidak menyentuh `https://ncxall.my.id/dashboard`**).
+* Fitur antarmuka utama:
+  1. **Guided SOP Empty State:** Identitas AI khusus SOP NCX, indikator progres `① Interview → ② Analisa → ③ Konfirmasi → ④ Solusi SOP`, dan tombol pilih cepat segmen (`EBIS`, `RETAIL`, `WIBS`).
+  2. **Workspace Chat Triage Layar Penuh:** Tampilan lega untuk membaca blok *command* Linux/XML (tombol 1-klik *copy*), pratinjau gambar *screenshot `before/after`* dari MinIO, dan sitasi nama file SOP.
+  3. **Panel Admin SOP (PIN/Token Auth):** Halaman khusus Admin untuk *upload*, lihat daftar versi aktif/arsip, dan hapus dokumen SOP per segmen.
+  4. **SSE Streaming:** Respons mengalir *real-time* dari FastAPI/LangGraph lewat HTTPS aman.
 
 ### FR-5: Continuous Self-Evaluation & Temporal Memory — Pola Hermes (Fase 2)
 * **Loop 1** merekam 100% trace ke **Langfuse (OTel)**.

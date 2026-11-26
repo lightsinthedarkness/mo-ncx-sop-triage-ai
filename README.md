@@ -1,6 +1,6 @@
 # NCX Triage & Self-Evolving Autonomous AI (`ykztir-ncx-ai`)
 
-Sistem **Private Local LLM + Multimodal RAG** untuk tim operasional **MO NCX** (`SOP EBIS`, `SOP RETAIL`, `SOP WIBS`), dirancang bertahap dengan arsitektur **Design 2.2** (menggabungkan *Multimodal SOP Triage*, pola *Two-Loop* **Hermes Agent**, pola *Company-as-Code* **Kortix AI**, dan integrasi **OpenDesign** ke Live Chat `https://ncxall.my.id/dashboard`).
+Sistem **Private Local LLM + Multimodal RAG** untuk tim operasional **NCX** (`SOP EBIS`, `SOP RETAIL`, `SOP WIBS`), dirancang bertahap dengan arsitektur **Design 2.2** — menggabungkan komponen *open-source top-star* terbaik per lapisan (**LangGraph**, **Docling**, **Qdrant Hybrid**, **LiteLLM/vLLM**, **Langfuse/Promptfoo/DeepEval**, **OpenHands**, **Browser-Use**) serta **Web App Mandiri berbasis OpenDesign** (terpisah penuh dari `ncxall.my.id/dashboard`).
 
 ---
 
@@ -45,7 +45,7 @@ Baca dokumen secara berurutan jika baru membuka proyek ini:
 | [DESIGN.md](DESIGN.md) | **Design 2.2** — Arsitektur *Two-Loop*, diagram *4-Stage Triage*, 7 mitigasi celah kritis, & *3-Tier Progressive Rollout*. |
 | [PRD.md](PRD.md) | **PRD 2.2** — Kebutuhan Fungsional (`FR-1` s/d `FR-6`), target NFR terukur, & roadmap 3 fase. |
 | [CONSTRAINTS.md](CONSTRAINTS.md) | Kontrak mutu berangka (*Floor rules*, coverage ≥80%, 100% *Zero-Premature-Verdict*, 0% SOP kedaluwarsa). |
-| [spec/capability-map.md](spec/capability-map.md) | Peta 4 modul Fase 1 (`sop-ingestion` → `sop-memory-rag` → `triage-engine-api` → `dashboard-live-chat`). |
+| [spec/capability-map.md](spec/capability-map.md) | Peta 4 modul Fase 1 (`sop-ingestion` → `sop-memory-rag` → `triage-engine-api` → `opendesign-web-portal`). |
 | [spec/SPEC-sop-ingestion.md](spec/SPEC-sop-ingestion.md) | Spesifikasi resmi Modul #1 (`sop-ingestion` — Approved). |
 | [tasks/plan.md](tasks/plan.md) & [tasks/todo.md](tasks/todo.md) | Rencana teknis & daftar tugas TDD Modul #1. |
 | [AGENTS.md](AGENTS.md), [feature_list.json](feature_list.json), [progress.md](progress.md) | *Agent Harness* (22 skill proyek di `.agents/skills/` + pelacakan progres lintas sesi). |
@@ -77,10 +77,10 @@ pytest --cov=src --cov-fail-under=80
 
 ## Urutan Build 3 Fase
 
-1. **Fase 1 (Aktif — Core RAG & Live Chat):**
+1. **Fase 1 (Aktif — Core RAG, Triage & Standalone Portal):**
    * `sop-ingestion` (Docling + Vision Captioner + Command-Safe Chunker + MinIO/LocalFS)
    * `sop-memory-rag` (Qdrant Hybrid `bge-m3` + BM25 + Reranker + Temporal Versioning)
    * `triage-engine-api` (FastAPI + LangGraph 4-Stage Triage + LiteLLM `Ollama`/`vLLM` + Langfuse)
-   * `dashboard-live-chat` (OpenDesign → `ncxall.my.id/dashboard` + proxy Cloudflare Worker)
-2. **Fase 2 (Hermes Continuous Evaluation):** `Graphiti` bi-temporal memory, `Promptfoo` *Golden Holdout Dataset*, `DSPy`, *Session-Branch Git PR*, & pemisahan `Redis Cache/Queue`.
-3. **Fase 3 (Kortix Autonomous Workers):** `Kestra/Temporal`, `AgentGateway (CEL RBAC)`, `HumanLayer`, `OpenHands`, `Browser Use`, & *Reversible PII Tokenization*.
+   * `opendesign-web-portal` (Web App Mandiri berbasis OpenDesign, mis. `ai.ncxall.my.id` / VPS — terpisah dari `ncxall.my.id/dashboard`)
+2. **Fase 2 (Continuous Self-Evaluation):** `Graphiti` bi-temporal memory, `Promptfoo` + `DeepEval` *Golden Holdout Dataset*, `DSPy`, *Session-Branch Git PR*, & pemisahan `Redis Cache/Queue`.
+3. **Fase 3 (Best-of-Breed Autonomous Workers):** `Kestra/Temporal`, `AgentGateway (CEL RBAC)`, `HumanLayer`, `OpenHands`, `Browser-Use`, & *Reversible PII Tokenization*.
