@@ -1,4 +1,4 @@
-# MO NCX SOP Triage & Self-Evolving Autonomous AI (`LLM`)
+# NCX Triage & Self-Evolving Autonomous AI (`ykztir-ncx-ai`)
 
 Sistem **Private Local LLM + Multimodal RAG** untuk tim operasional **MO NCX** (`SOP EBIS`, `SOP RETAIL`, `SOP WIBS`), dirancang bertahap dengan arsitektur **Design 2.2** (menggabungkan *Multimodal SOP Triage*, pola *Two-Loop* **Hermes Agent**, pola *Company-as-Code* **Kortix AI**, dan integrasi **OpenDesign** ke Live Chat `https://ncxall.my.id/dashboard`).
 

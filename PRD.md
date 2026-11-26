@@ -1,4 +1,4 @@
-# PRD.md — MO NCX SOP Triage & Self-Evolving Autonomous AI Platform (PRD 2.2)
+# PRD.md — NCX Triage & Self-Evolving Autonomous AI Platform (PRD 2.2)
 
 > [!NOTE]
 > Dokumen ini berpasangan dengan [DESIGN.md](DESIGN.md) (**Design 2.2**) dan mengacu pada *Statement of Intent* di [docs/intent/sop-triage-ai.md](docs/intent/sop-triage-ai.md).
