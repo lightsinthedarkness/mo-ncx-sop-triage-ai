@@ -9,6 +9,8 @@
   - Created project harness: `AGENTS.md`, `CONSTRAINTS.md`, `feature_list.json`, `progress.md`, `init.ps1`, and `spec/capability-map.md`.
   - Installed all **22 curated project skills** into `.agents/skills/` (`21/21` batch + `find-skills` = 22 total) and registered them in `AGENTS.md`.
   - Drafted & got Owner approval for Phase 1 Spec (`spec/SPEC-sop-ingestion.md`).
-  - Completed Phase 2 & Phase 3 (`planning-and-task-breakdown` + `writing-plans`): created `tasks/plan.md` (6 TDD vertical-slice tasks + 5 Review Focus edge cases + 2 checkpoints) and `tasks/todo.md`.
+  - Completed Phase 2 & Phase 3 (`planning-and-task-breakdown` + `writing-plans`): created `tasks/plan.md` and `tasks/todo.md`.
+  - Initialized Git (`main` baseline `bbf6f5b`, `README.md` `c5a7682`) and switched to `feat/sop-ingestion`.
+  - Ran `doubt-driven-development` fresh-context adversarial review (single-model; cross-model skipped per Owner) and reconciled all 14 findings into `spec/SPEC-sop-ingestion.md`, `tasks/plan.md`, and `tasks/todo.md`.
 - **Next Step:**
-  - Wait for Owner approval on `tasks/plan.md` & `tasks/todo.md`, then enter **Phase 4: BUILD & VERIFY** (`executing-plans` + `incremental-implementation` + `test-driven-development`) starting with Task 1.
+  - **STOPPED AT CODING GATE** per Owner instruction. Awaiting explicit "mulai coding" command to begin Phase 4 TDD (Task 1).
