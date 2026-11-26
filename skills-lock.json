@@ -1,0 +1,159 @@
+{
+  "version": 2,
+  "skills": {
+    "agent-self-evaluation": {
+      "source": "affaan-m/ECC",
+      "commit": "4adeee6732a12d1540f49a4d50a38ce8c97f9a53",
+      "sourceType": "github",
+      "skillPath": "skills/agent-self-evaluation/SKILL.md",
+      "computedHash": "bce84e436bb7bebc447e82fefd720dde9e1afdbe485ff0228045dc6fc96d83bb"
+    },
+    "deep-agents-memory": {
+      "source": "langchain-ai/langchain-skills",
+      "commit": "9002566fcf20fb3df65f42da4d316f5643f71c9e",
+      "sourceType": "github",
+      "skillPath": "skills/.legacy/deep-agents-memory/SKILL.md",
+      "computedHash": "eda666bdbd701fa509bc551a8e3d24c7fcc14f5ade5cd83d7fec874558af9b77"
+    },
+    "deepeval": {
+      "source": "confident-ai/deepeval",
+      "commit": "443135ed2756a454856840dc9357b5c9dd32b9fa",
+      "sourceType": "github",
+      "skillPath": "skills/deepeval/SKILL.md",
+      "computedHash": "55c8d336b5cfed32a4ea055ae3480291f52debd696db54f9df4b54db9f5d3b26"
+    },
+    "design-brief": {
+      "source": "nexu-io/open-design",
+      "commit": "6a74a1521ea2745fcf448bda7cdb8114f20d19b5",
+      "sourceType": "github",
+      "skillPath": "skills/design-brief/SKILL.md",
+      "computedHash": "4cb207bff8d3fc1fc6b339e2b055a61a49eb9b3472b474fba47df29433cecd44"
+    },
+    "docling": {
+      "source": "docling-project/docling",
+      "commit": "8a3c661fa16aa2dd8caec0a603259152d9269e79",
+      "sourceType": "github",
+      "skillPath": "docling/.agents/skills/docling/SKILL.md",
+      "computedHash": "7e70e6a30d1412b2555557e29ab011774b35c1d0e068c06898cf5da493c389e2"
+    },
+    "fastapi": {
+      "source": "fastapi/fastapi",
+      "commit": "05e6df7e906c3decba377c37548019973f40bf15",
+      "sourceType": "github",
+      "skillPath": "fastapi/.agents/skills/fastapi/SKILL.md",
+      "computedHash": "141f0146e357365d518029ccc74e5b0a256f9a352573c65856780995d1bea52c"
+    },
+    "find-skills": {
+      "source": "vercel-labs/skills",
+      "commit": "57217cf86ba38148a57af9e90d14a4c049558330",
+      "sourceType": "github",
+      "skillPath": "skills/find-skills/SKILL.md",
+      "computedHash": "7bc223e2aafbdbf6e50ea243ba6ef67fe432bb069ab439fea0390795dac0bf7f"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "commit": "e4bb5d960d87126ff3b3a8af1a104b7db67560ba",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-design/SKILL.md",
+      "computedHash": "83485963700bcf11d5bf78118facb301676b69d918fee2e45a95e7f1a2840f6c"
+    },
+    "hybrid-search-implementation": {
+      "source": "wshobson/agents",
+      "commit": "c96b5f6552dba32e4492307493ee613581430715",
+      "sourceType": "github",
+      "skillPath": "plugins/llm-application-dev/skills/hybrid-search-implementation/SKILL.md",
+      "computedHash": "9c2de36a9f82940de449fa550bbad7d6be9d53b5ecd5e9f2d93c548c3fa6cfaf"
+    },
+    "langchain-rag": {
+      "source": "langchain-ai/langchain-skills",
+      "commit": "9002566fcf20fb3df65f42da4d316f5643f71c9e",
+      "sourceType": "github",
+      "skillPath": "skills/.legacy/langchain-rag/SKILL.md",
+      "computedHash": "e5b0eaecf696e21de3465489a91616b7c0cf0faedb797a1c7b5c15fd44257ff3"
+    },
+    "langfuse": {
+      "source": "langfuse/skills",
+      "commit": "f0bcb13088b490c04b3f4870bace17f6d57b199c",
+      "sourceType": "github",
+      "skillPath": "skills/langfuse/SKILL.md",
+      "computedHash": "a35653229c8f110a1c950bce100edaf84870b8037dd59c940031e8434b9e15f0"
+    },
+    "langgraph-fundamentals": {
+      "source": "langchain-ai/langchain-skills",
+      "commit": "9002566fcf20fb3df65f42da4d316f5643f71c9e",
+      "sourceType": "github",
+      "skillPath": "skills/.legacy/langgraph-fundamentals/SKILL.md",
+      "computedHash": "96685d0e58c75ad2be40981e298218ef773b49f6359936d9e8e36be3fe5a6e9d"
+    },
+    "langgraph-human-in-the-loop": {
+      "source": "langchain-ai/langchain-skills",
+      "commit": "9002566fcf20fb3df65f42da4d316f5643f71c9e",
+      "sourceType": "github",
+      "skillPath": "skills/.legacy/langgraph-human-in-the-loop/SKILL.md",
+      "computedHash": "670d4ec660b3283bded446f8180a50f7820f10fb4e78ad57bfc0ecd79b027e32"
+    },
+    "langgraph-persistence": {
+      "source": "langchain-ai/langchain-skills",
+      "commit": "9002566fcf20fb3df65f42da4d316f5643f71c9e",
+      "sourceType": "github",
+      "skillPath": "skills/.legacy/langgraph-persistence/SKILL.md",
+      "computedHash": "92a060abd9119241fca2ebb175cbd32abd4a2a8e194a140e9814ad109a79a584"
+    },
+    "llm-evaluation": {
+      "source": "wshobson/agents",
+      "commit": "c96b5f6552dba32e4492307493ee613581430715",
+      "sourceType": "github",
+      "skillPath": "plugins/llm-application-dev/skills/llm-evaluation/SKILL.md",
+      "computedHash": "3986d5cdb5f5e240b16555d5d94c7759f741432b3c0595c0833a3c4ba31613dc"
+    },
+    "promptfoo-evals": {
+      "source": "promptfoo/promptfoo",
+      "commit": "485074451bd3c77a0abf000bc9a960499a86f286",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/promptfoo-evals/SKILL.md",
+      "computedHash": "ec127d5ec97b1c077babc485d74af93b641351bcde0e0d1a620a6b0beecec91c"
+    },
+    "python-testing-patterns": {
+      "source": "wshobson/agents",
+      "commit": "c96b5f6552dba32e4492307493ee613581430715",
+      "sourceType": "github",
+      "skillPath": "plugins/python-development/skills/python-testing-patterns/SKILL.md",
+      "computedHash": "8113c05a831d4872c9294b0df26a335c09af423ee2e23d8b9b6817b300d96796"
+    },
+    "qdrant-search-quality": {
+      "source": "qdrant/skills",
+      "commit": "78ea845ee6f649a7d2aebfec718a0a1b76eaaf04",
+      "sourceType": "github",
+      "skillPath": "skills/qdrant-search-quality/SKILL.md",
+      "computedHash": "c72ee6792d14d9cd038a8b3e7ea99183d35a4930cc4b1d81e57673e9ae2304b3"
+    },
+    "rag-implementation": {
+      "source": "wshobson/agents",
+      "commit": "c96b5f6552dba32e4492307493ee613581430715",
+      "sourceType": "github",
+      "skillPath": "plugins/llm-application-dev/skills/rag-implementation/SKILL.md",
+      "computedHash": "f488cd68c88657f8e0fb6476b4b6acf0142ab4aa17ceb036f0106829a94935ab"
+    },
+    "vllm-deploy-docker": {
+      "source": "vllm-project/vllm-skills",
+      "commit": "c99623410c1531148ff9b39fe1dcb27efbf4bf23",
+      "sourceType": "github",
+      "skillPath": "plugins/vllm-skills/skills/vllm-deploy-docker/SKILL.md",
+      "computedHash": "0c0f93d034a53272d2fcce5d6082a2ca5b682967090e145d35e353e45b2c4512"
+    },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "commit": "5a37a6329fbad3666c3207392a6a7c0110e92efb",
+      "sourceType": "github",
+      "skillPath": "skills/web-design-guidelines/SKILL.md",
+      "computedHash": "5994e4cfd86144903d2ba750f862b9e36af15e3297aac983679e347b99f6cb71"
+    },
+    "workers-best-practices": {
+      "source": "cloudflare/skills",
+      "commit": "ff191de7d903788eceaf516a514ae7d3b56b924a",
+      "sourceType": "github",
+      "skillPath": "skills/workers-best-practices/SKILL.md",
+      "computedHash": "7f941bbc549454872a4c7c261bf75a1ef7aaa69666bc85cec91e97cf40c11cc6"
+    }
+  }
+}

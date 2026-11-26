@@ -1,0 +1,47 @@
+{
+  "project": "mo-ncx-sop-triage-ai",
+  "design_version": "2.2",
+  "active_phase": "Phase 2/3 - Plan & Task Breakdown (Module 1: sop-ingestion)",
+  "features": [
+    {
+      "id": "F0-foundation-docs",
+      "module": "foundation",
+      "title": "Foundation Docs, Harness, Constraints & Capability Map (Design 2.2)",
+      "status": "done",
+      "depends_on": [],
+      "verification": "All foundation artifacts (DESIGN.md, PRD.md, CONSTRAINTS.md, AGENTS.md, spec/capability-map.md, init.ps1) created and 22 project skills installed."
+    },
+    {
+      "id": "F1-sop-ingestion",
+      "module": "sop-ingestion",
+      "title": "Multimodal SOP Parser (Docling + Vision Captioner + Command-Safe Chunker + MinIO Assets)",
+      "status": "in_progress",
+      "depends_on": ["F0-foundation-docs"],
+      "verification": "SPEC approved; tasks/plan.md & tasks/todo.md drafted awaiting Owner approval before Phase 4 TDD build."
+    },
+    {
+      "id": "F2-sop-memory-rag",
+      "module": "sop-memory-rag",
+      "title": "Qdrant Native Hybrid Search (bge-m3 + BM25) + Reranker + Temporal Versioning & ACL",
+      "status": "pending",
+      "depends_on": ["F1-sop-ingestion"],
+      "verification": ""
+    },
+    {
+      "id": "F3-triage-engine-api",
+      "module": "triage-engine-api",
+      "title": "LangGraph 4-Stage Triage State Machine + FastAPI SSE + LiteLLM (Ollama/vLLM) + Langfuse OTel",
+      "status": "pending",
+      "depends_on": ["F2-sop-memory-rag"],
+      "verification": ""
+    },
+    {
+      "id": "F4-dashboard-live-chat",
+      "module": "dashboard-live-chat",
+      "title": "OpenDesign Live Chat Widget (Hover-Peek Pill + Slide-Over Drawer + Admin SOP) in ncxall.my.id/dashboard",
+      "status": "pending",
+      "depends_on": ["F3-triage-engine-api"],
+      "verification": ""
+    }
+  ]
+}

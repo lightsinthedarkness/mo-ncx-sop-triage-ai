@@ -1,0 +1,36 @@
+# Python / Virtualenv / Caches
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Local runtime data, scratch & logs
+.data/
+.scratch/
+*.log
+
+# Secrets & Certificates (NEVER commit)
+.env
+.env.*
+!.env.example
+*.jks
+*.crt
+*.pem
+*.key
+*.p12
+.admin-secrets.json
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
