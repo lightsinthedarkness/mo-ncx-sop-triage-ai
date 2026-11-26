@@ -4,6 +4,18 @@ Sistem **Private Local LLM + Multimodal RAG** untuk tim operasional **MO NCX** (
 
 ---
 
+## Arsitektur Sistem (Design 2.2 — Archify)
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/diagrams/sop-triage-architecture-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="docs/diagrams/sop-triage-architecture-light.svg">
+  <img alt="MO NCX SOP Triage & Autonomous AI (Design 2.2) Architecture" src="docs/diagrams/sop-triage-architecture-dark.svg" width="100%">
+</picture>
+
+> Versi interaktif (zoom, pan, dark/light toggle): [`docs/diagrams/sop-triage-architecture.html`](docs/diagrams/sop-triage-architecture.html)
+
+---
+
 ## Ringkasan Alur Kerja AI (Fase 1 — SOP Triage)
 
 AI **dilarang** langsung menebak solusi di pesan pertama. Setiap kendala operasional dipandu melalui *state machine* 4 tahap di **LangGraph**:

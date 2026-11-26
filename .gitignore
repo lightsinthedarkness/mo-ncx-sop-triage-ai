@@ -16,6 +16,10 @@ htmlcov/
 # Local runtime data, scratch & logs
 .data/
 .scratch/
+.archify/
+docs/diagrams/*.finalize*.json
+docs/diagrams/*.browser-check.json
+docs/diagrams/*.delivery*.json
 *.log
 
 # Secrets & Certificates (NEVER commit)
