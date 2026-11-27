@@ -37,6 +37,19 @@ Seluruh komponen berjalan dalam jaringan internal kantor (`docker-compose.yml` d
 
 ---
 
+## 2b. Backup, Pemulihan & Batas Beban
+
+| Komponen | Backup | RPO / RTO target | Catatan |
+| :--- | :--- | :--- | :--- |
+| `PostgreSQL 16` (RBAC, sesi, audit log) | `pg_dump` harian + WAL archiving | RPO ≤ 24 jam (≤ 15 menit dengan WAL) / RTO ≤ 4 jam | Audit log append-only wajib ikut dan diverifikasi rantai hash-nya setelah restore. |
+| `Qdrant` | Snapshot harian | RPO ≤ 24 jam / RTO ≤ 2 jam | Indeks dapat dibangun ulang dari dokumen sumber + `IngestResult`. |
+| `MinIO` (screenshot) | Replikasi/`mc mirror` harian | RPO ≤ 24 jam | Sertakan status `review_status`. |
+| Dokumen SOP sumber | Salinan terpisah di storage kantor | — | Sumber kebenaran untuk re-ingest. |
+
+**Batas beban (nilai awal, disetel setelah Spike S3):** maks 3 sesi chat serentak per user, rate limit 30 request/menit per `user_id`, antrean ingestion Admin maks 2 dokumen paralel, ukuran paste log maks 200 KB, pemulihan diuji (*restore drill*) minimal per kuartal.
+
+---
+
 ## 3. Aturan Jaringan & Air-Gapped Readiness
 1. **Zero Egress Default:** Server kantor tetap beroperasi penuh (**100% fungsi chat, triage, ingestion, dan automasi pengetahuan**) meski akses internet keluar diblokir firewall kantor.
 2. **Pre-Downloaded Model Weights:** Bobot model Hugging Face (`Qwen3-14B/32B`, `Qwen2.5-VL-7B`, `BAAI/bge-m3`, `BAAI/bge-reranker-v2-m3`) diunduh sekali ke storage internal / mirror kantor sebelum deployment.

@@ -24,3 +24,8 @@
 1. Install Rust toolchain (`winget install Rustlang.Rustup` + `rustup component add rustfmt clippy llvm-tools-preview` + `cargo install cargo-llvm-cov`).
 2. Run `powershell -ExecutionPolicy Bypass -File .\init.ps1` and verify `[OK] Rust detected`.
 3. Begin **Phase 4 TDD** on branch `feat/sop-ingestion`: Tasks 1–3 in `tasks/plan.md` (`Cargo.toml` workspace, `crates/sop-core`, `assets.rs`, `vision.rs`).
+
+## Update 2026-11-28
+- Last Updated: 2026-11-28. Objective: doc phase hardening selesai; menunggu go-ahead Coding Gate.
+- Blockers: Rust belum terpasang; push GitHub sebelumnya gagal (connection reset).
+- Recommended Next Step: Step 0 rustup, lalu Task 1 (sop-core + scrubber); jalankan Spike S1 sebelum Task 4c.

@@ -30,6 +30,15 @@ Seluruh aplikasi backend `ykztir-ncx-ai` (Design 2.5 / PRD 2.5) dibangun dengan 
   2. Ekstraksi objek gambar tertanam memakai `lopdf` lalu dinormalisasi/di-encode ulang ke PNG valid menggunakan crate **`image`** (`image-rs/image`),
   3. PDF hasil scan (**0 teks + N gambar**) diproses sebagai *image-backed chunks* yang dideskripsikan oleh **Local Vision-LLM (`Qwen2.5-VL`)** — tidak ditolak sebagai `EmptyFile`.
 
+### Verifikasi Crate PDF (`crates.io` API, 2026-11-28)
+| Crate | Versi | Lisensi | Unduhan | Update Terakhir |
+| :--- | :--- | :--- | :--- | :--- |
+| `oxidize-pdf` | `5.6.1` | MIT | ~219 rb | 2026-11-16 |
+| `pdf-extract` | `0.12.1` | MIT | ~9,1 jt | 2026-09-16 |
+| `lopdf` | `0.47.0` | MIT | ~33,5 jt | 2026-11-04 |
+
+Ketiganya berlisensi MIT sehingga aman dipakai internal. Pilihan `oxidize-pdf` vs `pdf-extract` untuk teks **belum dikunci**: diputuskan lewat *spike* pada korpus PDF SOP nyata (lihat `tasks/plan.md` Spike S1); `pdf-extract` jauh lebih teruji, `oxidize-pdf` lebih baru tetapi kaya fitur.
+
 ### Batasan Tetap Tidak Berubah
 - **Zero Direct DB / Zero Prod Execution (`ADR-002`):** Dilarang menambahkan crate driver Oracle (`oracle`, `sibyl`, `oci`, `odpi`) maupun crate SSH exec produksi (`russh`, `ssh2`, `openssh`, `async-ssh2-tokio`) di seluruh workspace `Cargo.toml`/`Cargo.lock`, maupun memanggil `Command::new("sqlplus" | "ssh")`.
 - **Modul #4 (`web/` — `opendesign-web-portal`):** Tetap **Standalone OpenDesign Web App** (HTML/CSS/JS statis yang disajikan langsung oleh binary Rust `Axum` — nol Node.js di server produksi, terpisah penuh dari `https://ncxall.my.id/dashboard`).

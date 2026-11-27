@@ -21,3 +21,8 @@
 
 ## Next Step
 - **STOPPED AT CODING GATE** per Owner instruction. Next step when Owner says go: install `rustup` (`winget install Rustlang.Rustup`) and begin Phase 4 TDD Task 1 (`Cargo.toml` workspace + `crates/sop-core`).
+
+## 2026-11-28 — Full-doc review & reconcile
+- Review isi penuh semua dokumen inti; perbaikan diterapkan (commit 6496142 + lanjutan): Asset Review Gate, doc_id eksplisit, scrubber shared di sop-core (+input_scrub guard), Task 4 dipecah 4a-4d, perintah cargo -p, penyeragaman mistral.rs, audit log append-only, TLS/JWT, backup & rate limit, Spike S1-S3.
+- Lisensi crate PDF terverifikasi via crates.io API: oxidize-pdf 5.6.1 MIT, pdf-extract 0.12.1 MIT, lopdf 0.47.0 MIT.
+- Masih terbuka (butuh pengukuran, bukan dokumen): Spike S1 (PDF), S2 (latensi reranker), S3 (VRAM/TTFT). Coding Gate tetap tertutup.

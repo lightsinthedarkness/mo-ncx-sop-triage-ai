@@ -25,6 +25,11 @@
 
 ---
 
+## Spikes (Keputusan Berbasis Data — Sebelum Task Terkait)
+- **Spike S1 (sebelum Task 4c, PDF):** Uji `oxidize-pdf` vs `pdf-extract` (+ `lopdf` untuk gambar) pada 5–10 PDF SOP nyata yang sudah di-anonymize (born-digital, multi-kolom, font CID, scan). Kriteria lulus: teks terbaca benar ≥ 95% pada blok CLI/tabel, nol panic, waktu < 5 detik/dokumen. Hasil dicatat di `ADR-003` lalu satu crate dikunci. Lisensi ketiganya sudah diverifikasi MIT.
+- **Spike S2 (sebelum spec Modul #2):** Ukur latensi `bge-m3` + `bge-reranker-v2-m3` (CPU vs GPU) pada ~20 kandidat. Jika p95 hybrid > 800 ms di CPU, jadikan reranker GPU-only atau kurangi kandidat; catat di `infra/HARDWARE-SIZING.md`.
+- **Spike S3 (sebelum mengunci Tier A/B):** Ukur VRAM, TTFT, dan throughput `Qwen3-14B/32B` di `mistral.rs` pada GPU kantor (bandingkan `vLLM` bila tersedia) dengan 5/15/50 sesi serentak.
+
 ## Prerequisite (Before Task 1)
 - [ ] **Step 0:** Install Rust stable toolchain via `rustup` (`winget install Rustlang.Rustup`), then run:
   ```powershell
