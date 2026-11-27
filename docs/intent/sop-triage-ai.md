@@ -13,7 +13,7 @@
   2. AI menjalankan siklus wajib: **Interview Gali Fakta (segmen, environment, gejala/log, prasyarat) → Berpikir & Analisa SOP → Konfirmasi Analisa ke Pengguna → (Jika belum sesuai: balik bertanya mengerucut | Jika sesuai: keluarkan langkah resmi SOP + blok command utuh + cuplikan gambar/sumber file SOP)**.
   3. Setiap ada dokumen SOP baru atau revisi, Admin cukup melakukan *upload* file tanpa perlu membuat ribuan baris dataset *training* manual.
 - **Constraint:**
-  1. Seluruh dokumen SOP bersifat internal/privat — dilarang dikirim ke API AI komersial publik (OpenAI, Gemini Cloud, Anthropic, dsb.).
+  1. Seluruh dokumen SOP mentah bersifat internal/privat — dilarang dikirim ke API AI komersial publik (OpenAI, Gemini Cloud, Anthropic, dsb.). Pengecualian tunggal yang disetujui Owner diatur di [ADR-001](../adr/ADR-001-hybrid-python-rust-and-jev-orchestrator.md) & `CONSTRAINTS.md` Exception `E1`: **Jev (`TypeSafe AI`)** hanya boleh menerima *redacted metadata/slot state atau synthetic eval payload* (nol teks SOP mentah, IP, atau kredensial) dengan *fallback* ke Local LLM.
   2. Mesin inferensi LLM + Vision + *Hybrid Memory DB* dijalankan mandiri di **VM / VPS ber-GPU** dengan autentikasi Admin untuk mutasi SOP.
   3. Antarmuka dibangun sebagai **Standalone Web App Mandiri (OpenDesign)** di repo ini, mendukung desktop & mobile `390px` tanpa *overflow*, serta bebas *secret* ter-commit (`gitleaks` 0 leaks).
 - **Out of scope (Deferred to Fase 2 / Fase 3 / V2+):**

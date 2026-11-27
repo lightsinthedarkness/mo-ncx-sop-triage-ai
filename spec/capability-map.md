@@ -2,7 +2,7 @@
 
 - **Design Reference:** [DESIGN.md](../DESIGN.md) (Design 2.3 — Hybrid Python + Rust + Jev)
 - **ADR Reference:** [ADR-001](../docs/adr/ADR-001-hybrid-python-rust-and-jev-orchestrator.md)
-- **PRD Reference:** [PRD.md](../PRD.md) (PRD 2.2)
+- **PRD Reference:** [PRD.md](../PRD.md) (PRD 2.3)
 - **Status:** Approved Phase 0 Baseline (Fase 1 of 3-Tier Progressive Rollout)
 
 ## Module Table

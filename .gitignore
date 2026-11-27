@@ -13,6 +13,10 @@ build/
 coverage.xml
 htmlcov/
 
+# Rust / Cargo (Modules 2-3)
+target/
+**/*.rs.bk
+
 # Local runtime data, scratch & logs
 .data/
 .scratch/

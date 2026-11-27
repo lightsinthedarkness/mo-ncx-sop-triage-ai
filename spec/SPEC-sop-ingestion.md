@@ -1,8 +1,8 @@
 # Spec: Multimodal SOP Ingestion Pipeline (`sop-ingestion`) — V1
 
 - **Module ID:** `sop-ingestion` (ref: [capability-map.md](capability-map.md))
-- **Design Reference:** [DESIGN.md](../DESIGN.md) (Design 2.2)
-- **PRD Reference:** [PRD.md](../PRD.md) (FR-1)
+- **Design Reference:** [DESIGN.md](../DESIGN.md) (Design 2.3 — [ADR-001](../docs/adr/ADR-001-hybrid-python-rust-and-jev-orchestrator.md))
+- **PRD Reference:** [PRD.md](../PRD.md) (PRD 2.3 — FR-1)
 - **Quality Contract:** [CONSTRAINTS.md](../CONSTRAINTS.md)
 - **Status:** Approved & Hardened via `doubt-driven-development` (2026-11-26 — all 14 adversarial findings reconciled; ready for coding gate)
 
@@ -246,6 +246,6 @@ class IngestResult(BaseModel):
 ## 9. Out of Scope (Deferred)
 
 - **Embedding & Qdrant Upsert / Version Invalidation:** Modul #2 (`sop-memory-rag`).
-- **FastAPI Upload Endpoint & Admin Auth:** Modul #3 (`triage-engine-api`).
+- **Rust Axum Upload Endpoint & Admin Auth:** Modul #3 (`triage-engine-api`).
 - **Full Tree-sitter Multi-Language AST Parsing:** Ditunda ke V2 (di V1 menggunakan Python `ast` + *structured block splitter* untuk `.sh`, `.sql`, `.xml` guna menjaga kesederhanaan & kecepatan instalasi).
 - **Auto-Sync SharePoint API & Graphiti Bi-Temporal Sync:** Ditunda ke V2 / Fase 2.

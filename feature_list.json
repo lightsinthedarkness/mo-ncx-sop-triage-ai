@@ -6,7 +6,7 @@
     {
       "id": "F0-foundation-docs",
       "name": "Foundation Docs, Harness, Constraints, ADR-001, Skills & Archify Diagrams",
-      "description": "Design 2.3 (Hybrid Python+Rust+Jev), PRD 2.2, ADR-001, CONSTRAINTS.md, AGENTS.md, Capability Map, 24 project skills, Archify dual-theme SVGs.",
+      "description": "Design 2.3 (Hybrid Python+Rust+Jev), PRD 2.3, ADR-001, CONSTRAINTS.md, AGENTS.md, Capability Map, 24 project skills, Archify dual-theme SVGs.",
       "module": "foundation",
       "status": "done",
       "dependencies": [],

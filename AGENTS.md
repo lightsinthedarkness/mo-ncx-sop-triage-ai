@@ -6,7 +6,7 @@ Read `CONSTRAINTS.md` before writing code. Do not weaken it to make a change pas
 ## Authoritative Docs
 - Intent: [docs/intent/sop-triage-ai.md](docs/intent/sop-triage-ai.md)
 - Architecture (Design 2.3): [DESIGN.md](DESIGN.md) & [ADR-001](docs/adr/ADR-001-hybrid-python-rust-and-jev-orchestrator.md)
-- Product Requirements (PRD 2.2): [PRD.md](PRD.md)
+- Product Requirements (PRD 2.3): [PRD.md](PRD.md)
 - Quality Contract: [CONSTRAINTS.md](CONSTRAINTS.md)
 - Module Map: [spec/capability-map.md](spec/capability-map.md)
 - State & Progress: [feature_list.json](feature_list.json), [progress.md](progress.md)
@@ -30,7 +30,7 @@ Read `CONSTRAINTS.md` before writing code. Do not weaken it to make a change pas
 - **Visual Documentation:** `archify`, `archify-pr`
 - **Module 1 (`sop-ingestion`):** `docling`
 - **Module 2 (`sop-memory-rag`):** `qdrant-search-quality`, `rag-implementation`, `hybrid-search-implementation`, `langchain-rag`, `deep-agents-memory`
-- **Module 3 (`triage-engine-api`):** `langgraph-fundamentals`, `langgraph-persistence`, `langgraph-human-in-the-loop`, `fastapi`, `vllm-deploy-docker`
+- **Module 3 (`triage-engine-api` — Rust `Axum`/`Rig`/`sqlx` + Jev):** `vllm-deploy-docker` *(plus legacy Python pattern refs: `langgraph-fundamentals`, `langgraph-persistence`, `langgraph-human-in-the-loop`, `fastapi`)*
 - **Module 4 (`opendesign-web-portal`):** `frontend-design`, `web-design-guidelines`, `design-brief`, `workers-best-practices`
 - **Observability, Testing & Eval:** `langfuse`, `python-testing-patterns`, `llm-evaluation`, `deepeval`, `agent-self-evaluation`, `promptfoo-evals`
 

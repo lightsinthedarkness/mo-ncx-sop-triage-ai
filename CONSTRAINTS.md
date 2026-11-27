@@ -1,6 +1,6 @@
 # Constraints (`CONSTRAINTS.md`)
 
-Last reviewed: 2026-11-26 by Owner + Agent (`constraint-driven-development`)
+Last reviewed: 2026-11-27 by Owner + Agent (`constraint-driven-development` + `ADR-001`)
 
 > **Rule:** Read this file before writing any code. Never weaken a threshold, silence a check, or skip a test to make a change pass.
 

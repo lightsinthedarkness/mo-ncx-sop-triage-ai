@@ -209,7 +209,7 @@ LLM/
 ├── AGENTS.md                   # Peta kerja & harness rules untuk AI coding agent
 ├── CONSTRAINTS.md              # Kontrak kualitas terukur (Floor + Python/Rust + E1 Jev)
 ├── DESIGN.md                   # Dokumen ini (Design 2.3 — Hybrid Python + Rust + Jev)
-├── PRD.md                      # Product Requirements Document (PRD 2.2 + ADR-001)
+├── PRD.md                      # Product Requirements Document (PRD 2.3)
 ├── feature_list.json           # Pelacakan fitur & bukti verifikasi per slice
 ├── progress.md                 # Log progres & status terakhir lintas sesi
 ├── init.ps1                    # Skrip baseline health-check Windows/PowerShell
