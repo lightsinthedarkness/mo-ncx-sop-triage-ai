@@ -156,7 +156,7 @@ stateDiagram-v2
 | **Deny-by-Default (`Allow/Ask/Block`)** | Fase 1: Admin Auth untuk mutasi SOP + Triage Guard; Fase 3: **AgentGateway** (CEL RBAC) + **HumanLayer** | Mencegah vonis prematur di Fase 1 dan aksi berisiko tanpa izin manusia di Fase 3. |
 | **Shared Artifacts & Drive** | **MinIO / S3** (aset gambar *screenshot* SOP di Fase 1, *artifact bus* antar worker di Fase 3) | Gambar langkah *before/after* tampil langsung di chat; transfer file antar worker aman. |
 | **Session-Branch Change Requests** | Branch Git terisolasi per sesi evaluasi (`skills/*.md`) | Perubahan playbook/skill tidak pernah menimpa `main` tanpa *Promptfoo* + *Human Approval*. |
-| **OpenDesign Local-First UI Workflow** | Iterasi komponen UI Live Chat (*Hover-Peek Pill*, *Drawer*, *Guided Empty State*, *Admin SOP*) dengan **OpenDesign** sebelum injeksi ke `meadow-dashboard.html` | Pratinjau HTML/CSS/JS interaktif nyata, selaras 100% dengan tema *Midnight Iris* `ncxall.my.id/dashboard` tanpa *overhead* React/Next.js di Fase 1. |
+| **OpenDesign Local-First UI Workflow** | Membangun portal web AI mandiri (`opendesign-web-portal`) dengan **OpenDesign** (terpisah penuh dari `ncxall.my.id/dashboard`) | Pratinjau HTML/CSS/JS interaktif nyata, ruang layar penuh untuk Chat Triage, blok CLI/gambar SOP, Panel Admin Upload SOP, & *Approvals Queue* Fase 3. |
 
 ---
 

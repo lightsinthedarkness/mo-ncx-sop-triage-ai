@@ -1,46 +1,51 @@
 {
   "project": "ykztir-ncx-ai",
   "design_version": "2.2",
-  "active_phase": "Phase 2/3 - Plan & Task Breakdown (Module 1: sop-ingestion)",
+  "active_phase": "Pre-Coding Complete — Stopped at Coding Gate (Module 1: sop-ingestion)",
   "features": [
     {
       "id": "F0-foundation-docs",
+      "name": "Foundation Docs, Harness, Constraints, Skills & Archify Diagrams",
+      "description": "Design 2.2, PRD 2.2, CONSTRAINTS.md, AGENTS.md, Capability Map, 24 project skills, Archify dual-theme SVGs, and GitHub sync.",
       "module": "foundation",
-      "title": "Foundation Docs, Harness, Constraints & Capability Map (Design 2.2)",
       "status": "done",
-      "depends_on": [],
-      "verification": "All foundation artifacts (DESIGN.md, PRD.md, CONSTRAINTS.md, AGENTS.md, spec/capability-map.md, init.ps1) created and 22 project skills installed."
+      "dependencies": [],
+      "verification": "init.ps1 PASS (Python 3.12.10); gitleaks 0 leaks; 0 broken links; Archify showcase PASS; validate-harness 100/100."
     },
     {
       "id": "F1-sop-ingestion",
+      "name": "Multimodal SOP Ingestion Pipeline",
+      "description": "Docling + Local Vision Captioner (strict private allowlist) + Command/Table-Safe Chunker + Versioned AssetStore (LocalFS/MinIO) + dry-run CLI.",
       "module": "sop-ingestion",
-      "title": "Multimodal SOP Parser (Docling + Vision Captioner + Command-Safe Chunker + MinIO Assets)",
       "status": "in_progress",
-      "depends_on": ["F0-foundation-docs"],
-      "verification": "SPEC approved; tasks/plan.md & tasks/todo.md drafted awaiting Owner approval before Phase 4 TDD build."
+      "dependencies": ["F0-foundation-docs"],
+      "verification": "SPEC approved & hardened (14/14 doubt-driven findings reconciled); tasks/plan.md & tasks/todo.md ready; paused at Coding Gate."
     },
     {
       "id": "F2-sop-memory-rag",
+      "name": "Hybrid SOP Memory & Retrieval Engine",
+      "description": "Qdrant Native Hybrid Search (Dense BAAI/bge-m3 + Sparse BM25) + bge-reranker-v2-m3 + Temporal Versioning & ACL.",
       "module": "sop-memory-rag",
-      "title": "Qdrant Native Hybrid Search (bge-m3 + BM25) + Reranker + Temporal Versioning & ACL",
       "status": "pending",
-      "depends_on": ["F1-sop-ingestion"],
+      "dependencies": ["F1-sop-ingestion"],
       "verification": ""
     },
     {
       "id": "F3-triage-engine-api",
+      "name": "Deterministic 4-Stage Triage Engine & FastAPI Gateway",
+      "description": "LangGraph 4-Stage State Machine (INTERVIEW -> ANALYZE -> CONFIRM -> VERDICT) + FastAPI SSE + LiteLLM (Ollama/vLLM) + PostgreSQL + Langfuse OTel + Admin Auth.",
       "module": "triage-engine-api",
-      "title": "LangGraph 4-Stage Triage State Machine + FastAPI SSE + LiteLLM (Ollama/vLLM) + Langfuse OTel",
       "status": "pending",
-      "depends_on": ["F2-sop-memory-rag"],
+      "dependencies": ["F2-sop-memory-rag"],
       "verification": ""
     },
     {
       "id": "F4-opendesign-web-portal",
+      "name": "Standalone OpenDesign Web Portal",
+      "description": "Standalone OpenDesign Web App (separate from ncxall.my.id/dashboard) featuring Guided SOP Empty State, 4-Stage Triage Chat, CLI/Screenshot Viewer, & Admin SOP Upload Panel.",
       "module": "opendesign-web-portal",
-      "title": "Standalone OpenDesign Web Portal (4-Stage Triage Chat, SOP Asset Viewer, & Admin Upload Panel)",
       "status": "pending",
-      "depends_on": ["F3-triage-engine-api"],
+      "dependencies": ["F3-triage-engine-api"],
       "verification": ""
     }
   ]

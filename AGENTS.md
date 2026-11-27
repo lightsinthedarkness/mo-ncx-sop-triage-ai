@@ -36,15 +36,30 @@ Read `CONSTRAINTS.md` before writing code. Do not weaken it to make a change pas
 
 ## Verification Commands
 ```powershell
+./init.sh
 powershell -ExecutionPolicy Bypass -File .\init.ps1
 ruff check src tests
 mypy src
 pytest --cov=src --cov-fail-under=80
+gitleaks detect --source . --redact --no-banner
 ```
 
-## Non-Negotiable Rules
-1. **One module / feature at a time** — work strictly in `spec/capability-map.md` build order.
-2. **Never commit secrets or real customer/server credentials** (including passwords found inside sample SOP docs) into code, tests, docs, or git.
-3. **Never weaken `CONSTRAINTS.md`** or skip failing tests to reach green.
-4. **Evidence before claims:** Only mark a feature `done` in `feature_list.json` and `progress.md` after running real verification commands and recording observed output.
-5. **No production deploy without explicit Owner approval.**
+## Scope Rules
+- **One feature at a time:** Work strictly on one unfinished feature in `feature_list.json` following `spec/capability-map.md` build order.
+- **Stay in scope:** Never mix unrelated refactors, skip Spec/Plan gates, or touch `C:/Users/Administrator/web`.
+- **Never commit secrets or real customer/server credentials** (including passwords found inside sample SOP docs) into code, tests, docs, or git.
+- **Never weaken `CONSTRAINTS.md`** or skip failing tests to reach green.
+- **No production deploy without explicit Owner approval.**
+
+## Definition of Done
+A feature is **done only when**:
+- Target behavior meets all acceptance criteria in its `spec/SPEC-<module>.md`.
+- Required verification (`./init.sh` / `init.ps1`, `ruff`, `mypy`, `pytest --cov >= 80%`, `gitleaks`) actually ran and passed.
+- **Verification Evidence** (command and output) is recorded in `feature_list.json` and `progress.md`.
+- The repository remains clean and restartable from `./init.sh` / `init.ps1`.
+
+## End of Session
+Before ending a session:
+1. Re-run verification and record observed output in `progress.md` and `feature_list.json`.
+2. Update `session-handoff.md` with `Last Updated`, `Current Objective`, `Blockers`, `Files`, and `Recommended Next Step`.
+3. Leave a clean, restartable git state for the next session.
