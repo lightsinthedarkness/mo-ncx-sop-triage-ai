@@ -1,8 +1,8 @@
 # Spec: Multimodal SOP Ingestion Pipeline (`sop-ingestion`) — V1
 
 - **Module ID:** `sop-ingestion` (ref: [capability-map.md](capability-map.md))
-- **Design Reference:** [DESIGN.md](../DESIGN.md) (Design 2.3 — [ADR-001](../docs/adr/ADR-001-hybrid-python-rust-and-jev-orchestrator.md))
-- **PRD Reference:** [PRD.md](../PRD.md) (PRD 2.3 — FR-1)
+- **Design Reference:** [DESIGN.md](../DESIGN.md) (Design 2.4 — [ADR-001](../docs/adr/ADR-001-hybrid-python-rust-and-jev-orchestrator.md) & [ADR-002](../docs/adr/ADR-002-internal-siebel16-oracle12c-zero-db-advisory-and-knowledge-automation.md))
+- **PRD Reference:** [PRD.md](../PRD.md) (PRD 2.4 — FR-1)
 - **Quality Contract:** [CONSTRAINTS.md](../CONSTRAINTS.md)
 - **Status:** Approved & Hardened via `doubt-driven-development` (2026-11-26 — all 14 adversarial findings reconciled; ready for coding gate)
 

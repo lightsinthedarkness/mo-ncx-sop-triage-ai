@@ -5,8 +5,9 @@ Read `CONSTRAINTS.md` before writing code. Do not weaken it to make a change pas
 
 ## Authoritative Docs
 - Intent: [docs/intent/sop-triage-ai.md](docs/intent/sop-triage-ai.md)
-- Architecture (Design 2.3): [DESIGN.md](DESIGN.md) & [ADR-001](docs/adr/ADR-001-hybrid-python-rust-and-jev-orchestrator.md)
-- Product Requirements (PRD 2.3): [PRD.md](PRD.md)
+- Architecture (Design 2.4): [DESIGN.md](DESIGN.md), [ADR-001](docs/adr/ADR-001-hybrid-python-rust-and-jev-orchestrator.md), & [ADR-002](docs/adr/ADR-002-internal-siebel16-oracle12c-zero-db-advisory-and-knowledge-automation.md)
+- Product Requirements (PRD 2.4): [PRD.md](PRD.md)
+- Infra & Evals: [infra/HARDWARE-SIZING.md](infra/HARDWARE-SIZING.md), [knowledge/domain-pack/README.md](knowledge/domain-pack/README.md), [evals/README.md](evals/README.md)
 - Quality Contract: [CONSTRAINTS.md](CONSTRAINTS.md)
 - Module Map: [spec/capability-map.md](spec/capability-map.md)
 - State & Progress: [feature_list.json](feature_list.json), [progress.md](progress.md)

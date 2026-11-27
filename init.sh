@@ -14,6 +14,10 @@ required_docs=(
   "session-handoff.md"
   "spec/capability-map.md"
   "docs/adr/ADR-001-hybrid-python-rust-and-jev-orchestrator.md"
+  "docs/adr/ADR-002-internal-siebel16-oracle12c-zero-db-advisory-and-knowledge-automation.md"
+  "infra/HARDWARE-SIZING.md"
+  "evals/README.md"
+  "knowledge/domain-pack/README.md"
 )
 
 for doc in "${required_docs[@]}"; do

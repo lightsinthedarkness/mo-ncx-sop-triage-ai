@@ -1,21 +1,21 @@
 {
   "project": "ykztir-ncx-ai",
-  "design_version": "2.3",
+  "design_version": "2.4",
   "active_phase": "Pre-Coding Complete — Stopped at Coding Gate (Module 1: sop-ingestion)",
   "features": [
     {
       "id": "F0-foundation-docs",
-      "name": "Foundation Docs, Harness, Constraints, ADR-001, Skills & Archify Diagrams",
-      "description": "Design 2.3 (Hybrid Python+Rust+Jev), PRD 2.3, ADR-001, CONSTRAINTS.md, AGENTS.md, Capability Map, 24 project skills, Archify dual-theme SVGs.",
+      "name": "Foundation Docs, Harness, Constraints, ADR-001/002, Domain Pack, Infra Sizing, Evals & Archify",
+      "description": "Design 2.4 (On-Prem Internal Siebel 16 / Oracle 12c Zero-Direct-DB Advisory), PRD 2.4, ADR-001, ADR-002, CONSTRAINTS.md, AGENTS.md, infra/HARDWARE-SIZING.md, knowledge/domain-pack/README.md, evals/README.md, 24 skills, Archify dual-theme SVGs.",
       "module": "foundation",
       "status": "done",
       "dependencies": [],
-      "verification": "init.ps1 PASS (Python 3.12.10); gitleaks 0 leaks; 0 broken links; Archify showcase PASS; validate-harness 100/100."
+      "verification": "init.ps1 PASS; gitleaks 0 leaks; 0 broken links; Archify showcase PASS; validate-harness 100/100."
     },
     {
       "id": "F1-sop-ingestion",
-      "name": "Multimodal SOP Ingestion Pipeline (Python + Docling)",
-      "description": "Python 3.12 Docling + Local Vision Captioner (strict private allowlist) + Command/Table-Safe Chunker + Versioned AssetStore (LocalFS/MinIO) + JSON IngestResult CLI.",
+      "name": "Multimodal SOP & Domain Pack Ingestion Pipeline",
+      "description": "Docling + Local Vision Captioner (strict private allowlist) + Command/Table-Safe Chunker + knowledge/domain-pack/ + Versioned AssetStore (LocalFS/MinIO) + JSON IngestResult CLI.",
       "module": "sop-ingestion",
       "status": "in_progress",
       "dependencies": ["F0-foundation-docs"],
@@ -32,8 +32,8 @@
     },
     {
       "id": "F3-triage-engine-api",
-      "name": "Deterministic 4-Stage Triage Engine & API (Rust Axum/Rig + Jev Router/Judge)",
-      "description": "Rust Axum + Rig 4-Stage State Machine (INTERVIEW -> ANALYZE -> CONFIRM -> VERDICT) with Jev (TypeSafe AI Choice/Score redacted router & judge + local fallback), LiteLLM (Ollama/vLLM), PostgreSQL sqlx, Langfuse OTel, & Admin Auth.",
+      "name": "On-Prem 4-Stage Triage Engine & Non-DB Knowledge Automation (Rust Axum/Rig)",
+      "description": "Rust Axum + Rig 4-Stage State Machine (INTERVIEW -> ANALYZE -> CONFIRM -> VERDICT) with Offline-First Local Guided Router (+ optional Jev E1), Zero Direct DB guard, Office 2-Tier RBAC + Immutable Audit Log, Auto Handover Note, Auto SOP-Gap Detector, LiteLLM (Ollama/vLLM), PostgreSQL sqlx, & Langfuse OTel.",
       "module": "triage-engine-api",
       "status": "pending",
       "dependencies": ["F2-sop-memory-rag"],
@@ -41,8 +41,8 @@
     },
     {
       "id": "F4-opendesign-web-portal",
-      "name": "Standalone OpenDesign Web Portal",
-      "description": "Standalone OpenDesign Web App (separate from ncxall.my.id/dashboard) featuring Guided SOP Empty State, 4-Stage Triage Chat, CLI/Screenshot Viewer, & Admin SOP Upload Panel.",
+      "name": "Standalone OpenDesign Intranet Web Portal",
+      "description": "Standalone OpenDesign Web App (intranet, separate from ncxall.my.id/dashboard) featuring Office Login, Guided SOP Empty State, 4-Stage Triage Chat, Paste Log, Auto Handover Note, CLI/Query Reference & Screenshot Viewer, & Admin SOP/SOP-Gap Panel.",
       "module": "opendesign-web-portal",
       "status": "pending",
       "dependencies": ["F3-triage-engine-api"],

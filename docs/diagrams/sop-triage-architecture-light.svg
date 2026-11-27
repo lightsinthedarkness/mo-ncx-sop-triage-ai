@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg viewBox="0 0 969 1276" role="img" lang="en" aria-labelledby="archify-diagram-title archify-diagram-description" data-animation="trace" data-preset="classic" data-quality-profile="showcase" data-node-ui="" data-reader-fit="intrinsic-height" data-reader-min-text="7.5" data-reader-primary-text="14" style="--flow-cycle: 6.440s; width: 969px; height: 1276px; min-width: 0px;" width="969" height="1276" xmlns="http://www.w3.org/2000/svg" data-theme="light"><style>
+<svg viewBox="0 0 1450 1096" role="img" lang="en" aria-labelledby="archify-diagram-title archify-diagram-description" data-animation="trace" data-preset="classic" data-quality-profile="showcase" data-node-ui="" data-reader-fit="intrinsic-height" data-reader-min-text="7.5" data-reader-primary-text="14" style="--flow-cycle: 5.688s; width: 1450px; height: 1096px; min-width: 0px;" width="1450" height="1096" xmlns="http://www.w3.org/2000/svg" data-theme="light"><style>
 /*
 JetBrains Mono variable WOFF2 subsets from Google Fonts service revision v24.
 These fixed bytes are shared by the viewer and its SVG/raster exports.
@@ -443,194 +443,194 @@ svg[data-preset="editorial"] { --flow-halo-peak: 0.07; --flow-glow-peak: 0.28; -
 }
 @keyframes archify-relay-ripple { 
   0% { r: 2px; opacity: var(--flow-peak, 0.6); }
-  11.646%, 100% { r: 20px; opacity: 0; }
+  13.185%, 100% { r: 20px; opacity: 0; }
 }
 @keyframes archify-relay-comet-0 { 
   0% { stroke-dashoffset: calc(var(--flow-len, 0px) + var(--flow-shift, 0px)); opacity: 0; animation-timing-function: cubic-bezier(0.45, 0.05, 0.35, 1); }
-  1.304% { opacity: var(--flow-peak, 0.9); }
-  6.522% { stroke-dashoffset: var(--flow-shift, 0px); opacity: var(--flow-peak, 0.9); }
-  9.006%, 100% { stroke-dashoffset: var(--flow-shift, 0px); opacity: 0; }
+  2.11% { opacity: var(--flow-peak, 0.9); }
+  13.153% { stroke-dashoffset: var(--flow-shift, 0px); opacity: var(--flow-peak, 0.9); }
+  15.966%, 100% { stroke-dashoffset: var(--flow-shift, 0px); opacity: 0; }
 }
 @keyframes archify-relay-wake-0 { 
   0% { stroke-dashoffset: var(--flow-len, 0px); opacity: var(--flow-peak, 0.3); animation-timing-function: cubic-bezier(0.45, 0.05, 0.35, 1); }
-  6.522% { stroke-dashoffset: 0px; opacity: var(--flow-peak, 0.3); }
-  20.497%, 100% { stroke-dashoffset: 0px; opacity: 0; }
+  13.153% { stroke-dashoffset: 0px; opacity: var(--flow-peak, 0.3); }
+  28.975%, 100% { stroke-dashoffset: 0px; opacity: 0; }
 }
 @keyframes archify-relay-comet-1 { 
   0% { stroke-dashoffset: calc(var(--flow-len, 0px) + var(--flow-shift, 0px)); opacity: 0; animation-timing-function: cubic-bezier(0.45, 0.05, 0.35, 1); }
-  1.304% { opacity: var(--flow-peak, 0.9); }
-  6.522% { stroke-dashoffset: var(--flow-shift, 0px); opacity: var(--flow-peak, 0.9); }
-  9.006%, 100% { stroke-dashoffset: var(--flow-shift, 0px); opacity: 0; }
+  1.477% { opacity: var(--flow-peak, 0.9); }
+  7.384% { stroke-dashoffset: var(--flow-shift, 0px); opacity: var(--flow-peak, 0.9); }
+  10.197%, 100% { stroke-dashoffset: var(--flow-shift, 0px); opacity: 0; }
 }
 @keyframes archify-relay-wake-1 { 
   0% { stroke-dashoffset: var(--flow-len, 0px); opacity: var(--flow-peak, 0.3); animation-timing-function: cubic-bezier(0.45, 0.05, 0.35, 1); }
-  6.522% { stroke-dashoffset: 0px; opacity: var(--flow-peak, 0.3); }
-  20.497%, 100% { stroke-dashoffset: 0px; opacity: 0; }
+  7.384% { stroke-dashoffset: 0px; opacity: var(--flow-peak, 0.3); }
+  23.206%, 100% { stroke-dashoffset: 0px; opacity: 0; }
 }
 @keyframes archify-relay-comet-2 { 
   0% { stroke-dashoffset: calc(var(--flow-len, 0px) + var(--flow-shift, 0px)); opacity: 0; animation-timing-function: cubic-bezier(0.45, 0.05, 0.35, 1); }
-  1.863% { opacity: var(--flow-peak, 0.9); }
-  23.292% { stroke-dashoffset: var(--flow-shift, 0px); opacity: var(--flow-peak, 0.9); }
-  25.776%, 100% { stroke-dashoffset: var(--flow-shift, 0px); opacity: 0; }
+  1.477% { opacity: var(--flow-peak, 0.9); }
+  7.384% { stroke-dashoffset: var(--flow-shift, 0px); opacity: var(--flow-peak, 0.9); }
+  10.197%, 100% { stroke-dashoffset: var(--flow-shift, 0px); opacity: 0; }
 }
 @keyframes archify-relay-wake-2 { 
-  0%, 6.988% { opacity: 0; }
-  23.292% { opacity: var(--flow-peak, 0.3); }
-  37.267%, 100% { stroke-dashoffset: 0px; opacity: 0; }
+  0%, 2.215% { opacity: 0; }
+  7.384% { opacity: var(--flow-peak, 0.3); }
+  23.206%, 100% { stroke-dashoffset: 0px; opacity: 0; }
 }
 @keyframes archify-relay-comet-3 { 
   0% { stroke-dashoffset: calc(var(--flow-len, 0px) + var(--flow-shift, 0px)); opacity: 0; animation-timing-function: cubic-bezier(0.45, 0.05, 0.35, 1); }
-  1.304% { opacity: var(--flow-peak, 0.9); }
-  6.522% { stroke-dashoffset: var(--flow-shift, 0px); opacity: var(--flow-peak, 0.9); }
-  9.006%, 100% { stroke-dashoffset: var(--flow-shift, 0px); opacity: 0; }
+  1.477% { opacity: var(--flow-peak, 0.9); }
+  7.384% { stroke-dashoffset: var(--flow-shift, 0px); opacity: var(--flow-peak, 0.9); }
+  10.197%, 100% { stroke-dashoffset: var(--flow-shift, 0px); opacity: 0; }
 }
 @keyframes archify-relay-wake-3 { 
-  0%, 1.957% { opacity: 0; }
-  6.522% { opacity: var(--flow-peak, 0.3); }
-  20.497%, 100% { stroke-dashoffset: 0px; opacity: 0; }
+  0%, 2.215% { opacity: 0; }
+  7.384% { opacity: var(--flow-peak, 0.3); }
+  23.206%, 100% { stroke-dashoffset: 0px; opacity: 0; }
 }
 @keyframes archify-relay-comet-4 { 
   0% { stroke-dashoffset: calc(var(--flow-len, 0px) + var(--flow-shift, 0px)); opacity: 0; animation-timing-function: cubic-bezier(0.45, 0.05, 0.35, 1); }
-  1.863% { opacity: var(--flow-peak, 0.9); }
-  12.166% { stroke-dashoffset: var(--flow-shift, 0px); opacity: var(--flow-peak, 0.9); }
-  14.651%, 100% { stroke-dashoffset: var(--flow-shift, 0px); opacity: 0; }
+  1.582% { opacity: var(--flow-peak, 0.9); }
+  7.91% { stroke-dashoffset: var(--flow-shift, 0px); opacity: var(--flow-peak, 0.9); }
+  10.723%, 100% { stroke-dashoffset: var(--flow-shift, 0px); opacity: 0; }
 }
 @keyframes archify-relay-wake-4 { 
   0% { stroke-dashoffset: var(--flow-len, 0px); opacity: var(--flow-peak, 0.3); animation-timing-function: cubic-bezier(0.45, 0.05, 0.35, 1); }
-  12.166% { stroke-dashoffset: 0px; opacity: var(--flow-peak, 0.3); }
-  26.142%, 100% { stroke-dashoffset: 0px; opacity: 0; }
+  7.91% { stroke-dashoffset: 0px; opacity: var(--flow-peak, 0.3); }
+  23.733%, 100% { stroke-dashoffset: 0px; opacity: 0; }
 }
 @keyframes archify-relay-comet-5 { 
   0% { stroke-dashoffset: calc(var(--flow-len, 0px) + var(--flow-shift, 0px)); opacity: 0; animation-timing-function: cubic-bezier(0.45, 0.05, 0.35, 1); }
-  1.346% { opacity: var(--flow-peak, 0.9); }
-  6.732% { stroke-dashoffset: var(--flow-shift, 0px); opacity: var(--flow-peak, 0.9); }
-  9.217%, 100% { stroke-dashoffset: var(--flow-shift, 0px); opacity: 0; }
+  1.477% { opacity: var(--flow-peak, 0.9); }
+  7.384% { stroke-dashoffset: var(--flow-shift, 0px); opacity: var(--flow-peak, 0.9); }
+  10.197%, 100% { stroke-dashoffset: var(--flow-shift, 0px); opacity: 0; }
 }
 @keyframes archify-relay-wake-5 { 
   0% { stroke-dashoffset: var(--flow-len, 0px); opacity: var(--flow-peak, 0.3); animation-timing-function: cubic-bezier(0.45, 0.05, 0.35, 1); }
-  6.732% { stroke-dashoffset: 0px; opacity: var(--flow-peak, 0.3); }
-  20.708%, 100% { stroke-dashoffset: 0px; opacity: 0; }
+  7.384% { stroke-dashoffset: 0px; opacity: var(--flow-peak, 0.3); }
+  23.206%, 100% { stroke-dashoffset: 0px; opacity: 0; }
 }
 @keyframes archify-relay-comet-6 { 
   0% { stroke-dashoffset: calc(var(--flow-len, 0px) + var(--flow-shift, 0px)); opacity: 0; animation-timing-function: cubic-bezier(0.45, 0.05, 0.35, 1); }
-  1.863% { opacity: var(--flow-peak, 0.9); }
-  23.292% { stroke-dashoffset: var(--flow-shift, 0px); opacity: var(--flow-peak, 0.9); }
-  25.776%, 100% { stroke-dashoffset: var(--flow-shift, 0px); opacity: 0; }
+  2.11% { opacity: var(--flow-peak, 0.9); }
+  26.371% { stroke-dashoffset: var(--flow-shift, 0px); opacity: var(--flow-peak, 0.9); }
+  29.183%, 100% { stroke-dashoffset: var(--flow-shift, 0px); opacity: 0; }
 }
 @keyframes archify-relay-wake-6 { 
   0% { stroke-dashoffset: var(--flow-len, 0px); opacity: var(--flow-peak, 0.3); animation-timing-function: cubic-bezier(0.45, 0.05, 0.35, 1); }
-  23.292% { stroke-dashoffset: 0px; opacity: var(--flow-peak, 0.3); }
-  37.267%, 100% { stroke-dashoffset: 0px; opacity: 0; }
+  26.371% { stroke-dashoffset: 0px; opacity: var(--flow-peak, 0.3); }
+  42.193%, 100% { stroke-dashoffset: 0px; opacity: 0; }
 }
 @keyframes archify-relay-comet-7 { 
   0% { stroke-dashoffset: calc(var(--flow-len, 0px) + var(--flow-shift, 0px)); opacity: 0; animation-timing-function: cubic-bezier(0.45, 0.05, 0.35, 1); }
-  1.863% { opacity: var(--flow-peak, 0.9); }
-  14.579% { stroke-dashoffset: var(--flow-shift, 0px); opacity: var(--flow-peak, 0.9); }
-  17.063%, 100% { stroke-dashoffset: var(--flow-shift, 0px); opacity: 0; }
+  1.546% { opacity: var(--flow-peak, 0.9); }
+  7.732% { stroke-dashoffset: var(--flow-shift, 0px); opacity: var(--flow-peak, 0.9); }
+  10.545%, 100% { stroke-dashoffset: var(--flow-shift, 0px); opacity: 0; }
 }
 @keyframes archify-relay-wake-7 { 
   0% { stroke-dashoffset: var(--flow-len, 0px); opacity: var(--flow-peak, 0.3); animation-timing-function: cubic-bezier(0.45, 0.05, 0.35, 1); }
-  14.579% { stroke-dashoffset: 0px; opacity: var(--flow-peak, 0.3); }
-  28.554%, 100% { stroke-dashoffset: 0px; opacity: 0; }
+  7.732% { stroke-dashoffset: 0px; opacity: var(--flow-peak, 0.3); }
+  23.555%, 100% { stroke-dashoffset: 0px; opacity: 0; }
 }
 @keyframes archify-relay-comet-8 { 
   0% { stroke-dashoffset: calc(var(--flow-len, 0px) + var(--flow-shift, 0px)); opacity: 0; animation-timing-function: cubic-bezier(0.45, 0.05, 0.35, 1); }
-  1.863% { opacity: var(--flow-peak, 0.9); }
-  13.975% { stroke-dashoffset: var(--flow-shift, 0px); opacity: var(--flow-peak, 0.9); }
-  16.46%, 100% { stroke-dashoffset: var(--flow-shift, 0px); opacity: 0; }
+  1.477% { opacity: var(--flow-peak, 0.9); }
+  7.384% { stroke-dashoffset: var(--flow-shift, 0px); opacity: var(--flow-peak, 0.9); }
+  10.197%, 100% { stroke-dashoffset: var(--flow-shift, 0px); opacity: 0; }
 }
 @keyframes archify-relay-wake-8 { 
   0% { stroke-dashoffset: var(--flow-len, 0px); opacity: var(--flow-peak, 0.3); animation-timing-function: cubic-bezier(0.45, 0.05, 0.35, 1); }
-  13.975% { stroke-dashoffset: 0px; opacity: var(--flow-peak, 0.3); }
-  27.95%, 100% { stroke-dashoffset: 0px; opacity: 0; }
+  7.384% { stroke-dashoffset: 0px; opacity: var(--flow-peak, 0.3); }
+  23.206%, 100% { stroke-dashoffset: 0px; opacity: 0; }
 }
 @keyframes archify-relay-comet-9 { 
   0% { stroke-dashoffset: calc(var(--flow-len, 0px) + var(--flow-shift, 0px)); opacity: 0; animation-timing-function: cubic-bezier(0.45, 0.05, 0.35, 1); }
-  1.863% { opacity: var(--flow-peak, 0.9); }
-  12.201% { stroke-dashoffset: var(--flow-shift, 0px); opacity: var(--flow-peak, 0.9); }
-  14.685%, 100% { stroke-dashoffset: var(--flow-shift, 0px); opacity: 0; }
+  2.11% { opacity: var(--flow-peak, 0.9); }
+  22.854% { stroke-dashoffset: var(--flow-shift, 0px); opacity: var(--flow-peak, 0.9); }
+  25.667%, 100% { stroke-dashoffset: var(--flow-shift, 0px); opacity: 0; }
 }
 @keyframes archify-relay-wake-9 { 
-  0%, 3.66% { opacity: 0; }
-  12.201% { opacity: var(--flow-peak, 0.3); }
-  26.176%, 100% { stroke-dashoffset: 0px; opacity: 0; }
+  0%, 6.856% { opacity: 0; }
+  22.854% { opacity: var(--flow-peak, 0.3); }
+  38.677%, 100% { stroke-dashoffset: 0px; opacity: 0; }
 }
 @keyframes archify-relay-comet-10 { 
   0% { stroke-dashoffset: calc(var(--flow-len, 0px) + var(--flow-shift, 0px)); opacity: 0; animation-timing-function: cubic-bezier(0.45, 0.05, 0.35, 1); }
-  1.863% { opacity: var(--flow-peak, 0.9); }
-  23.292% { stroke-dashoffset: var(--flow-shift, 0px); opacity: var(--flow-peak, 0.9); }
-  25.776%, 100% { stroke-dashoffset: var(--flow-shift, 0px); opacity: 0; }
+  2.11% { opacity: var(--flow-peak, 0.9); }
+  26.371% { stroke-dashoffset: var(--flow-shift, 0px); opacity: var(--flow-peak, 0.9); }
+  29.183%, 100% { stroke-dashoffset: var(--flow-shift, 0px); opacity: 0; }
 }
 @keyframes archify-relay-wake-10 { 
-  0%, 6.988% { opacity: 0; }
-  23.292% { opacity: var(--flow-peak, 0.3); }
-  37.267%, 100% { stroke-dashoffset: 0px; opacity: 0; }
+  0%, 7.911% { opacity: 0; }
+  26.371% { opacity: var(--flow-peak, 0.3); }
+  42.193%, 100% { stroke-dashoffset: 0px; opacity: 0; }
 }
 @keyframes archify-relay-node-0 { 
   0%, 100% { filter: var(--ambient-node-base-filter, none); }
   0% { filter: var(--ambient-node-base-filter, none); }
-  1.863%, 6.522% { filter: var(--ambient-node-base-filter,) drop-shadow(0 0 10px var(--arrow-emphasis)); }
-  18.634% { filter: var(--ambient-node-base-filter, none); }
+  2.11%, 7.384% { filter: var(--ambient-node-base-filter,) drop-shadow(0 0 10px var(--arrow-emphasis)); }
+  21.096% { filter: var(--ambient-node-base-filter, none); }
 }
 @keyframes archify-relay-node-1 { 
   0%, 100% { filter: var(--ambient-node-base-filter, none); }
-  6.522% { filter: var(--ambient-node-base-filter, none); }
-  8.385%, 13.043% { filter: var(--ambient-node-base-filter,) drop-shadow(0 0 10px var(--arrow-emphasis)); }
-  25.155% { filter: var(--ambient-node-base-filter, none); }
+  13.153% { filter: var(--ambient-node-base-filter, none); }
+  15.263%, 20.537% { filter: var(--ambient-node-base-filter,) drop-shadow(0 0 10px var(--arrow-emphasis)); }
+  34.249% { filter: var(--ambient-node-base-filter, none); }
 }
 @keyframes archify-relay-node-2 { 
   0%, 100% { filter: var(--ambient-node-base-filter, none); }
-  14.596% { filter: var(--ambient-node-base-filter, none); }
-  16.46%, 21.118% { filter: var(--ambient-node-base-filter,) drop-shadow(0 0 10px var(--arrow-emphasis)); }
-  33.23% { filter: var(--ambient-node-base-filter, none); }
+  22.295% { filter: var(--ambient-node-base-filter, none); }
+  24.404%, 29.679% { filter: var(--ambient-node-base-filter,) drop-shadow(0 0 10px var(--arrow-emphasis)); }
+  43.391% { filter: var(--ambient-node-base-filter, none); }
 }
 @keyframes archify-relay-node-3 { 
   0%, 100% { filter: var(--ambient-node-base-filter, none); }
-  39.441% { filter: var(--ambient-node-base-filter, none); }
-  41.304%, 45.963% { filter: var(--ambient-node-base-filter,) drop-shadow(0 0 10px var(--arrow-emphasis)); }
-  58.075% { filter: var(--ambient-node-base-filter, none); }
+  31.437% { filter: var(--ambient-node-base-filter, none); }
+  33.546%, 38.82% { filter: var(--ambient-node-base-filter,) drop-shadow(0 0 10px var(--arrow-emphasis)); }
+  52.533% { filter: var(--ambient-node-base-filter, none); }
 }
 @keyframes archify-relay-node-4 { 
   0%, 100% { filter: var(--ambient-node-base-filter, none); }
-  47.516% { filter: var(--ambient-node-base-filter, none); }
-  49.379%, 54.037% { filter: var(--ambient-node-base-filter,) drop-shadow(0 0 10px var(--arrow-emphasis)); }
-  66.149% { filter: var(--ambient-node-base-filter, none); }
+  40.578% { filter: var(--ambient-node-base-filter, none); }
+  42.688%, 47.962% { filter: var(--ambient-node-base-filter,) drop-shadow(0 0 10px var(--arrow-emphasis)); }
+  61.675% { filter: var(--ambient-node-base-filter, none); }
 }
 @keyframes archify-relay-node-5 { 
   0%, 100% { filter: var(--ambient-node-base-filter, none); }
-  61.235% { filter: var(--ambient-node-base-filter, none); }
-  63.098%, 67.757% { filter: var(--ambient-node-base-filter,) drop-shadow(0 0 10px var(--arrow-emphasis)); }
-  79.868% { filter: var(--ambient-node-base-filter, none); }
+  50.247% { filter: var(--ambient-node-base-filter, none); }
+  52.356%, 57.63% { filter: var(--ambient-node-base-filter,) drop-shadow(0 0 10px var(--arrow-emphasis)); }
+  71.343% { filter: var(--ambient-node-base-filter, none); }
 }
 @keyframes archify-relay-node-6 { 
   0%, 100% { filter: var(--ambient-node-base-filter, none); }
-  55.573% { filter: var(--ambient-node-base-filter, none); }
-  57.436%, 62.094% { filter: var(--ambient-node-base-filter,) drop-shadow(0 0 10px var(--arrow-emphasis)); }
-  74.206% { filter: var(--ambient-node-base-filter, none); }
+  40.927% { filter: var(--ambient-node-base-filter, none); }
+  43.037%, 48.311% { filter: var(--ambient-node-base-filter,) drop-shadow(0 0 10px var(--arrow-emphasis)); }
+  62.023% { filter: var(--ambient-node-base-filter, none); }
 }
 @keyframes archify-relay-node-7 { 
   0%, 100% { filter: var(--ambient-node-base-filter, none); }
-  54.969% { filter: var(--ambient-node-base-filter, none); }
-  56.832%, 61.491% { filter: var(--ambient-node-base-filter,) drop-shadow(0 0 10px var(--arrow-emphasis)); }
-  73.602% { filter: var(--ambient-node-base-filter, none); }
+  40.578% { filter: var(--ambient-node-base-filter, none); }
+  42.688%, 47.962% { filter: var(--ambient-node-base-filter,) drop-shadow(0 0 10px var(--arrow-emphasis)); }
+  61.675% { filter: var(--ambient-node-base-filter, none); }
 }
 @keyframes archify-relay-node-8 { 
   0%, 100% { filter: var(--ambient-node-base-filter, none); }
-  53.194% { filter: var(--ambient-node-base-filter, none); }
-  55.058%, 59.716% { filter: var(--ambient-node-base-filter,) drop-shadow(0 0 10px var(--arrow-emphasis)); }
-  71.828% { filter: var(--ambient-node-base-filter, none); }
+  56.049% { filter: var(--ambient-node-base-filter, none); }
+  58.159%, 63.433% { filter: var(--ambient-node-base-filter,) drop-shadow(0 0 10px var(--arrow-emphasis)); }
+  77.146% { filter: var(--ambient-node-base-filter, none); }
 }
 @keyframes archify-relay-node-9 { 
   0%, 100% { filter: var(--ambient-node-base-filter, none); }
-  64.286% { filter: var(--ambient-node-base-filter, none); }
-  66.149%, 70.807% { filter: var(--ambient-node-base-filter,) drop-shadow(0 0 10px var(--arrow-emphasis)); }
-  82.919% { filter: var(--ambient-node-base-filter, none); }
+  59.565% { filter: var(--ambient-node-base-filter, none); }
+  61.675%, 66.949% { filter: var(--ambient-node-base-filter,) drop-shadow(0 0 10px var(--arrow-emphasis)); }
+  80.662% { filter: var(--ambient-node-base-filter, none); }
 }
 @keyframes archify-relay-node-10 { 
   0%, 100% { filter: var(--ambient-node-base-filter, none); }
-  55.801% { filter: var(--ambient-node-base-filter, none); }
-  57.664%, 62.323% { filter: var(--ambient-node-base-filter,) drop-shadow(0 0 10px var(--arrow-emphasis)); }
-  74.434% { filter: var(--ambient-node-base-filter, none); }
+  49.72% { filter: var(--ambient-node-base-filter, none); }
+  51.83%, 57.104% { filter: var(--ambient-node-base-filter,) drop-shadow(0 0 10px var(--arrow-emphasis)); }
+  70.817% { filter: var(--ambient-node-base-filter, none); }
 }
 svg[data-node-ui] [data-node-id] &gt; rect:not(.c-mask) { stroke-width: 1.25px; }
 :is([data-theme="dark"] svg[data-node-ui], svg[data-node-ui][data-theme="dark"]) [data-node-id] &gt; rect:not(.c-mask).c-frontend { fill: color-mix(in srgb, var(--frontend-stroke) 13%, var(--mask)); stroke: color-mix(in srgb, var(--frontend-stroke) 72%, var(--mask)); }
@@ -652,7 +652,7 @@ svg[data-node-ui] g[data-edge-from] &gt; rect.c-mask { rx: 7px; stroke: var(--la
 svg[data-node-ui][data-preset="blueprint"] :is([data-graph-role="structural-frame-label-mask"], g[data-edge-from] &gt; rect.c-mask, .phase-chip) { rx: 2px; }
 svg[data-node-ui][data-preset="editorial"] :is([data-graph-role="structural-frame-label-mask"], g[data-edge-from] &gt; rect.c-mask, .phase-chip) { rx: 3px; }
 :root, svg { --bg: #f4f5f7; --grid: #e9edf2; --canvas-dot: #e2e7ec; --text: #111827; --text-muted: #5b6474; --text-dim: #9aa3b2; --text-faint: #6b7280; --panel: #ffffff; --panel-border: #e5e7eb; --lane-fill: rgba(248, 250, 252, 0.65); --lane-stroke: #cbd5e1; --arrow: #64748b; --arrow-emphasis: #059669; --arrow-security: #b43b57; --arrow-dashed: #6d4fc2; --edge-label: #5b6474; --mask: #ffffff; --frontend-fill: rgba(34, 211, 238, 0.15); --frontend-stroke: #0891b2; --backend-fill: rgba(52, 211, 153, 0.18); --backend-stroke: #059669; --database-fill: rgba(167, 139, 250, 0.2); --database-stroke: #7c3aed; --cloud-fill: rgba(251, 191, 36, 0.18); --cloud-stroke: #d97706; --security-fill: rgba(251, 113, 133, 0.15); --security-stroke: #e11d48; --messagebus-fill: rgba(251, 146, 60, 0.15); --messagebus-stroke: #ea580c; --external-fill: rgba(148, 163, 184, 0.18); --external-stroke: #64748b; --toolbar-bg: rgba(255, 255, 255, 0.92); --toolbar-border: #cbd5e1; --toolbar-text: #334155; --toolbar-hover: #ffffff; --toolbar-menu-bg: #ffffff; --reader-accent: #077f9c; --flow-cycle: ; --flow-halo-peak: ; --flow-glow-peak: ; --flow-tail-peak: ; --flow-head-peak: ; --flow-wake-peak: ; --flow-ripple-peak: ; --flow-peak: ; }
-</style><rect x="0" y="0" width="969" height="1276" fill="#f4f5f7"/><metadata id="archify-software-notices">NOTICE
+</style><rect x="0" y="0" width="1450" height="1096" fill="#f4f5f7"/><metadata id="archify-software-notices">NOTICE
 Archify
 Copyright (c) 2026 tt-a1i (Archify)
 Copyright (c) 2025 Cocoon AI
@@ -1018,7 +1018,7 @@ The Atlas 3D view includes the unmodified minified build of
 License. It is embedded in the analysis page and runs only when Atlas 3D is
 opened. The complete license is preserved in
 `modules/code-analysis/overlay/vendor/THREE-LICENSE.txt` in the packaged Skill.</metadata>
-        <title id="archify-diagram-title">NCX Triage &amp; Self-Evolving Autonomous AI (Design 2.3 — Hybrid Python + Rust + Jev)</title>
+        <title id="archify-diagram-title">NCX Triage &amp; Internal Autonomous AI (Design 2.4 — On-Prem Siebel 16 / Oracle 12c Advisory)</title>
         <desc id="archify-diagram-description">An architecture diagram generated by Archify.</desc>
         <!-- Definitions -->
         <defs>
@@ -1064,268 +1064,269 @@ opened. The complete license is preserved in
         <rect width="100%" height="100%" fill="url(#grid)"/>
 
         <!-- Boundaries (behind everything) -->
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="security-group" data-composition-frame-id="0" data-composition-frame-label="Private GPU VM / VPS (Raw SOP Private · E1 Redacted Jev)" x="48" y="444" width="880.8" height="764" rx="8" class="c-security-group" stroke-width="1"/>
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="security-group" data-composition-frame-id="0" data-composition-frame-label="Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access)" x="48" y="176" width="1362" height="682" rx="8" class="c-security-group" stroke-width="1"/>
 
         <!-- Connection paths (before components for correct z-order) -->
         <g data-graph-role="automatic-crossover" style="--step:0">
-          <path data-graph-role="automatic-crossover-underlay" d="M 488.4 108 L 488.4 176" fill="none" stroke="var(--mask)" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="team" data-edge-to="dashboard" data-edge-label="Chat &amp; Upload" data-edge-key="0" data-edge-id="team-to-dash" data-composition-points="488.4,108;488.4,176" data-composition-crossover="halo" data-composition-independent="true" d="M 488.4 108 L 488.4 176" class="a-emphasis" data-animate="edge" style="--step: 0;" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 649.5 108 L 649.5 214 Q 649.5 222 641.5 222 L 551 222" fill="none" stroke="var(--mask)" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="team" data-edge-to="dashboard" data-edge-label="Chat &amp; Paste Log" data-edge-key="0" data-edge-id="team-to-dash" data-composition-points="649.5,108;649.5,222;551,222" data-composition-crossover="halo" data-composition-independent="true" d="M 649.5 108 L 649.5 214 Q 649.5 222 641.5 222 L 551 222" class="a-emphasis" data-animate="edge" style="--step: 0;" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:1">
-          <path data-graph-role="automatic-crossover-underlay" d="M 488.4 248 L 488.4 316" fill="none" stroke="var(--mask)" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="dashboard" data-edge-to="cf_worker" data-edge-label="HTTPS SSE" data-edge-key="1" data-edge-id="dash-to-cf" data-composition-points="488.4,248;488.4,316" data-composition-crossover="halo" data-composition-independent="true" d="M 488.4 248 L 488.4 316" class="a-emphasis" data-animate="edge" style="--step: 1;" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 449 278 L 449 346" fill="none" stroke="var(--mask)" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="dashboard" data-edge-to="cf_worker" data-edge-label="HTTPS SSE" data-edge-key="1" data-edge-id="dash-to-cf" data-composition-points="449,278;449,346" data-composition-crossover="halo" data-composition-independent="true" d="M 449 278 L 449 346" class="a-emphasis" data-animate="edge" style="--step: 1;" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:2">
-          <path data-graph-role="automatic-crossover-underlay" d="M 488.4 376 L 488.4 482 Q 488.4 490 480.4 490 L 189 490 Q 181 490 181 498 L 181 636" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="cf_worker" data-edge-to="triage_api" data-edge-label="Tunnel Auth" data-edge-key="2" data-edge-id="cf-to-triage" data-composition-points="488.4,376;488.4,490;181,490;181,636" data-composition-crossover="halo" data-composition-independent="true" d="M 488.4 376 L 488.4 482 Q 488.4 490 480.4 490 L 189 490 Q 181 490 181 498 L 181 636" class="a-security" data-animate="edge" style="--step: 2;" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 449 418 L 449 520" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="cf_worker" data-edge-to="triage_api" data-edge-label="Verified Role" data-edge-key="2" data-edge-id="cf-to-triage" data-composition-points="449,418;449,520" data-composition-crossover="halo" data-composition-independent="true" d="M 449 418 L 449 520" class="a-security" data-animate="edge" style="--step: 2;" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:3">
-          <path data-graph-role="automatic-crossover-underlay" d="M 270 668 L 370.4 668" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="triage_api" data-edge-to="ingestion" data-edge-label="Admin SOP" data-edge-key="3" data-edge-id="triage-to-ingest" data-composition-points="270,668;370.4,668" data-composition-crossover="halo" data-composition-independent="true" d="M 270 668 L 370.4 668" class="a-dashed" data-animate="edge" style="--step: 3;" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 526.8333333333334 592 L 526.8333333333334 626" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="triage_api" data-edge-to="ingestion" data-edge-label="Admin SOP" data-edge-key="3" data-edge-id="triage-to-ingest" data-composition-points="526.8333333333334,592;526.8333333333334,626" data-composition-crossover="halo" data-composition-independent="true" d="M 526.8333333333334 592 L 526.8333333333334 626" class="a-dashed" data-animate="edge" style="--step: 3;" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:4">
-          <path data-graph-role="automatic-crossover-underlay" d="M 577.4 652 L 685.8 652 Q 693.8 652 693.8 644 L 693.8 546" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="ingestion" data-edge-to="qdrant" data-edge-label="Upsert Chunks" data-edge-key="4" data-edge-id="ingest-to-qdrant" data-composition-points="577.4,652;693.8,652;693.8,546" data-composition-crossover="halo" data-composition-independent="true" d="M 577.4 652 L 685.8 652 Q 693.8 652 693.8 644 L 693.8 546" class="a-default" data-animate="edge" style="--step: 4;" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 328 682 L 291 682 Q 283 682 283 690 L 283 766" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="ingestion" data-edge-to="qdrant" data-edge-label="Upsert Chunks" data-edge-key="4" data-edge-id="ingest-to-qdrant" data-composition-points="328,682;283,682;283,766" data-composition-crossover="halo" data-composition-independent="true" d="M 328 682 L 291 682 Q 283 682 283 690 L 283 766" class="a-default" data-animate="edge" style="--step: 4;" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:5">
-          <path data-graph-role="automatic-crossover-underlay" d="M 577.4 679 L 698.8 679" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="ingestion" data-edge-to="minio" data-edge-label="Store Images" data-edge-key="5" data-edge-id="ingest-to-minio" data-composition-points="577.4,679;698.8,679" data-composition-crossover="halo" data-composition-independent="true" d="M 577.4 679 L 698.8 679" class="a-default" data-animate="edge" style="--step: 5;" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 449 698 L 449 772" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="ingestion" data-edge-to="minio" data-edge-label="Store Images" data-edge-key="5" data-edge-id="ingest-to-minio" data-composition-points="449,698;449,772" data-composition-crossover="halo" data-composition-independent="true" d="M 449 698 L 449 772" class="a-default" data-animate="edge" style="--step: 5;" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:6">
-          <path data-graph-role="automatic-crossover-underlay" d="M 254 636 L 254 538 Q 254 530 262 530 L 677.8 530" fill="none" stroke="var(--mask)" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="triage_api" data-edge-to="qdrant" data-edge-label="Hybrid RAG" data-edge-key="6" data-edge-id="triage-to-qdrant" data-composition-points="254,636;254,530;677.8,530" data-composition-crossover="halo" data-composition-independent="true" d="M 254 636 L 254 538 Q 254 530 262 530 L 677.8 530" class="a-emphasis" data-animate="edge" style="--step: 6;" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 419.33333333333337 556 L 196.5 556 Q 188.5 556 188.5 564 L 188.5 766" fill="none" stroke="var(--mask)" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="triage_api" data-edge-to="qdrant" data-edge-label="Hybrid RAG" data-edge-key="6" data-edge-id="triage-to-qdrant" data-composition-points="419.33333333333337,556;188.5,556;188.5,766" data-composition-crossover="halo" data-composition-independent="true" d="M 419.33333333333337 556 L 196.5 556 Q 188.5 556 188.5 564 L 188.5 766" class="a-emphasis" data-animate="edge" style="--step: 6;" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:7">
-          <path data-graph-role="automatic-crossover-underlay" d="M 254 708 L 254 826 Q 254 834 262 834 L 393.9 834" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="triage_api" data-edge-to="postgres" data-edge-label="Session State" data-edge-key="7" data-edge-id="triage-to-pg" data-composition-points="254,708;254,834;393.9,834" data-composition-crossover="halo" data-composition-independent="true" d="M 254 708 L 254 826 Q 254 834 262 834 L 393.9 834" class="a-default" data-animate="edge" style="--step: 7;" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 662.3333333333334 576 L 724.5 576 Q 732.5 576 732.5 584 L 732.5 632" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="triage_api" data-edge-to="postgres" data-edge-label="Audit &amp; State" data-edge-key="7" data-edge-id="triage-to-pg" data-composition-points="662.3333333333334,576;732.5,576;732.5,632" data-composition-crossover="halo" data-composition-independent="true" d="M 662.3333333333334 576 L 724.5 576 Q 732.5 576 732.5 584 L 732.5 632" class="a-default" data-animate="edge" style="--step: 7;" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:8">
-          <path data-graph-role="automatic-crossover-underlay" d="M 165.95 708 L 165.95 960" fill="none" stroke="var(--mask)" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="triage_api" data-edge-to="litellm" data-edge-label="Private LLM" data-edge-key="8" data-edge-id="triage-to-litellm" data-composition-points="165.95,708;165.95,960" data-composition-crossover="halo" data-composition-independent="true" d="M 165.95 708 L 165.95 960" class="a-emphasis" data-animate="edge" style="--step: 8;" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 610.5 520 L 610.5 462" fill="none" stroke="var(--mask)" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="triage_api" data-edge-to="litellm" data-edge-label="Local LLM" data-edge-key="8" data-edge-id="triage-to-litellm" data-composition-points="610.5,520;610.5,462" data-composition-crossover="halo" data-composition-independent="true" d="M 610.5 520 L 610.5 462" class="a-emphasis" data-animate="edge" style="--step: 8;" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:9">
-          <path data-graph-role="automatic-crossover-underlay" d="M 163 636 L 163 416" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="triage_api" data-edge-to="jev_judge" data-edge-label="Redacted Choice/Score" data-edge-key="9" data-edge-id="triage-to-jev" data-composition-points="163,636;163,416" data-composition-crossover="halo" data-composition-independent="true" d="M 163 636 L 163 416" class="a-security" data-animate="edge" style="--step: 9;" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 631 592 L 631 956" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="triage_api" data-edge-to="jev_judge" data-edge-label="Opt. Redacted E1" data-edge-key="9" data-edge-id="triage-to-jev" data-composition-points="631,592;631,956" data-composition-crossover="halo" data-composition-independent="true" d="M 631 592 L 631 956" class="a-dashed" data-animate="edge" style="--step: 9;" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:10">
-          <path data-graph-role="automatic-crossover-underlay" d="M 187.95 708 L 187.95 910 Q 187.95 918 195.95 918 L 465.9 918 Q 473.9 918 473.9 926 L 473.9 1128" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="triage_api" data-edge-to="langfuse" data-edge-label="OTel Trace" data-edge-key="10" data-edge-id="triage-to-langfuse" data-composition-points="187.95,708;187.95,918;473.9,918;473.9,1128" data-composition-crossover="halo" data-composition-independent="true" d="M 187.95 708 L 187.95 910 Q 187.95 918 195.95 918 L 465.9 918 Q 473.9 918 473.9 926 L 473.9 1128" class="a-dashed" data-animate="edge" style="--step: 10;" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 662.3333333333334 556 L 1268.5 556 Q 1276.5 556 1276.5 564 L 1276.5 632" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="triage_api" data-edge-to="langfuse" data-edge-label="OTel Trace" data-edge-key="10" data-edge-id="triage-to-langfuse" data-composition-points="662.3333333333334,556;1276.5,556;1276.5,632" data-composition-crossover="halo" data-composition-independent="true" d="M 662.3333333333334 556 L 1268.5 556 Q 1276.5 556 1276.5 564 L 1276.5 632" class="a-dashed" data-animate="edge" style="--step: 10;" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         </g>
 
         <!-- Components -->
-        <g id="node-team" data-node-id="team" data-node-label="Tim NCX &amp; Admin" tabindex="0" role="button" aria-label="Focus Tim NCX &amp; Admin, EBIS / RETAIL / WIBS, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="EBIS / RETAIL / WIBS" data-node-context="Architecture component">
-          <title>Tim NCX &amp; Admin · EBIS / RETAIL / WIBS · Architecture component</title>
-          <rect x="410.4" y="48" width="156" height="60" rx="8" class="c-mask"/>
-          <rect x="410.4" y="48" width="156" height="60" rx="8" class="c-external" data-animate="node" style="--step: 0; --flow-node-name: archify-relay-node-0;" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(416.4 54) scale(0.6875)">
+        <g id="node-team" data-node-id="team" data-node-label="User Kantor &amp; Admin" tabindex="0" role="button" aria-label="Focus User Kantor &amp; Admin, MO NCX (EBIS / RETAIL / WIBS), Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="MO NCX (EBIS / RETAIL / WIBS)" data-node-context="Architecture component">
+          <title>User Kantor &amp; Admin · MO NCX (EBIS / RETAIL / WIBS) · Architecture component</title>
+          <rect x="633.5" y="48" width="191" height="60" rx="8" class="c-mask"/>
+          <rect x="633.5" y="48" width="191" height="60" rx="8" class="c-external" data-animate="node" style="--step: 0; --flow-node-name: archify-relay-node-0;" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(639.5 54) scale(0.6875)">
             <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
             <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
           </g>
-          <text data-node-label="" x="488.4" y="76" class="t-primary" font-size="12" font-weight="600" text-anchor="middle">Tim NCX &amp; Admin</text>
-        <text x="488.4" y="92" class="t-muted" font-size="10.5" text-anchor="middle">EBIS / RETAIL / WIBS</text>
+          <text data-node-label="" x="729" y="76" class="t-primary" font-size="12.5" font-weight="600" text-anchor="middle">User Kantor &amp; Admin</text>
+        <text x="729" y="92" class="t-muted" font-size="10.5" text-anchor="middle">MO NCX (EBIS / RETAIL / WIBS)</text>
         </g>
 
-        <g id="node-dashboard" data-node-id="dashboard" data-node-label="OpenDesign Web Portal" tabindex="0" role="button" aria-label="Focus OpenDesign Web Portal, Standalone (ai.ncxall.my.id), Architecture component" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="Standalone (ai.ncxall.my.id)" data-node-tag="Chat Triage + Admin SOP" data-node-context="Architecture component">
-          <title>OpenDesign Web Portal · Standalone (ai.ncxall.my.id) · Architecture component · Chat Triage + Admin SOP</title>
-          <rect x="388.4" y="176" width="200" height="72" rx="8" class="c-mask"/>
-          <rect x="388.4" y="176" width="200" height="72" rx="8" class="c-frontend" data-animate="node" style="--step: 1; --flow-node-name: archify-relay-node-1;" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(394.4 182) scale(0.6875)">
+        <g id="node-dashboard" data-node-id="dashboard" data-node-label="OpenDesign Web Portal" tabindex="0" role="button" aria-label="Focus OpenDesign Web Portal, Standalone Intranet · Paste Log, Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access)" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="Standalone Intranet · Paste Log" data-node-tag="Chat + Handover + Admin" data-node-context="Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access)">
+          <title>OpenDesign Web Portal · Standalone Intranet · Paste Log · Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access) · Chat + Handover + Admin</title>
+          <rect x="347" y="206" width="204" height="72" rx="8" class="c-mask"/>
+          <rect x="347" y="206" width="204" height="72" rx="8" class="c-frontend" data-animate="node" style="--step: 1; --flow-node-name: archify-relay-node-1;" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(353 212) scale(0.6875)">
             <rect x="2" y="3" width="12" height="10" rx="2"/>
             <path d="M2 6.5h12"/>
             <circle cx="4.1" cy="4.8" r=".7" class="sigil-fill"/>
             <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
           </g>
-          <text data-node-label="" x="488.4" y="210" class="t-primary" font-size="12" font-weight="600" text-anchor="middle">OpenDesign Web Portal</text>
-        <text x="488.4" y="226" class="t-muted" font-size="10.5" text-anchor="middle">Standalone (ai.ncxall.my.id)</text>
-        <text x="488.4" y="240" class="t-frontend" font-size="7" text-anchor="middle">Chat Triage + Admin SOP</text>
+          <text data-node-label="" x="449" y="240" class="t-primary" font-size="12.3" font-weight="600" text-anchor="middle">OpenDesign Web Portal</text>
+        <text x="449" y="256" class="t-muted" font-size="10.5" text-anchor="middle">Standalone Intranet · Paste Log</text>
+        <text x="449" y="270" class="t-frontend" font-size="7" text-anchor="middle">Chat + Handover + Admin</text>
         </g>
 
-        <g id="node-cf_worker" data-node-id="cf_worker" data-node-label="HTTPS Gateway &amp; Auth" tabindex="0" role="button" aria-label="Focus HTTPS Gateway &amp; Auth, /api/sop-ai/* · Admin PIN, Architecture component" aria-pressed="false" data-node-kind="security" data-node-sublabel="/api/sop-ai/* · Admin PIN" data-node-context="Architecture component">
-          <title>HTTPS Gateway &amp; Auth · /api/sop-ai/* · Admin PIN · Architecture component</title>
-          <rect x="392.4" y="316" width="192" height="60" rx="8" class="c-mask"/>
-          <rect x="392.4" y="316" width="192" height="60" rx="8" class="c-security" data-animate="node" style="--step: 2; --flow-node-name: archify-relay-node-2;" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(398.4 322) scale(0.6875)">
+        <g id="node-cf_worker" data-node-id="cf_worker" data-node-label="Office Auth &amp; RBAC" tabindex="0" role="button" aria-label="Focus Office Auth &amp; RBAC, LDAP/AD or JWT · 2-Tier Role, Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access)" aria-pressed="false" data-node-kind="security" data-node-sublabel="LDAP/AD or JWT · 2-Tier Role" data-node-tag="Zero Direct DB" data-node-context="Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access)">
+          <title>Office Auth &amp; RBAC · LDAP/AD or JWT · 2-Tier Role · Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access) · Zero Direct DB</title>
+          <rect x="356.5" y="346" width="185" height="72" rx="8" class="c-mask"/>
+          <rect x="356.5" y="346" width="185" height="72" rx="8" class="c-security" data-animate="node" style="--step: 2; --flow-node-name: archify-relay-node-2;" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(362.5 352) scale(0.6875)">
             <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z"/>
             <path d="m5.8 8 1.5 1.5 3-3"/>
           </g>
-          <text data-node-label="" x="488.4" y="344" class="t-primary" font-size="12" font-weight="600" text-anchor="middle">HTTPS Gateway &amp; Auth</text>
-        <text x="488.4" y="360" class="t-muted" font-size="10.5" text-anchor="middle">/api/sop-ai/* · Admin PIN</text>
+          <text data-node-label="" x="449" y="380" class="t-primary" font-size="12.6" font-weight="600" text-anchor="middle">Office Auth &amp; RBAC</text>
+        <text x="449" y="396" class="t-muted" font-size="10.5" text-anchor="middle">LDAP/AD or JWT · 2-Tier Role</text>
+        <text x="449" y="410" class="t-security" font-size="7" text-anchor="middle">Zero Direct DB</text>
         </g>
 
-        <g id="node-triage_api" data-node-id="triage_api" data-node-label="Triage Engine (Rust)" tabindex="0" role="button" aria-label="Focus Triage Engine (Rust), Axum + Rig · 4-Stage Graph, Private GPU VM / VPS (Raw SOP Private · E1 Redacted Jev)" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Axum + Rig · 4-Stage Graph" data-node-tag="Mod 3 · Rust" data-node-context="Private GPU VM / VPS (Raw SOP Private · E1 Redacted Jev)">
-          <title>Triage Engine (Rust) · Axum + Rig · 4-Stage Graph · Private GPU VM / VPS (Raw SOP Private · E1 Redacted Jev) · Mod 3 · Rust</title>
-          <rect x="78" y="636" width="192" height="72" rx="8" class="c-mask"/>
-          <rect x="78" y="636" width="192" height="72" rx="8" class="c-backend" data-animate="node" style="--step: 3; --flow-node-name: archify-relay-node-3;" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(84 642) scale(0.6875)">
+        <g id="node-triage_api" data-node-id="triage_api" data-node-label="Triage &amp; Auto Engine (Rust)" tabindex="0" role="button" aria-label="Focus Triage &amp; Auto Engine (Rust), Axum + Rig · Local Router + SOP-Gap, Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access)" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Axum + Rig · Local Router + SOP-Gap" data-node-tag="Mod 3 · Non-DB Auto" data-node-context="Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access)">
+          <title>Triage &amp; Auto Engine (Rust) · Axum + Rig · Local Router + SOP-Gap · Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access) · Mod 3 · Non-DB Auto</title>
+          <rect x="419.33333333333337" y="520" width="243" height="72" rx="8" class="c-mask"/>
+          <rect x="419.33333333333337" y="520" width="243" height="72" rx="8" class="c-backend" data-animate="node" style="--step: 3; --flow-node-name: archify-relay-node-3;" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(425.33333333333337 526) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-node-label="" x="174" y="670" class="t-primary" font-size="12" font-weight="600" text-anchor="middle">Triage Engine (Rust)</text>
-        <text x="174" y="686" class="t-muted" font-size="10.5" text-anchor="middle">Axum + Rig · 4-Stage Graph</text>
-        <text x="174" y="700" class="t-backend" font-size="7" text-anchor="middle">Mod 3 · Rust</text>
+          <text data-node-label="" x="540.8333333333334" y="554" class="t-primary" font-size="12" font-weight="600" text-anchor="middle">Triage &amp; Auto Engine (Rust)</text>
+        <text x="540.8333333333334" y="570" class="t-muted" font-size="10.5" text-anchor="middle">Axum + Rig · Local Router + SOP-Gap</text>
+        <text x="540.8333333333334" y="584" class="t-backend" font-size="7" text-anchor="middle">Mod 3 · Non-DB Auto</text>
         </g>
 
-        <g id="node-jev_judge" data-node-id="jev_judge" data-node-label="Jev Router &amp; Judge" tabindex="0" role="button" aria-label="Focus Jev Router &amp; Judge, TypeSafe AI (Redacted E1), Architecture component" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="TypeSafe AI (Redacted E1)" data-node-tag="Choice / Score" data-node-context="Architecture component">
-          <title>Jev Router &amp; Judge · TypeSafe AI (Redacted E1) · Architecture component · Choice / Score</title>
-          <rect x="85" y="344" width="178" height="72" rx="8" class="c-mask"/>
-          <rect x="85" y="344" width="178" height="72" rx="8" class="c-cloud" data-animate="node" style="--step: 10; --flow-node-name: archify-relay-node-8;" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(91 350) scale(0.6875)">
+        <g id="node-jev_judge" data-node-id="jev_judge" data-node-label="Jev Router &amp; Judge (Opt.)" tabindex="0" role="button" aria-label="Focus Jev Router &amp; Judge (Opt.), TypeSafe AI · Redacted E1, Architecture component" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="TypeSafe AI · Redacted E1" data-node-tag="Offline Fallback Ready" data-node-context="Architecture component">
+          <title>Jev Router &amp; Judge (Opt.) · TypeSafe AI · Redacted E1 · Architecture component · Offline Fallback Ready</title>
+          <rect x="615" y="956" width="228" height="72" rx="8" class="c-mask"/>
+          <rect x="615" y="956" width="228" height="72" rx="8" class="c-cloud" data-animate="node" style="--step: 10; --flow-node-name: archify-relay-node-8;" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(621 962) scale(0.6875)">
             <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
           </g>
-          <text data-node-label="" x="174" y="378" class="t-primary" font-size="12" font-weight="600" text-anchor="middle">Jev Router &amp; Judge</text>
-        <text x="174" y="394" class="t-muted" font-size="10.5" text-anchor="middle">TypeSafe AI (Redacted E1)</text>
-        <text x="174" y="408" class="t-cloud" font-size="7" text-anchor="middle">Choice / Score</text>
+          <text data-node-label="" x="729" y="990" class="t-primary" font-size="12" font-weight="600" text-anchor="middle">Jev Router &amp; Judge (Opt.)</text>
+        <text x="729" y="1006" class="t-muted" font-size="10.5" text-anchor="middle">TypeSafe AI · Redacted E1</text>
+        <text x="729" y="1020" class="t-cloud" font-size="7" text-anchor="middle">Offline Fallback Ready</text>
         </g>
 
-        <g id="node-ingestion" data-node-id="ingestion" data-node-label="SOP Ingestion (Python)" tabindex="0" role="button" aria-label="Focus SOP Ingestion (Python), Docling + Local Vision-LLM, Private GPU VM / VPS (Raw SOP Private · E1 Redacted Jev)" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Docling + Local Vision-LLM" data-node-tag="Mod 1 · Command-Safe" data-node-context="Private GPU VM / VPS (Raw SOP Private · E1 Redacted Jev)">
-          <title>SOP Ingestion (Python) · Docling + Local Vision-LLM · Private GPU VM / VPS (Raw SOP Private · E1 Redacted Jev) · Mod 1 · Command-Safe</title>
-          <rect x="370.4" y="636" width="207" height="72" rx="8" class="c-mask"/>
-          <rect x="370.4" y="636" width="207" height="72" rx="8" class="c-backend" data-animate="node" style="--step: 4; --flow-node-name: archify-relay-node-4;" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(376.4 642) scale(0.6875)">
+        <g id="node-ingestion" data-node-id="ingestion" data-node-label="SOP &amp; Domain Pack (Python)" tabindex="0" role="button" aria-label="Focus SOP &amp; Domain Pack (Python), Docling + Vision + Siebel/Oracle Pack, Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access)" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Docling + Vision + Siebel/Oracle Pack" data-node-tag="Mod 1 · Read-Only" data-node-context="Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access)">
+          <title>SOP &amp; Domain Pack (Python) · Docling + Vision + Siebel/Oracle Pack · Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access) · Mod 1 · Read-Only</title>
+          <rect x="328" y="626" width="242" height="72" rx="8" class="c-mask"/>
+          <rect x="328" y="626" width="242" height="72" rx="8" class="c-backend" data-animate="node" style="--step: 4; --flow-node-name: archify-relay-node-4;" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(334 632) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-node-label="" x="473.9" y="670" class="t-primary" font-size="12" font-weight="600" text-anchor="middle">SOP Ingestion (Python)</text>
-        <text x="473.9" y="686" class="t-muted" font-size="10.5" text-anchor="middle">Docling + Local Vision-LLM</text>
-        <text x="473.9" y="700" class="t-backend" font-size="7" text-anchor="middle">Mod 1 · Command-Safe</text>
+          <text data-node-label="" x="449" y="660" class="t-primary" font-size="12.4" font-weight="600" text-anchor="middle">SOP &amp; Domain Pack (Python)</text>
+        <text x="449" y="676" class="t-muted" font-size="10.5" text-anchor="middle">Docling + Vision + Siebel/Oracle Pack</text>
+        <text x="449" y="690" class="t-backend" font-size="7" text-anchor="middle">Mod 1 · Read-Only</text>
         </g>
 
-        <g id="node-qdrant" data-node-id="qdrant" data-node-label="Qdrant Hybrid (Rust SDK)" tabindex="0" role="button" aria-label="Focus Qdrant Hybrid (Rust SDK), bge-m3 + BM25 + Reranker, Private GPU VM / VPS (Raw SOP Private · E1 Redacted Jev)" aria-pressed="false" data-node-kind="database" data-node-sublabel="bge-m3 + BM25 + Reranker" data-node-tag="Mod 2 · Temporal ACL" data-node-context="Private GPU VM / VPS (Raw SOP Private · E1 Redacted Jev)">
-          <title>Qdrant Hybrid (Rust SDK) · bge-m3 + BM25 + Reranker · Private GPU VM / VPS (Raw SOP Private · E1 Redacted Jev) · Mod 2 · Temporal ACL</title>
-          <rect x="677.8" y="474" width="221" height="72" rx="8" class="c-mask"/>
-          <rect x="677.8" y="474" width="221" height="72" rx="8" class="c-database" data-animate="node" style="--step: 5; --flow-node-name: archify-relay-node-5;" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(683.8 480) scale(0.6875)">
+        <g id="node-qdrant" data-node-id="qdrant" data-node-label="Qdrant Hybrid (Rust SDK)" tabindex="0" role="button" aria-label="Focus Qdrant Hybrid (Rust SDK), bge-m3 + BM25 + Reranker, Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access)" aria-pressed="false" data-node-kind="database" data-node-sublabel="bge-m3 + BM25 + Reranker" data-node-tag="Mod 2 · Temporal ACL" data-node-context="Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access)">
+          <title>Qdrant Hybrid (Rust SDK) · bge-m3 + BM25 + Reranker · Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access) · Mod 2 · Temporal ACL</title>
+          <rect x="78" y="766" width="221" height="72" rx="8" class="c-mask"/>
+          <rect x="78" y="766" width="221" height="72" rx="8" class="c-database" data-animate="node" style="--step: 5; --flow-node-name: archify-relay-node-5;" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(84 772) scale(0.6875)">
             <ellipse cx="8" cy="4" rx="5" ry="2"/>
             <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
-          <text data-node-label="" x="788.3" y="508" class="t-primary" font-size="12" font-weight="600" text-anchor="middle">Qdrant Hybrid (Rust SDK)</text>
-        <text x="788.3" y="524" class="t-muted" font-size="10.5" text-anchor="middle">bge-m3 + BM25 + Reranker</text>
-        <text x="788.3" y="538" class="t-database" font-size="7" text-anchor="middle">Mod 2 · Temporal ACL</text>
+          <text data-node-label="" x="188.5" y="800" class="t-primary" font-size="12" font-weight="600" text-anchor="middle">Qdrant Hybrid (Rust SDK)</text>
+        <text x="188.5" y="816" class="t-muted" font-size="10.5" text-anchor="middle">bge-m3 + BM25 + Reranker</text>
+        <text x="188.5" y="830" class="t-database" font-size="7" text-anchor="middle">Mod 2 · Temporal ACL</text>
         </g>
 
-        <g id="node-minio" data-node-id="minio" data-node-label="MinIO Asset Store" tabindex="0" role="button" aria-label="Focus MinIO Asset Store, SOP Screenshots + Artifacts, Private GPU VM / VPS (Raw SOP Private · E1 Redacted Jev)" aria-pressed="false" data-node-kind="database" data-node-sublabel="SOP Screenshots + Artifacts" data-node-context="Private GPU VM / VPS (Raw SOP Private · E1 Redacted Jev)">
-          <title>MinIO Asset Store · SOP Screenshots + Artifacts · Private GPU VM / VPS (Raw SOP Private · E1 Redacted Jev)</title>
-          <rect x="698.8" y="642" width="179" height="60" rx="8" class="c-mask"/>
-          <rect x="698.8" y="642" width="179" height="60" rx="8" class="c-database" data-animate="node" style="--step: 6; --flow-node-name: archify-relay-node-10;" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(704.8 648) scale(0.6875)">
+        <g id="node-minio" data-node-id="minio" data-node-label="MinIO Asset Store" tabindex="0" role="button" aria-label="Focus MinIO Asset Store, SOP Screenshots (Intranet), Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access)" aria-pressed="false" data-node-kind="database" data-node-sublabel="SOP Screenshots (Intranet)" data-node-context="Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access)">
+          <title>MinIO Asset Store · SOP Screenshots (Intranet) · Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access)</title>
+          <rect x="363" y="772" width="172" height="60" rx="8" class="c-mask"/>
+          <rect x="363" y="772" width="172" height="60" rx="8" class="c-database" data-animate="node" style="--step: 6; --flow-node-name: archify-relay-node-10;" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(369 778) scale(0.6875)">
             <ellipse cx="8" cy="4" rx="5" ry="2"/>
             <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
-          <text data-node-label="" x="788.3" y="670" class="t-primary" font-size="12.8" font-weight="600" text-anchor="middle">MinIO Asset Store</text>
-        <text x="788.3" y="686" class="t-muted" font-size="10.5" text-anchor="middle">SOP Screenshots + Artifacts</text>
+          <text data-node-label="" x="449" y="800" class="t-primary" font-size="12.1" font-weight="600" text-anchor="middle">MinIO Asset Store</text>
+        <text x="449" y="816" class="t-muted" font-size="10.5" text-anchor="middle">SOP Screenshots (Intranet)</text>
         </g>
 
-        <g id="node-postgres" data-node-id="postgres" data-node-label="PostgreSQL" tabindex="0" role="button" aria-label="Focus PostgreSQL, Checkpointer + Audit Log, Private GPU VM / VPS (Raw SOP Private · E1 Redacted Jev)" aria-pressed="false" data-node-kind="database" data-node-sublabel="Checkpointer + Audit Log" data-node-context="Private GPU VM / VPS (Raw SOP Private · E1 Redacted Jev)">
-          <title>PostgreSQL · Checkpointer + Audit Log · Private GPU VM / VPS (Raw SOP Private · E1 Redacted Jev)</title>
-          <rect x="393.9" y="804" width="160" height="60" rx="8" class="c-mask"/>
-          <rect x="393.9" y="804" width="160" height="60" rx="8" class="c-database" data-animate="node" style="--step: 8; --flow-node-name: archify-relay-node-6;" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(399.9 810) scale(0.6875)">
+        <g id="node-postgres" data-node-id="postgres" data-node-label="PostgreSQL 16" tabindex="0" role="button" aria-label="Focus PostgreSQL 16, State + RBAC + Audit + SOP-Gap, Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access)" aria-pressed="false" data-node-kind="database" data-node-sublabel="State + RBAC + Audit + SOP-Gap" data-node-context="Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access)">
+          <title>PostgreSQL 16 · State + RBAC + Audit + SOP-Gap · Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access)</title>
+          <rect x="634" y="632" width="197" height="60" rx="8" class="c-mask"/>
+          <rect x="634" y="632" width="197" height="60" rx="8" class="c-database" data-animate="node" style="--step: 8; --flow-node-name: archify-relay-node-6;" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(640 638) scale(0.6875)">
             <ellipse cx="8" cy="4" rx="5" ry="2"/>
             <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
-          <text data-node-label="" x="473.9" y="832" class="t-primary" font-size="14" font-weight="600" text-anchor="middle">PostgreSQL</text>
-        <text x="473.9" y="848" class="t-muted" font-size="10.5" text-anchor="middle">Checkpointer + Audit Log</text>
+          <text data-node-label="" x="732.5" y="660" class="t-primary" font-size="14" font-weight="600" text-anchor="middle">PostgreSQL 16</text>
+        <text x="732.5" y="676" class="t-muted" font-size="10.5" text-anchor="middle">State + RBAC + Audit + SOP-Gap</text>
         </g>
 
-        <g id="node-litellm" data-node-id="litellm" data-node-label="LiteLLM Gateway" tabindex="0" role="button" aria-label="Focus LiteLLM Gateway, Ollama Lokal / vLLM GPU, Private GPU VM / VPS (Raw SOP Private · E1 Redacted Jev)" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Ollama Lokal / vLLM GPU" data-node-tag="Qwen3 / Gemma 4" data-node-context="Private GPU VM / VPS (Raw SOP Private · E1 Redacted Jev)">
-          <title>LiteLLM Gateway · Ollama Lokal / vLLM GPU · Private GPU VM / VPS (Raw SOP Private · E1 Redacted Jev) · Qwen3 / Gemma 4</title>
-          <rect x="96" y="960" width="156" height="72" rx="8" class="c-mask"/>
-          <rect x="96" y="960" width="156" height="72" rx="8" class="c-backend" data-animate="node" style="--step: 9; --flow-node-name: archify-relay-node-7;" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(102 966) scale(0.6875)">
+        <g id="node-litellm" data-node-id="litellm" data-node-label="LiteLLM + vLLM / Ollama" tabindex="0" role="button" aria-label="Focus LiteLLM + vLLM / Ollama, Qwen3-14B/32B · Guided JSON, Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access)" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Qwen3-14B/32B · Guided JSON" data-node-tag="100% On-Prem GPU" data-node-context="Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access)">
+          <title>LiteLLM + vLLM / Ollama · Qwen3-14B/32B · Guided JSON · Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access) · 100% On-Prem GPU</title>
+          <rect x="594.5" y="390" width="214" height="72" rx="8" class="c-mask"/>
+          <rect x="594.5" y="390" width="214" height="72" rx="8" class="c-backend" data-animate="node" style="--step: 9; --flow-node-name: archify-relay-node-7;" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(600.5 396) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-node-label="" x="174" y="994" class="t-primary" font-size="12" font-weight="600" text-anchor="middle">LiteLLM Gateway</text>
-        <text x="174" y="1010" class="t-muted" font-size="10.5" text-anchor="middle">Ollama Lokal / vLLM GPU</text>
-        <text x="174" y="1024" class="t-backend" font-size="7" text-anchor="middle">Qwen3 / Gemma 4</text>
+          <text data-node-label="" x="701.5" y="424" class="t-primary" font-size="12" font-weight="600" text-anchor="middle">LiteLLM + vLLM / Ollama</text>
+        <text x="701.5" y="440" class="t-muted" font-size="10.5" text-anchor="middle">Qwen3-14B/32B · Guided JSON</text>
+        <text x="701.5" y="454" class="t-backend" font-size="7" text-anchor="middle">100% On-Prem GPU</text>
         </g>
 
-        <g id="node-langfuse" data-node-id="langfuse" data-node-label="Langfuse &amp; Hermes Eval" tabindex="0" role="button" aria-label="Focus Langfuse &amp; Hermes Eval, OTel Trace · Promptfoo · DSPy, Private GPU VM / VPS (Raw SOP Private · E1 Redacted Jev)" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="OTel Trace · Promptfoo · DSPy" data-node-context="Private GPU VM / VPS (Raw SOP Private · E1 Redacted Jev)">
-          <title>Langfuse &amp; Hermes Eval · OTel Trace · Promptfoo · DSPy · Private GPU VM / VPS (Raw SOP Private · E1 Redacted Jev)</title>
-          <rect x="370.4" y="1128" width="207" height="60" rx="8" class="c-mask"/>
-          <rect x="370.4" y="1128" width="207" height="60" rx="8" class="c-cloud" data-animate="node" style="--step: 11; --flow-node-name: archify-relay-node-9;" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(376.4 1134) scale(0.6875)">
-            <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
+        <g id="node-langfuse" data-node-id="langfuse" data-node-label="Langfuse &amp; Hermes Eval" tabindex="0" role="button" aria-label="Focus Langfuse &amp; Hermes Eval, Self-Hosted · 50-100 NCX Bench, Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access)" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Self-Hosted · 50-100 NCX Bench" data-node-context="Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access)">
+          <title>Langfuse &amp; Hermes Eval · Self-Hosted · 50-100 NCX Bench · Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access)</title>
+          <rect x="1173" y="632" width="207" height="60" rx="8" class="c-mask"/>
+          <rect x="1173" y="632" width="207" height="60" rx="8" class="c-backend" data-animate="node" style="--step: 11; --flow-node-name: archify-relay-node-9;" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1179 638) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-node-label="" x="473.9" y="1156" class="t-primary" font-size="12" font-weight="600" text-anchor="middle">Langfuse &amp; Hermes Eval</text>
-        <text x="473.9" y="1172" class="t-muted" font-size="10.5" text-anchor="middle">OTel Trace · Promptfoo · DSPy</text>
+          <text data-node-label="" x="1276.5" y="660" class="t-primary" font-size="12" font-weight="600" text-anchor="middle">Langfuse &amp; Hermes Eval</text>
+        <text x="1276.5" y="676" class="t-muted" font-size="10.5" text-anchor="middle">Self-Hosted · 50-100 NCX Bench</text>
         </g>
 
         <!-- Connection labels -->
-        <g data-edge-from="team" data-edge-to="dashboard" data-edge-label="Chat &amp; Upload" data-edge-key="0" data-edge-id="team-to-dash">
-          <rect x="410" y="135" width="72.4" height="14" rx="3" class="c-mask"/>
-          <text x="446.2" y="145" class="t-edge-emphasis" font-size="10" font-weight="500" textLength="68.4" lengthAdjust="spacingAndGlyphs" text-anchor="middle">Chat &amp; Upload</text>
+        <g data-edge-from="team" data-edge-to="dashboard" data-edge-label="Chat &amp; Paste Log" data-edge-key="0" data-edge-id="team-to-dash">
+          <rect x="556.7" y="158" width="86.8" height="14" rx="3" class="c-mask"/>
+          <text x="600.1" y="168" class="t-edge-emphasis" font-size="10" font-weight="500" textLength="82.8" lengthAdjust="spacingAndGlyphs" text-anchor="middle">Chat &amp; Paste Log</text>
         </g>
         <g data-edge-from="dashboard" data-edge-to="cf_worker" data-edge-label="HTTPS SSE" data-edge-key="1" data-edge-id="dash-to-cf">
-          <rect x="429.19999999999993" y="275" width="53.199999999999996" height="14" rx="3" class="c-mask"/>
-          <text x="455.79999999999995" y="285" class="t-edge-emphasis" font-size="10" font-weight="500" textLength="49.199999999999996" lengthAdjust="spacingAndGlyphs" text-anchor="middle">HTTPS SSE</text>
+          <rect x="389.79999999999995" y="305" width="53.199999999999996" height="14" rx="3" class="c-mask"/>
+          <text x="416.4" y="315" class="t-edge-emphasis" font-size="10" font-weight="500" textLength="49.199999999999996" lengthAdjust="spacingAndGlyphs" text-anchor="middle">HTTPS SSE</text>
         </g>
-        <g data-edge-from="cf_worker" data-edge-to="triage_api" data-edge-label="Tunnel Auth" data-edge-key="2" data-edge-id="cf-to-triage">
-          <rect x="303.3" y="470" width="62.8" height="14" rx="3" class="c-mask"/>
-          <text x="334.7" y="480" class="t-edge-security" font-size="10" font-weight="500" textLength="58.8" lengthAdjust="spacingAndGlyphs" text-anchor="middle">Tunnel Auth</text>
+        <g data-edge-from="cf_worker" data-edge-to="triage_api" data-edge-label="Verified Role" data-edge-key="2" data-edge-id="cf-to-triage">
+          <rect x="370.6" y="462" width="72.4" height="14" rx="3" class="c-mask"/>
+          <text x="406.8" y="472" class="t-edge-security" font-size="10" font-weight="500" textLength="68.4" lengthAdjust="spacingAndGlyphs" text-anchor="middle">Verified Role</text>
         </g>
         <g data-edge-from="triage_api" data-edge-to="ingestion" data-edge-label="Admin SOP" data-edge-key="3" data-edge-id="triage-to-ingest">
-          <rect x="293.59999999999997" y="648" width="53.199999999999996" height="14" rx="3" class="c-mask"/>
-          <text x="320.2" y="658" class="t-edge-dashed" font-size="10" font-weight="500" textLength="49.199999999999996" lengthAdjust="spacingAndGlyphs" text-anchor="middle">Admin SOP</text>
+          <rect x="467.6333333333333" y="602" width="53.199999999999996" height="14" rx="3" class="c-mask"/>
+          <text x="494.23333333333335" y="612" class="t-edge-dashed" font-size="10" font-weight="500" textLength="49.199999999999996" lengthAdjust="spacingAndGlyphs" text-anchor="middle">Admin SOP</text>
         </g>
         <g data-edge-from="ingestion" data-edge-to="qdrant" data-edge-label="Upsert Chunks" data-edge-key="4" data-edge-id="ingest-to-qdrant">
-          <rect x="657.5999999999999" y="579" width="72.4" height="14" rx="3" class="c-mask"/>
-          <text x="693.8" y="589" class="t-edge-default" font-size="10" font-weight="500" textLength="68.4" lengthAdjust="spacingAndGlyphs" text-anchor="middle">Upsert Chunks</text>
+          <rect x="246.8" y="667.222222222222" width="72.4" height="14" rx="3" class="c-mask"/>
+          <text x="283" y="677.222222222222" class="t-edge-default" font-size="10" font-weight="500" textLength="68.4" lengthAdjust="spacingAndGlyphs" text-anchor="middle">Upsert Chunks</text>
         </g>
         <g data-edge-from="ingestion" data-edge-to="minio" data-edge-label="Store Images" data-edge-key="5" data-edge-id="ingest-to-minio">
-          <rect x="604.3" y="689" width="67.6" height="14" rx="3" class="c-mask"/>
-          <text x="638.0999999999999" y="699" class="t-edge-default" font-size="10" font-weight="500" textLength="63.599999999999994" lengthAdjust="spacingAndGlyphs" text-anchor="middle">Store Images</text>
+          <rect x="375.4" y="728" width="67.6" height="14" rx="3" class="c-mask"/>
+          <text x="409.2" y="738" class="t-edge-default" font-size="10" font-weight="500" textLength="63.599999999999994" lengthAdjust="spacingAndGlyphs" text-anchor="middle">Store Images</text>
         </g>
         <g data-edge-from="triage_api" data-edge-to="qdrant" data-edge-label="Hybrid RAG" data-edge-key="6" data-edge-id="triage-to-qdrant">
-          <rect x="436.9" y="510" width="58" height="14" rx="3" class="c-mask"/>
-          <text x="465.9" y="520" class="t-edge-emphasis" font-size="10" font-weight="500" textLength="54" lengthAdjust="spacingAndGlyphs" text-anchor="middle">Hybrid RAG</text>
+          <rect x="169.91666666666669" y="541" width="58" height="14" rx="3" class="c-mask"/>
+          <text x="198.91666666666669" y="551" class="t-edge-emphasis" font-size="10" font-weight="500" textLength="54" lengthAdjust="spacingAndGlyphs" text-anchor="middle">Hybrid RAG</text>
         </g>
-        <g data-edge-from="triage_api" data-edge-to="postgres" data-edge-label="Session State" data-edge-key="7" data-edge-id="triage-to-pg">
-          <rect x="287.75" y="814" width="72.4" height="14" rx="3" class="c-mask"/>
-          <text x="323.95" y="824" class="t-edge-default" font-size="10" font-weight="500" textLength="68.4" lengthAdjust="spacingAndGlyphs" text-anchor="middle">Session State</text>
+        <g data-edge-from="triage_api" data-edge-to="postgres" data-edge-label="Audit &amp; State" data-edge-key="7" data-edge-id="triage-to-pg">
+          <rect x="689.2166666666667" y="561" width="72.4" height="14" rx="3" class="c-mask"/>
+          <text x="725.4166666666667" y="571" class="t-edge-default" font-size="10" font-weight="500" textLength="68.4" lengthAdjust="spacingAndGlyphs" text-anchor="middle">Audit &amp; State</text>
         </g>
-        <g data-edge-from="triage_api" data-edge-to="litellm" data-edge-label="Private LLM" data-edge-key="8" data-edge-id="triage-to-litellm">
-          <rect x="97.14999999999998" y="827" width="62.8" height="14" rx="3" class="c-mask"/>
-          <text x="128.54999999999998" y="837" class="t-edge-emphasis" font-size="10" font-weight="500" textLength="58.8" lengthAdjust="spacingAndGlyphs" text-anchor="middle">Private LLM</text>
+        <g data-edge-from="triage_api" data-edge-to="litellm" data-edge-label="Local LLM" data-edge-key="8" data-edge-id="triage-to-litellm">
+          <rect x="551.3" y="484" width="53.199999999999996" height="14" rx="3" class="c-mask"/>
+          <text x="577.9" y="494" class="t-edge-emphasis" font-size="10" font-weight="500" textLength="49.199999999999996" lengthAdjust="spacingAndGlyphs" text-anchor="middle">Local LLM</text>
         </g>
-        <g data-edge-from="triage_api" data-edge-to="jev_judge" data-edge-label="Redacted Choice/Score" data-edge-key="9" data-edge-id="triage-to-jev">
-          <rect x="50.199999999999996" y="519" width="110.8" height="14" rx="3" class="c-mask"/>
-          <text x="105.6" y="529" class="t-edge-security" font-size="10" font-weight="500" textLength="106.8" lengthAdjust="spacingAndGlyphs" text-anchor="middle">Redacted Choice/Score</text>
+        <g data-edge-from="triage_api" data-edge-to="jev_judge" data-edge-label="Opt. Redacted E1" data-edge-key="9" data-edge-id="triage-to-jev">
+          <rect x="538.2" y="767" width="86.8" height="14" rx="3" class="c-mask"/>
+          <text x="581.6" y="777" class="t-edge-dashed" font-size="10" font-weight="500" textLength="82.8" lengthAdjust="spacingAndGlyphs" text-anchor="middle">Opt. Redacted E1</text>
         </g>
         <g data-edge-from="triage_api" data-edge-to="langfuse" data-edge-label="OTel Trace" data-edge-key="10" data-edge-id="triage-to-langfuse">
-          <rect x="301.92499999999995" y="898" width="58" height="14" rx="3" class="c-mask"/>
-          <text x="330.92499999999995" y="908" class="t-edge-dashed" font-size="10" font-weight="500" textLength="54" lengthAdjust="spacingAndGlyphs" text-anchor="middle">OTel Trace</text>
+          <rect x="978.4166666666667" y="541" width="58" height="14" rx="3" class="c-mask"/>
+          <text x="1007.4166666666667" y="551" class="t-edge-dashed" font-size="10" font-weight="500" textLength="54" lengthAdjust="spacingAndGlyphs" text-anchor="middle">OTel Trace</text>
         </g>
 
         <!-- Boundary labels (foreground masks keep routes out of titles) -->
-        <g data-graph-role="structural-frame-label" data-composition-frame-id="0" data-composition-frame-kind="security-group" data-composition-frame-label="Private GPU VM / VPS (Raw SOP Private · E1 Redacted Jev)">
-          <rect data-graph-role="structural-frame-label-mask" x="168" y="454" width="312.4" height="16" rx="3" class="c-mask"/>
-          <text data-boundary-label="" x="172" y="467" class="t-security" font-size="9" font-weight="600">Private GPU VM / VPS (Raw SOP Private · E1 Redacted Jev)</text>
+        <g data-graph-role="structural-frame-label" data-composition-frame-id="0" data-composition-frame-kind="security-group" data-composition-frame-label="Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access)">
+          <rect data-graph-role="structural-frame-label-mask" x="52" y="185" width="475.87101754193543" height="17" rx="3" class="c-mask"/>
+          <text data-boundary-label="" x="56" y="198.3548397096774" class="t-security" font-size="9.35483970967742" font-weight="600">Intranet Kantor / On-Prem GPU Server (Zero Direct Oracle 12c / Siebel 16 DB Access)</text>
         </g>
 
         <!-- Legend -->
         <g data-legend="">
-          <text x="40" y="1240" class="t-primary" font-size="12" font-weight="650">Legend</text>
-          <g data-legend-semantic-kind="frontend" data-legend-x="40" data-legend-baseline="1260" data-legend-width="93">
-            <rect x="40" y="1251" width="16" height="10" rx="2.5" class="c-frontend" stroke-width="1"/>
-            <text x="62" y="1260" class="t-muted" font-size="10" font-weight="500">Frontend</text>
+          <text x="40" y="1060" class="t-primary" font-size="12" font-weight="650">Legend</text>
+          <g data-legend-semantic-kind="frontend" data-legend-x="40" data-legend-baseline="1080" data-legend-width="93">
+            <rect x="40" y="1071" width="16" height="10" rx="2.5" class="c-frontend" stroke-width="1"/>
+            <text x="62" y="1080" class="t-muted" font-size="10" font-weight="500">Frontend</text>
           </g>
-          <g data-legend-semantic-kind="backend" data-legend-x="155" data-legend-baseline="1260" data-legend-width="87">
-            <rect x="155" y="1251" width="16" height="10" rx="2.5" class="c-backend" stroke-width="1"/>
-            <text x="177" y="1260" class="t-muted" font-size="10" font-weight="500">Backend</text>
+          <g data-legend-semantic-kind="backend" data-legend-x="155" data-legend-baseline="1080" data-legend-width="87">
+            <rect x="155" y="1071" width="16" height="10" rx="2.5" class="c-backend" stroke-width="1"/>
+            <text x="177" y="1080" class="t-muted" font-size="10" font-weight="500">Backend</text>
           </g>
-          <g data-legend-semantic-kind="database" data-legend-x="264" data-legend-baseline="1260" data-legend-width="93">
-            <rect x="264" y="1251" width="16" height="10" rx="2.5" class="c-database" stroke-width="1"/>
-            <text x="286" y="1260" class="t-muted" font-size="10" font-weight="500">Database</text>
+          <g data-legend-semantic-kind="database" data-legend-x="264" data-legend-baseline="1080" data-legend-width="93">
+            <rect x="264" y="1071" width="16" height="10" rx="2.5" class="c-database" stroke-width="1"/>
+            <text x="286" y="1080" class="t-muted" font-size="10" font-weight="500">Database</text>
           </g>
-          <g data-legend-semantic-kind="cloud" data-legend-x="379" data-legend-baseline="1260" data-legend-width="74">
-            <rect x="379" y="1251" width="16" height="10" rx="2.5" class="c-cloud" stroke-width="1"/>
-            <text x="401" y="1260" class="t-muted" font-size="10" font-weight="500">Cloud</text>
+          <g data-legend-semantic-kind="cloud" data-legend-x="379" data-legend-baseline="1080" data-legend-width="74">
+            <rect x="379" y="1071" width="16" height="10" rx="2.5" class="c-cloud" stroke-width="1"/>
+            <text x="401" y="1080" class="t-muted" font-size="10" font-weight="500">Cloud</text>
           </g>
-          <g data-legend-semantic-kind="security" data-legend-x="475" data-legend-baseline="1260" data-legend-width="93">
-            <rect x="475" y="1251" width="16" height="10" rx="2.5" class="c-security" stroke-width="1"/>
-            <text x="497" y="1260" class="t-muted" font-size="10" font-weight="500">Security</text>
+          <g data-legend-semantic-kind="security" data-legend-x="475" data-legend-baseline="1080" data-legend-width="93">
+            <rect x="475" y="1071" width="16" height="10" rx="2.5" class="c-security" stroke-width="1"/>
+            <text x="497" y="1080" class="t-muted" font-size="10" font-weight="500">Security</text>
           </g>
-          <g data-legend-semantic-kind="external" data-legend-x="590" data-legend-baseline="1260" data-legend-width="93">
-            <rect x="590" y="1251" width="16" height="10" rx="2.5" class="c-external" stroke-width="1"/>
-            <text x="612" y="1260" class="t-muted" font-size="10" font-weight="500">External</text>
+          <g data-legend-semantic-kind="external" data-legend-x="590" data-legend-baseline="1080" data-legend-width="93">
+            <rect x="590" y="1071" width="16" height="10" rx="2.5" class="c-external" stroke-width="1"/>
+            <text x="612" y="1080" class="t-muted" font-size="10" font-weight="500">External</text>
           </g>
         </g>
       </svg>
