@@ -22,5 +22,5 @@ sop-ingestion (Rust) ──► sop-memory-rag (Rust) ──► triage-engine-api
 
 ## Deferred Roadmap Boundary (Out of Scope for Fase 1 Specs)
 
-- **Fase 2 (Self-Evaluation Loop — Self-Hosted):** `graphiti-temporal-memory`, `eval-loop` (`Promptfoo` + Golden Benchmark 50–100 NCX + Session-Branch Git PR), `redis-cache-queue`.
+- **Fase 2 (Self-Evaluation Loop — Self-Hosted):** `graphiti-temporal-memory`, `eval-loop` (`Promptfoo` + Golden Benchmark 80–100 NCX + Session-Branch Git PR), `redis-cache-queue`.
 - **Fase 3 (Self-Hosted Knowledge Automation — Non-DB):** `kestra-temporal-onprem` (*SOP freshness audit* & pelaporan berkala — tetap **Zero Direct DB / Zero Prod Execution**).

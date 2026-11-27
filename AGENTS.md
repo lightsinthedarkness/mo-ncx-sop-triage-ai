@@ -27,13 +27,17 @@ Read `CONSTRAINTS.md` before writing code. Do not weaken it to make a change pas
 - **Review & Ship:** `code-review-and-quality` + `security-and-hardening` + `code-simplification` + `documentation-and-adrs`
 
 ## Project Domain Skills (`.agents/skills/` — 24 Installed)
-- **Discovery:** `find-skills`
-- **Visual Documentation:** `archify`, `archify-pr`
-- **Module 1 (`crates/sop-core` + `crates/sop-ingestion` — Rust):** `zip`, `quick-xml`, `calamine`, `lopdf`, `reqwest` *(legacy doc parsing pattern ref: `docling`)*
-- **Module 2 (`crates/sop-memory-rag` — Rust `qdrant-client` + `rig-qdrant` + `fastembed`):** `qdrant-search-quality`, `rag-implementation`, `hybrid-search-implementation` *(plus pattern refs: `langchain-rag`, `deep-agents-memory`)*
-- **Module 3 (`crates/triage-engine` — Rust `Axum`/`Rig`/`sqlx` + Offline Router / Optional Jev):** `vllm-deploy-docker` *(plus pattern refs: `langgraph-fundamentals`, `langgraph-persistence`, `langgraph-human-in-the-loop`, `fastapi`)*
+- **Discovery & Visual Docs:** `find-skills`, `archify`, `archify-pr`
+- **RAG & Retrieval Patterns:** `qdrant-search-quality`, `rag-implementation`, `hybrid-search-implementation` *(plus legacy pattern refs: `docling`, `langchain-rag`, `deep-agents-memory`)*
+- **Inference & Orchestration Patterns:** `vllm-deploy-docker` *(plus legacy pattern refs: `langgraph-fundamentals`, `langgraph-persistence`, `langgraph-human-in-the-loop`, `fastapi`)*
 - **Module 4 (`web/` — `opendesign-web-portal`):** `frontend-design`, `web-design-guidelines`, `design-brief`, `workers-best-practices`
-- **Observability, Testing & Eval:** `langfuse`, `llm-evaluation`, `agent-self-evaluation`, `promptfoo-evals` *(plus legacy Python refs: `python-testing-patterns`, `deepeval`)*
+- **Observability, Testing & Eval:** `langfuse`, `llm-evaluation`, `agent-self-evaluation`, `promptfoo-evals` *(plus legacy refs: `python-testing-patterns`, `deepeval`)*
+
+## Rust Workspace Crates (`ADR-003`)
+- **Shared Core & Fixtures:** `crates/sop-core` (`serde`, `schemars`, `chrono`, `sha2`, `thiserror`) + `crates/sop-test-support`
+- **Module 1 (`crates/sop-ingestion`):** `zip`, `quick-xml`, `calamine`, `oxidize-pdf`/`lopdf`, `image`, `encoding_rs`, `reqwest`, `clap`
+- **Module 2 (`crates/sop-memory-rag`):** `qdrant-client` (`1.20.0`), `rig-core` (`0.47.0`), `rig-qdrant` (`0.47.1`), `fastembed` (`7.8.0`)
+- **Module 3 (`crates/triage-engine`):** `axum`, `tokio`, `rig-core`, `rmcp` (`1.4.0`), `sqlx`, `jsonwebtoken`, `argon2`, `opentelemetry-otlp`
 
 ## Verification Commands
 ```powershell

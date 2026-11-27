@@ -10,7 +10,7 @@
 Tim operasional **MO NCX** (internal kantor berbasis **Siebel CRM 16 + Oracle Database 12c**) membutuhkan sistem **Local LLM Internal** yang dibangun dengan **100% Pure Rust Backend** dan berjalan mandiri di jaringan kantor (*on-prem / intranet first*) untuk:
 1. **Fase 1 (Core Multimodal RAG, 4-Stage Triage & Standalone Portal):** Menjawab pertanyaan *"bagaimana caranya..."* dari rekan kantor (`EBIS`, `RETAIL`, `WIBS`) sesuai konteks SOP aktif + **Domain Context Pack Siebel 16 / Oracle 12c** melalui alur disiplin **Interview → Berpikir & Analisa → Konfirmasi → Pengerucutan → Vonis Langkah, Referensi Query/Command, & Screenshot SOP** di **Standalone OpenDesign Web Portal** (terpisah penuh dari `https://ncxall.my.id/dashboard`).
 2. **Fase 1.5 (Non-DB Knowledge & Workflow Automation):** Menjalankan automasi operasional harian yang aman tanpa menyentuh database — analisa potongan log yang di-paste/upload user di chat, **Auto Handover / Escalation Note Generator**, **Auto SOP-Gap Detector**, serta *auto-versioning* SOP.
-3. **Fase 2–3 (Continuous Self-Evaluation & Self-Hosted Knowledge Automation):** Evaluasi berkala terhadap **Golden Benchmark 50–100 Kasus NCX** ([evals/README.md](evals/README.md)), memori bi-temporal (**Graphiti**), serta usulan pembaruan playbook `skills/*.md` lewat Git PR + *Admin Approval* — 100% *self-hosted on-prem*.
+3. **Fase 2–3 (Continuous Self-Evaluation & Self-Hosted Knowledge Automation):** Evaluasi berkala terhadap **Golden Benchmark 80–100 Kasus NCX** ([evals/README.md](evals/README.md)), memori bi-temporal (**Graphiti**), serta usulan pembaruan playbook `skills/*.md` lewat Git PR + *Admin Approval* — 100% *self-hosted on-prem*.
 
 > [!IMPORTANT]
 > **Hard Boundary (`ADR-002` — Zero Direct DB / Zero Prod Execution):**
@@ -30,12 +30,13 @@ Tim operasional **MO NCX** (internal kantor berbasis **Siebel CRM 16 + Oracle Da
 ## 3. Kebutuhan Fungsional (Functional Requirements)
 
 ### FR-1: Multimodal SOP & Domain Pack Ingestion + Versioning (Fase 1 — Rust `crates/sop-ingestion`)
-* Admin dapat mengunggah dokumen SOP (`.docx`, `.pdf`, `.xlsx`, `.pptx`, `.md`, `.sh`, `.sql`, `.xml`) dengan label segmen (`EBIS`, `RETAIL`, `WIBS`, `GENERAL`) dan nomor versi (`doc_version`), serta menyinkronkan file statis **Domain Context Pack** (`knowledge/domain-pack/`).
-* Jalur *parsing* 100% native Rust:
-  * `.docx` & `.pptx` via `zip` (`zip-rs/zip2`) + `quick-xml` (`tafia/quick-xml`) untuk membaca paragraf, tabel, blok CLI/XML utuh tanpa *Markdown escaping*, serta mengekstrak gambar *screenshot* `before/after` berurutan (`block_index` + `section_path`).
-  * `.xlsx` via `calamine` (`tafia/calamine`); `.pdf` via `lopdf` (`J-F-Liu/lopdf`); skrip/Markdown via `encoding_rs` (UTF-8/cp1252) + *Command-Safe Chunker*.
-  * Gambar *screenshot* tertanam disimpan ke **MinIO / LocalFS** dan dideskripsikan secara teknis oleh **Vision-LLM lokal (`Qwen2.5-VL`)** via `reqwest` (strict private-host allowlist + `redirect::Policy::none()`).
-* Output berupa struct tipe-aman `IngestResult` di `crates/sop-core` (juga dapat diekspor ke JSON via CLI) yang langsung dikonsumsi oleh Modul #2 (`crates/sop-memory-rag`).
+* Admin dapat mengunggah dokumen SOP (`.docx`, `.pdf`, `.xlsx`, `.pptx`, `.md`, `.yaml`, `.yml`, `.sh`, `.sql`, `.xml`) dengan label segmen (`EBIS`, `RETAIL`, `WIBS`, `GENERAL`), `source_type` (`sop` / `domain_pack`), dan nomor versi (`doc_version: NonZeroU32`), serta menyinkronkan file statis **Domain Context Pack** (`knowledge/domain-pack/`).
+* Jalur *parsing* 100% native Rust (tahan *decompression bomb*):
+  * `.docx` & `.pptx` via `zip` (`zip-rs/zip2`) + `quick-xml` (`tafia/quick-xml`) untuk membaca paragraf/runs, tabel, blok CLI/XML utuh tanpa *Markdown escaping*, serta mengekstrak gambar *screenshot* `before/after` berurutan (`block_index` + `section_path`).
+  * `.xlsx` via `calamine` (`tafia/calamine`) + `xl/media/*`; `.pdf` via `oxidize-pdf`/`pdf-extract` (teks) + `lopdf` & crate `image` (normalisasi objek gambar ke PNG + dukungan PDF scan 0-teks); skrip/Markdown/YAML via `encoding_rs` (UTF-8/UTF-16 BOM + tolak biner korup) + *Command-Safe Chunker*.
+  * **Secret Scrubber Wajib:** Kredensial plaintext operasional (`-storepass`, `password=`, PEM, Bearer) otomatis diredaksi menjadi `<REDACTED_SECRET>` sebelum disimpan ke chunk, caption Vision, atau JSON output.
+  * Gambar *screenshot* tertanam disimpan secara async (nama file aman Windows bebas `:`) ke **MinIO / LocalFS** dan dideskripsikan oleh **Vision-LLM lokal (`Qwen2.5-VL`)** via `reqwest` (`.no_proxy()`, DNS IP pinning, `redirect::Policy::none()`, & *circuit breaker*).
+* Output berupa struct tipe-aman `IngestResult` di `crates/sop-core` (dengan `schemars::JsonSchema`) yang langsung dikonsumsi oleh Modul #2 (`crates/sop-memory-rag`).
 * Ketika Admin mengunggah revisi SOP (`v1 → v2`), versi lama otomatis ditandai `is_active = false` (`valid_until = now`) di **Qdrant** sehingga aturan basi tidak pernah muncul lagi.
 
 ### FR-2: Hybrid SOP Memory & Grounded Retrieval (Fase 1 — Rust `crates/sop-memory-rag`)
@@ -61,7 +62,7 @@ Tim operasional **MO NCX** (internal kantor berbasis **Siebel CRM 16 + Oracle Da
 
 ### FR-5: Continuous Self-Evaluation & Self-Hosted Temporal Memory — Pola Hermes (Fase 2)
 * **Loop 1** merekam 100% trace ke **Langfuse (Self-Hosted OTel via `opentelemetry-rust`)** & *Immutable Audit Log* PostgreSQL.
-* **Loop 2** mengevaluasi sesi terhadap **Golden Benchmark 50–100 Kasus NCX** ([evals/README.md](evals/README.md)) memakai `Promptfoo` (+ opsi `Jev Score` pada payload sintetis), memperbarui **Graphiti** (*bi-temporal memory*), serta mengusulkan perbaikan `skills/*.md` lewat **Session-Branch Git PR** + *Admin Approval*. File `soul.md` bersifat **immutable**.
+* **Loop 2** mengevaluasi sesi terhadap **Golden Benchmark 80–100 Kasus NCX** ([evals/README.md](evals/README.md)) memakai `Promptfoo` (+ opsi `Jev Score` pada payload sintetis), memperbarui **Graphiti** (*bi-temporal memory*), serta mengusulkan perbaikan `skills/*.md` lewat **Session-Branch Git PR** + *Admin Approval*. File `soul.md` bersifat **immutable**.
 
 ### FR-6: Self-Hosted Knowledge & Workflow Automation (Fase 3 — Non-DB)
 * Automasi terjadwal/event-driven berbasis **Kestra / Temporal (Self-Hosted)** untuk *SOP freshness audit*, sinkronisasi dokumentasi internal, dan pelaporan operasional berkala (tetap patuh pada batas **Zero Direct DB / Zero Prod Execution**).
@@ -73,9 +74,9 @@ Tim operasional **MO NCX** (internal kantor berbasis **Siebel CRM 16 + Oracle Da
 | Kategori | Target & Batasan Terukur |
 | :--- | :--- |
 | **Zero Direct DB & On-Prem Privacy** | **0** crate/koneksi ke Oracle 12c (`SELECT`/`UPDATE`/`DDL`) & **0** eksekusi ke server Siebel 16; 100% dokumen SOP mentah diproses lokal oleh binary Rust di intranet kantor; **Jev (`E1`)** opsional & hanya menerima *redacted state/synthetic eval* dengan *local fallback*; *zero hardcoded secrets* (`gitleaks` = 0). |
-| **Akurasi Triage & RAG** | *Zero-Premature-Verdict* = **100%**; *Citation Grounding / Faithfulness* ≥ **95%**; *Expired SOP Leakage* = **0%**; lolos **Golden Benchmark 50–100 Kasus NCX** sebelum go-live kantor. |
-| **Identitas & Audit** | 100% sesi chat & mutasi SOP terikat ke `user_id` kantor (RBAC 2-tier) dan tercatat di *Immutable Audit Log* PostgreSQL. |
-| **Performa & Jejak Memori** | Backend Rust < **256 MB RAM** (tanpa runtime Python); TTFT ≤ **3 detik** di GPU Server (`vLLM` — lihat [infra/HARDWARE-SIZING.md](infra/HARDWARE-SIZING.md)); respons retrieval hybrid ≤ **800 ms**. |
+| **Akurasi Triage & RAG** | *Zero-Premature-Verdict* = **100%**; *Citation Grounding / Faithfulness* ≥ **95%**; *Expired SOP Leakage* = **0%**; lolos **Golden Benchmark 80–100 Kasus NCX** sebelum go-live kantor. |
+| **Identitas & Audit** | 100% sesi chat & mutasi SOP terikat ke `user_id` kantor (RBAC 2-tier: `user_kantor` / `admin_sop`) dan tercatat di *Immutable Audit Log* PostgreSQL. |
+| **Performa & Jejak Memori** | Aplikasi backend Rust < **256 MB RAM** (Worker ingestion streaming < **128 MB RAM**, nol runtime Python untuk aplikasi inti); TTFT ≤ **3 detik** di GPU Server (`mistral.rs` / `vLLM` — lihat [infra/HARDWARE-SIZING.md](infra/HARDWARE-SIZING.md)); respons retrieval hybrid ≤ **800 ms**. |
 | **Aksesibilitas & Responsive** | **Standalone OpenDesign Web Portal** wajib bebas *overflow* di desktop dan mobile `390px`, mendukung navigasi keyboard (`Esc`, `Enter`) & kontras WCAG 2.2 AA. |
 
 ---
@@ -88,6 +89,6 @@ Tim operasional **MO NCX** (internal kantor berbasis **Siebel CRM 16 + Oracle Da
   3. `crates/triage-engine` *(Rust)*: `Axum` + `Rig` + `rmcp` (`modelcontextprotocol/rust-sdk`) + `sqlx` 4-Stage Triage State Machine + Offline-First Local Router (+ Jev opsional `E1`) + Office RBAC & Immutable Audit Log + *Auto Handover Note* + *Auto SOP-Gap Detector* + **`mistral.rs` (`candle`)** / `vLLM` / `Ollama` + Langfuse OTel.
   4. `web/` (`opendesign-web-portal`): Web App Mandiri berbasis **OpenDesign** (intranet, terpisah penuh dari `ncxall.my.id/dashboard`) + Login Kantor + Paste Log + Handover Note + Panel Admin SOP/SOP-Gap + SSE Streaming.
 * **Fase 2 — Continuous Self-Evaluation & Bi-Temporal Memory (Self-Hosted)**
-  * Integrasi **Graphiti**, **Golden Benchmark 50–100 Kasus NCX** (`Promptfoo` + opsi `Jev Score`), *Session-Branch Git PR*, & pemisahan **Redis Cache/Queue**.
+  * Integrasi **Graphiti**, **Golden Benchmark 80–100 Kasus NCX** (`Promptfoo` + opsi `Jev Score`), *Session-Branch Git PR*, & pemisahan **Redis Cache/Queue**.
 * **Fase 3 — Self-Hosted Knowledge & Workflow Automation (Non-DB)**
   * Integrasi **Kestra/Temporal (Self-Hosted)** untuk *SOP freshness audit* & pelaporan berkala internal (tetap **Zero Direct DB**).

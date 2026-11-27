@@ -19,7 +19,7 @@
       "module": "sop-ingestion",
       "status": "in_progress",
       "dependencies": ["F0-foundation-docs"],
-      "verification": "SPEC, tasks/plan.md, & tasks/todo.md converted to 100% Pure Rust preserving all 14 hardened findings; paused at Coding Gate pending rustup installation."
+      "verification": "SPEC, tasks/plan.md, & tasks/todo.md converted to Rust 2021 & hardened via doubt-driven-development (19/19 adversarial findings + source-driven crate research reconciled; cross-model skipped per Owner); paused at Coding Gate pending rustup installation."
     },
     {
       "id": "F2-sop-memory-rag",

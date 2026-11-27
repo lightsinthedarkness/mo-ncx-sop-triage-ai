@@ -48,7 +48,7 @@ Baca dokumen secara berurutan jika baru membuka proyek ini:
 | [CONSTRAINTS.md](CONSTRAINTS.md) | Kontrak mutu berangka (*Zero-Direct-DB Floor*, 100% Rust `fmt`/`clippy`/`test`/`llvm-cov >= 80%`, `jev_redaction`, `gitleaks`). |
 | [infra/HARDWARE-SIZING.md](infra/HARDWARE-SIZING.md) | Panduan sizing GPU Server Kantor (24 GB / 48 GB VRAM `vLLM`) & topologi self-hosted intranet. |
 | [knowledge/domain-pack/README.md](knowledge/domain-pack/README.md) | Struktur konteks statis Siebel 16 & Oracle 12c (*read-only*, nol koneksi DB). |
-| [evals/README.md](evals/README.md) | Skema & rubrik **Golden Benchmark 50–100 Kasus NCX** sebelum rilis ke tim kantor. |
+| [evals/README.md](evals/README.md) | Skema & rubrik **Golden Benchmark 80–100 Kasus NCX** sebelum rilis ke tim kantor. |
 | [spec/capability-map.md](spec/capability-map.md) | Peta 4 modul Fase 1 (`sop-ingestion` → `sop-memory-rag` → `triage-engine-api` → `opendesign-web-portal`). |
 | [spec/SPEC-sop-ingestion.md](spec/SPEC-sop-ingestion.md) | Spesifikasi resmi Modul #1 (`crates/sop-core` + `crates/sop-ingestion` — Rust Approved). |
 | [tasks/plan.md](tasks/plan.md) & [tasks/todo.md](tasks/todo.md) | Rencana teknis & daftar tugas TDD Rust Modul #1. |
@@ -84,9 +84,9 @@ gitleaks detect --source . --redact --no-banner
 ## Urutan Build 3 Fase (100% Pure Rust On-Prem Intranet Kantor)
 
 1. **Fase 1 (Aktif — Core RAG, Advisory Triage, Domain Pack & Standalone Portal):**
-   * `crates/sop-core` + `crates/sop-ingestion` *(Rust)*: `zip` + `quick-xml` + `calamine` + `lopdf` + Local Vision (`reqwest`) + Command-Safe Chunker + `knowledge/domain-pack/` + LocalFS/MinIO
+   * `crates/sop-core` + `crates/sop-ingestion` *(Rust 2021)*: `zip` + `quick-xml` + `calamine` + `oxidize-pdf`/`lopdf`/`image` + **Secret Scrubber** + Local Vision (`reqwest` DNS-pinned) + Command-Safe Chunker + `knowledge/domain-pack/` (`.md`/`.yaml`) + Async LocalFS/MinIO
    * `crates/sop-memory-rag` *(Rust)*: `qdrant-client` + `rig-qdrant` + `fastembed` Hybrid `bge-m3` + BM25 + Reranker + Temporal Versioning
    * `crates/triage-engine` *(Rust)*: `Axum` + `Rig` + `rmcp` (`modelcontextprotocol/rust-sdk`) + `sqlx` 4-Stage Triage + Offline-First Local Router (+ **Jev** opsional `E1`) + Office RBAC & Immutable Audit Log + *Auto Handover Note* + *Auto SOP-Gap Detector* + **`mistral.rs` (`candle`)** / `vLLM` / `Ollama` + Langfuse OTel
    * `web/` (`opendesign-web-portal`): Web App Mandiri berbasis OpenDesign (intranet kantor — terpisah penuh dari `ncxall.my.id/dashboard`)
-2. **Fase 2 (Continuous Self-Evaluation — Self-Hosted):** `Graphiti` bi-temporal memory, **Golden Benchmark 50–100 Kasus NCX** (`Promptfoo` + opsi `Jev Score`), *Session-Branch Git PR*, & pemisahan `Redis Cache/Queue`.
+2. **Fase 2 (Continuous Self-Evaluation — Self-Hosted):** `Graphiti` bi-temporal memory, **Golden Benchmark 80–100 Kasus NCX** (`Promptfoo` + opsi `Jev Score`), *Session-Branch Git PR*, & pemisahan `Redis Cache/Queue`.
 3. **Fase 3 (Self-Hosted Knowledge Automation — Non-DB):** `Kestra/Temporal` internal untuk *SOP freshness audit* & pelaporan berkala berbasis pengetahuan (tetap **Zero Direct DB / Zero Prod Execution**).

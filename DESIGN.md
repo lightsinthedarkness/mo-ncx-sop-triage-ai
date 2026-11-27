@@ -2,9 +2,9 @@
 
 > [!IMPORTANT]
 > Dokumen ini merupakan **Design 2.5** (memperbarui Design 2.4 per [ADR-001](docs/adr/ADR-001-hybrid-python-rust-and-jev-orchestrator.md), [ADR-002](docs/adr/ADR-002-internal-siebel16-oracle12c-zero-db-advisory-and-knowledge-automation.md), & [ADR-003](docs/adr/ADR-003-pure-rust-backend-workspace.md)):
-> 1. **100% Pure Rust Backend Workspace (`ADR-003`):** Seluruh backend — Modul #1 (`crates/sop-ingestion`), Modul #2 (`crates/sop-memory-rag`), dan Modul #3 (`crates/triage-engine`) — berbagi tipe *compile-time* lewat `crates/sop-core` dalam satu **Cargo Workspace** tanpa runtime Python di server produksi kantor.
-> 2. **Zero Direct DB / Zero Prod Server Execution (`ADR-002`):** Khusus internal kantor berbasis **Siebel CRM 16 + Oracle Database 12c**. AI **TIDAK terhubung ke Oracle 12c** (baik `SELECT` maupun `UPDATE/DDL` dilarang) dan **TIDAK mengeksekusi perintah ke server produksi**. AI fokus penuh pada **Advisory ("bagaimana caranya...")**, analisa potongan log yang di-paste user di chat, referensi query/command siap salin, serta **Non-DB Knowledge Automation**.
-> 3. **100% Intranet / On-Prem First:** Seluruh stack inti (**Rust Workspace**, **Qdrant**, **vLLM/Ollama**, **MinIO**, **PostgreSQL 16**, **Langfuse**, **OpenDesign Web Portal**) berjalan mandiri di jaringan internal kantor tanpa internet. **Jev (`TypeSafe AI`, Exception `E1`)** bersifat **opsional** (*redacted payload only*) dengan **Local Structured-Output Engine (`vLLM` Guided JSON)** sebagai *primary offline-ready router*.
+> 1. **100% Pure Rust Backend Workspace (`ADR-003`):** Seluruh aplikasi backend — Modul #1 (`crates/sop-ingestion`), Modul #2 (`crates/sop-memory-rag`), dan Modul #3 (`crates/triage-engine`) — berbagi tipe *compile-time* lewat `crates/sop-core` dalam satu **Cargo Workspace (Rust 2021)** tanpa runtime Python untuk aplikasi inti (server LLM default Pure Rust via **`mistral.rs`**, sedangkan sidecar Docker opsional seperti `vLLM`/`LiteLLM`/`Graphiti` bersifat terisolasi jika dipilih).
+> 2. **Zero Direct DB / Zero Prod Server Execution (`ADR-002`):** Khusus internal kantor berbasis **Siebel CRM 16 + Oracle Database 12c**. AI **TIDAK terhubung ke Oracle 12c** (baik `SELECT` maupun `UPDATE/DDL` dilarang) dan **TIDAK mengeksekusi perintah ke server produksi**. AI fokus penuh pada **Advisory ("bagaimana caranya...")**, analisa potongan log yang di-paste user di chat, referensi query/command siap salin, **Secret Scrubber** kredensial SOP, serta **Non-DB Knowledge Automation**.
+> 3. **100% Intranet / On-Prem First:** Seluruh stack inti (**Rust Workspace**, **Qdrant**, **`mistral.rs` (`candle`)**, **MinIO**, **PostgreSQL 16**, **Langfuse**, **OpenDesign Web Portal**) berjalan mandiri di jaringan internal kantor tanpa internet. **Jev (`TypeSafe AI`, Exception `E1`)** bersifat **opsional** (*redacted payload only*) dengan **Local Structured-Output Engine** (`mistral.rs` `response_format` via `llguidance` / `vLLM` `guided_json`) sebagai *primary offline-ready router*.
 > 4. **Domain Context Pack (`knowledge/domain-pack/`) & Office 2-Tier RBAC:** Katalog statis Siebel 16 / Oracle 12c (*read-only*) + login user kantor (`User Kantor` vs `Admin SOP`) + *Immutable Audit Log* + *Auto SOP-Gap Detector*.
 > 5. **Standalone OpenDesign Web Portal (`opendesign-web-portal`):** Berdiri sendiri di jaringan internal kantor (mis. `ai.ncxall.my.id` / intranet VPS — terpisah penuh dari `https://ncxall.my.id/dashboard`) dengan protokol SSE Streaming.
 
@@ -17,7 +17,7 @@
    - **Loop 1 (Triage & Advisory):** **Rust Triage Engine (`Axum` + `Rig` + `sqlx`)** dengan *Offline-First Structured Router* (serta **Jev `Choice`** opsional via Exception `E1`) mengunci alur `INTERVIEW → ANALYZE → CONFIRM → VERDICT` agar AI tidak pernah menebak solusi di pesan pertama.
    - **Non-DB Automation:** Auto-ingestion & versioning SOP (`v1 → v2`), analisa potongan log yang di-paste/upload user di chat, **Auto Handover / Escalation Note Generator**, serta **Auto SOP-Gap Detector** ke backlog Admin saat `NO SOP MATCH`.
 3. **Continuous Self-Evaluation & Self-Hosted Knowledge Automation (Fase 2 – 3):**
-   - **Loop 2 (Pola Hermes — Fase 2):** Evaluasi otomatis terhadap **Golden Benchmark 50–100 Kasus NCX** ([evals/README.md](evals/README.md)) via `Promptfoo` (+ opsi `Jev Score` pada payload sintetis), memori bi-temporal (**Graphiti**), serta usulan perbaikan `skills/*.md` lewat **Session-Branch Git PR** + *Admin Approval*.
+   - **Loop 2 (Pola Hermes — Fase 2):** Evaluasi otomatis terhadap **Golden Benchmark 80–100 Kasus NCX** ([evals/README.md](evals/README.md)) via `Promptfoo` (+ opsi `Jev Score` pada payload sintetis), memori bi-temporal (**Graphiti**), serta usulan perbaikan `skills/*.md` lewat **Session-Branch Git PR** + *Admin Approval*.
    - **Self-Hosted Internal Automation (Fase 3):** Ekstensi automasi *non-DB / non-prod-destructive* yang 100% *self-hosted on-prem* (mis. *scheduled SOP freshness audit*, *knowledge sync*, *drafting report* terjadwal via Kestra/Temporal internal + *Approvals Queue* manusia).
 
 ---
@@ -44,7 +44,7 @@ flowchart TD
         SOUL["soul.md (Aturan Tetap & Zero-Direct-DB Boundary — Immutable)"]
         SKILLS["skills/*.md (Playbook & SOP Dinamis)"]
         DOMAIN["knowledge/domain-pack/ (Static Siebel 16 & Oracle 12c Glossary/Schema)"]
-        EVALS["evals/golden_dataset/ (50-100 Kasus Uji NCX Ter-anonymize)"]
+        EVALS["evals/golden_dataset/ (80-100 Kasus Uji NCX Ter-anonymize)"]
     end
 
     subgraph INGEST["Ingestion & Multimodal Context Layer (Fase 1 — 100% Rust Crates)"]
@@ -138,17 +138,17 @@ flowchart TD
 | Lapisan | Komponen / Crate | Repositori Terverifikasi | Peran |
 | :--- | :--- | :--- | :--- |
 | **Shared Domain Types** | `crates/sop-core` (`serde`, `chrono`, `sha2`, `thiserror`, `schemars`) | `serde-rs/serde`, `dtolnay/thiserror`, `GREsau/schemars` | Kontrak tipe tunggal *compile-time* (`SopMetadata`, `SopChunk`, `ExtractedAsset`, `IngestResult`) dipakai Mod 1, 2, & 3. |
-| **Document Ingestion (Mod 1)** | `crates/sop-ingestion` (`zip`, `quick-xml`, `calamine`, `lopdf`, `encoding_rs`, `reqwest`, `clap`) | `zip-rs/zip2`, `tafia/quick-xml`, `tafia/calamine`, `J-F-Liu/lopdf`, `seanmonstar/reqwest` | Parse `.docx`/`.pptx`/`.xlsx`/`.pdf`/skrip & `domain-pack/`, jaga blok CLI/XML/SQL utuh, ekstrak berurutan *screenshot* `before/after` + panggil lokal `Qwen2.5-VL`. |
-| **Hybrid Memory & RAG (Mod 2)** | `crates/sop-memory-rag` (`qdrant-client`, `rig-qdrant`, `fastembed`) → **Qdrant** | `qdrant/rust-client`, `0xPlaygrounds/rig`, `Anush008/fastembed-rs`, `qdrant/qdrant` | Pencarian hibrida akurat (`BAAI/bge-m3` + BM25 + `bge-reranker-v2-m3`) + metadata temporal (`doc_version`, `valid_from`, `valid_until`, `is_active`, `segment`, `role_acl`). |
-| **State, Auth & Assets** | **PostgreSQL 16** (`sqlx`) + **MinIO** | `launchbadge/sqlx`, `minio/minio` | Checkpointer sesi Rust, Office 2-Tier RBAC (`jsonwebtoken` + `argon2`), *SOP-Gap* log, *Immutable Audit Log*, & penyimpanan gambar SOP. |
-| **Triage Engine & Non-DB Auto (Mod 3)** | `crates/triage-engine` (`axum`, `tokio`, `rig-core`, `rmcp`, `tower-http`) + Local Guided Router (+ **Jev** opsional `E1`) | `tokio-rs/axum`, `tokio-rs/tokio`, `0xPlaygrounds/rig`, `modelcontextprotocol/rust-sdk` (`rmcp`) | State machine 4-tahap, analisa log paste user, *Auto Handover Note*, *Auto SOP-Gap Detector*, Non-DB Knowledge MCP Tools (`rmcp`), & SSE Streaming API. |
-| **Private LLM & Vision Inference** | **LiteLLM** → **`mistral.rs` (`candle`)** *(Pure Rust)* / **vLLM** (GPU Server Kantor) / **Ollama** (dev lokal) | `EricLBuehler/mistral.rs`, `huggingface/candle`, `vllm-project/vllm`, `BerriAI/litellm` | Model Hugging Face privat (`Qwen3-14B/32B` + `Qwen2.5-VL-7B` — lihat [infra/HARDWARE-SIZING.md](infra/HARDWARE-SIZING.md)); opsi `mistral.rs` menjaga **100% Pure Rust end-to-end hingga inference engine**. |
+| **Document Ingestion (Mod 1)** | `crates/sop-ingestion` (`zip`, `quick-xml`, `calamine`, `oxidize-pdf`/`lopdf`, `image`, `encoding_rs`, `reqwest`, `clap`) | `zip-rs/zip2`, `tafia/quick-xml`, `tafia/calamine`, `bzsanti/oxidize-pdf`, `J-F-Liu/lopdf`, `image-rs/image` | Parse `.docx`/`.pptx`/`.xlsx`/`.pdf`/skrip & `.yaml`/`.md` `domain-pack/`, **Secret Scrubber** kredensial SOP, jaga blok CLI/XML/SQL utuh, ekstrak berurutan *screenshot* `before/after` + panggil lokal `Qwen2.5-VL`. |
+| **Hybrid Memory & RAG (Mod 2)** | `crates/sop-memory-rag` (`qdrant-client` `1.20.0`, `rig-qdrant` `0.47.1`, `fastembed` `7.8.0`) → **Qdrant** | `qdrant/rust-client`, `0xPlaygrounds/rig`, `Anush008/fastembed-rs`, `qdrant/qdrant` | Pencarian hibrida (`BAAI/bge-m3` + BM25 + `bge-reranker-v2-m3`) + metadata temporal (`is_active`, `source_type`, `role_acl`). *(Catatan air-gapped: bobot & lib C++ ONNX `fastembed` di-pre-stage offline atau pakai HTTP embedding lokal).* |
+| **State, Auth & Assets** | **PostgreSQL 16** (`sqlx`) + **MinIO** | `launchbadge/sqlx`, `minio/minio` | Checkpointer sesi Rust, Office 2-Tier RBAC (`user_kantor`/`admin_sop` via `jsonwebtoken` + `argon2`), *SOP-Gap* log, *Immutable Audit Log*, & penyimpanan gambar SOP. |
+| **Triage Engine & Non-DB Auto (Mod 3)** | `crates/triage-engine` (`axum`, `tokio`, `rig-core` `0.47.0`, `rmcp` `1.4.0`, `tower-http`) + Local Structured Router (+ **Jev** opsional `E1`) | `tokio-rs/axum`, `tokio-rs/tokio`, `0xPlaygrounds/rig`, `modelcontextprotocol/rust-sdk` (`rmcp`) | State machine 4-tahap, analisa log paste user, *Auto Handover Note*, *Auto SOP-Gap Detector*, Non-DB Knowledge MCP Tools (`rmcp`), Static Serving Portal `web/`, & SSE Streaming API. |
+| **Private LLM & Vision Inference** | **`mistral.rs` (`candle`)** *(Default Pure Rust: `response_format` via `llguidance`, ISQ/GGUF)* · atau sidecar Docker opsional **vLLM** (`guided_json`, AWQ/FP8) / **Ollama** (+ **LiteLLM** opsional) | `EricLBuehler/mistral.rs`, `huggingface/candle`, `vllm-project/vllm`, `BerriAI/litellm` | Model Hugging Face privat (`Qwen3-14B/32B` + `Qwen2.5-VL-7B` — lihat [infra/HARDWARE-SIZING.md](infra/HARDWARE-SIZING.md)); opsi `mistral.rs` menjaga **100% zero-Python hingga inference engine**. |
 | **Observability** | **Langfuse** (Self-Hosted) + `opentelemetry-otlp` | `langfuse/langfuse`, `open-telemetry/opentelemetry-rust` | Trace *end-to-end* tiap sesi *triage* & latensi retrieval di intranet kantor. |
 | **Frontend UI (Mod 4)** | **OpenDesign** Standalone Web Portal (`web/`) | Standalone di repo ini | Portal Web AI intranet mandiri (terpisah dari `ncxall.my.id/dashboard`): Login Kantor, Chat Triage, Paste Log, Handover Note, & Panel Admin SOP/SOP-Gap. |
 
 ### Fase 2 — Hermes Continuous Self-Evaluation & Bi-Temporal Memory (Self-Hosted)
 - **Graphiti** (`getzep/graphiti`) untuk *bi-temporal knowledge graph* tersinkron dengan invalidasi Qdrant.
-- **Promptfoo** (`promptfoo/promptfoo`) terhadap **Golden Benchmark 50–100 Kasus NCX** ([evals/README.md](evals/README.md)) (+ opsi `Jev Score` pada payload sintetis).
+- **Promptfoo** (`promptfoo/promptfoo`) terhadap **Golden Benchmark 80–100 Kasus NCX** ([evals/README.md](evals/README.md)) (+ opsi `Jev Score` pada payload sintetis).
 - *Session-Branch Git PR* untuk `skills/*.md` (dilarang *auto-merge*, wajib approval Admin).
 - **Redis Cache** (`allkeys-lru`) terpisah dari **Redis Queue** (`noeviction` + AOF).
 
@@ -193,11 +193,12 @@ LLM/
 ├── tasks/
 │   ├── plan.md                 # Rencana teknis Rust TDD (Phase 2)
 │   └── todo.md                 # Daftar tugas vertical-slice Rust TDD (Phase 3)
-├── evals/                      # Golden Benchmark 50-100 Kasus NCX (Promptfoo + README)
+├── evals/                      # Golden Benchmark 80-100 Kasus NCX (Promptfoo + README)
 ├── infra/                      # HARDWARE-SIZING.md & Docker Compose On-Prem
 ├── crates/
-│   ├── sop-core/               # Shared Rust domain models & error types
-│   ├── sop-ingestion/          # Modul #1: Multimodal Rust parser, chunker, vision, assets, CLI
+│   ├── sop-core/               # Shared Rust domain models & error types (serde + schemars)
+│   ├── sop-test-support/       # Shared dev-only synthetic fixtures (zero dead_code clippy warnings)
+│   ├── sop-ingestion/          # Modul #1: Multimodal Rust parser, Secret Scrubber, chunker, vision, async assets, CLI
 │   ├── sop-memory-rag/         # Modul #2: Qdrant Hybrid + fastembed + temporal ACL
 │   └── triage-engine/          # Modul #3: Axum + Rig 4-Stage Triage, RBAC, Non-DB Auto
 └── web/                        # Modul #4: Standalone OpenDesign Intranet Web Portal

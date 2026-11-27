@@ -22,14 +22,14 @@ Seluruh komponen berjalan dalam jaringan internal kantor (`docker-compose.yml` d
 
 | Service | Teknologi | Port Internal | Kebutuhan Resource | Catatan Keamanan |
 | :--- | :--- | :---: | :--- | :--- |
-| **Inference Engine** | **`mistral.rs` (`huggingface/candle`, Pure Rust)** *atau* `vLLM` (OpenAI-compatible + Guided JSON) | `8000` | GPU VRAM (lihat tabel di atas) | Hanya bind ke `127.0.0.1` / jaringan Docker internal; `mistral.rs` berjalan sebagai 1 binary Rust tanpa Python/PyTorch |
-| **LLM Gateway** | `LiteLLM` (Prod vs Eval quota isolation) | `4000` | 1 vCPU, 512 MB RAM | Routing 100% ke `vLLM` lokal; Jev (`E1`) opsional & off secara default di mode *air-gapped* |
-| **Vector Hybrid DB** | `Qdrant` (Dense `bge-m3` + Sparse BM25) | `6333` | 2–4 vCPU, 4–8 GB RAM | Volume persisten + snapshot backup harian |
+| **Inference Engine** | **`mistral.rs` (`huggingface/candle`, Default Pure Rust)** *atau* sidecar Docker opsional `vLLM` / `Ollama` | `8000` | GPU VRAM (lihat tabel di atas) | `mistral.rs`: 1 binary Rust zero-Python (`response_format` via `llguidance`, kuantisasi ISQ/GGUF/UQFF); `vLLM` *(sidecar Python/PyTorch opsional)*: `guided_json`, AWQ/FP8 |
+| **LLM Gateway** *(Opsional)* | `LiteLLM` *(sidecar Docker opsional bila perlu quota isolation multi-model)* | `4000` | 1 vCPU, 512 MB RAM | Dapat dilewati langsung ke `mistral.rs` untuk deployment **100% zero-Python**; Jev (`E1`) off secara default di mode *air-gapped* |
+| **Vector Hybrid DB** | `Qdrant` (Dense `bge-m3` + Sparse BM25) | `6333` | 2–4 vCPU, 4–8 GB RAM | Volume persisten + snapshot backup harian; bila pakai `fastembed-rs`, pre-stage model & lib ONNX (`ort`) offline |
 | **Relational & Audit DB** | `PostgreSQL 16` | `5432` | 2 vCPU, 2–4 GB RAM | Menyimpan session state, user RBAC, SOP Gap log, & Immutable Audit Log |
 | **Screenshot Asset Store** | `MinIO` (S3-compatible) | `9000` | 1–2 vCPU, 1–2 GB RAM | Menyimpan *screenshot `before/after`* SOP |
 | **Triage API & Orchestrator** | **Rust** (`Axum` + `Rig` + `sqlx`) | `8080` | 2 vCPU, < 256 MB RAM | **Zero Oracle 12c DB driver / Zero SSH exec** |
-| **Ingestion Worker** | **Rust** (`crates/sop-ingestion`: `zip`/`quick-xml`/`calamine`/`lopdf`) | Internal job / CLI | 2 vCPU, < 128 MB RAM | Dipicu saat Admin upload/revisi SOP (nol runtime Python) |
-| **Web Portal UI** | **OpenDesign** Standalone Web App | `443` (Reverse Proxy) | Static / Nginx | HTTPS internal kantor (mis. `ai.ncxall.my.id` / intranet DNS), terpisah penuh dari `ncxall.my.id/dashboard` |
+| **Ingestion Worker** | **Rust** (`crates/sop-ingestion`: `zip`/`quick-xml`/`calamine`/`oxidize-pdf`/`lopdf`/`image`) | Internal job / CLI | 2 vCPU, < 128 MB RAM | Streaming asset persistence + decompression-bomb limits (nol runtime Python) |
+| **Web Portal UI** | **OpenDesign** Static Assets (`web/`, disajikan langsung oleh **Rust `Axum`**) | `443` (Reverse Proxy) | Static embedded/served | HTTPS internal kantor (nol server Node.js di produksi, terpisah penuh dari `ncxall.my.id/dashboard`) |
 | **Observability** | `Langfuse` (Self-Hosted) + OTel | `3000` | 2 vCPU, 2–4 GB RAM | Trace 100% lokal di intranet kantor |
 
 ---

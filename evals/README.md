@@ -1,6 +1,6 @@
 # Golden Benchmark Dataset — NCX Siebel 16 & Oracle 12c Advisory (`evals/README.md`)
 
-Direktori ini menyimpan **Golden Holdout Benchmark (50–100 skenario uji nyata yang sudah di-anonymize)** untuk memverifikasi akurasi jawaban, disiplin 4-tahap triage, isolasi versi SOP, dan keamanan advisory sebelum rilis ke tim kantor (per [ADR-002](../docs/adr/ADR-002-internal-siebel16-oracle12c-zero-db-advisory-and-knowledge-automation.md) & [CONSTRAINTS.md](../CONSTRAINTS.md)).
+Direktori ini menyimpan **Golden Holdout Benchmark (80–100 skenario uji nyata yang sudah di-anonymize)** untuk memverifikasi akurasi jawaban, disiplin 4-tahap triage, isolasi versi SOP, dan keamanan advisory sebelum rilis ke tim kantor (per [ADR-002](../docs/adr/ADR-002-internal-siebel16-oracle12c-zero-db-advisory-and-knowledge-automation.md) & [CONSTRAINTS.md](../CONSTRAINTS.md)).
 
 > [!CAUTION]
 > **Aturan Privasi Dataset:** Semua skenario di `evals/` wajib menggunakan data sintetis/ter-anonymize (mis. `SC-TEST-001`, `10.0.0.10`, `<REDACTED_PASS>`). **Dilarang keras** memasukkan IP produksi, nama pelanggan asli, nomor order asli, atau kredensial nyata.
@@ -31,7 +31,7 @@ Direktori ini menyimpan **Golden Holdout Benchmark (50–100 skenario uji nyata 
     - user: "Di server Production, habis update sertifikat, muncul SSL handshake error di OHS."
       expected_state: "CONFIRM"
       expected_source_doc: "SOP Config HTTPS Ebis Production.docx"
-      expected_doc_version: "v2"
+      expected_doc_version: 2
     - user: "Ya, analisa sudah sesuai."
       expected_state: "VERDICT"
       must_contain_citations: true
