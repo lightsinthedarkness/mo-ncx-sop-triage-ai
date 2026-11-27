@@ -86,7 +86,7 @@ gitleaks detect --source . --redact --no-banner
 1. **Fase 1 (Aktif — Core RAG, Advisory Triage, Domain Pack & Standalone Portal):**
    * `crates/sop-core` + `crates/sop-ingestion` *(Rust)*: `zip` + `quick-xml` + `calamine` + `lopdf` + Local Vision (`reqwest`) + Command-Safe Chunker + `knowledge/domain-pack/` + LocalFS/MinIO
    * `crates/sop-memory-rag` *(Rust)*: `qdrant-client` + `rig-qdrant` + `fastembed` Hybrid `bge-m3` + BM25 + Reranker + Temporal Versioning
-   * `crates/triage-engine` *(Rust)*: `Axum` + `Rig` + `sqlx` 4-Stage Triage + Offline-First Local Router (+ **Jev** opsional `E1`) + Office RBAC & Immutable Audit Log + *Auto Handover Note* + *Auto SOP-Gap Detector* + LiteLLM (`Ollama`/`vLLM`) + Langfuse OTel
+   * `crates/triage-engine` *(Rust)*: `Axum` + `Rig` + `rmcp` (`modelcontextprotocol/rust-sdk`) + `sqlx` 4-Stage Triage + Offline-First Local Router (+ **Jev** opsional `E1`) + Office RBAC & Immutable Audit Log + *Auto Handover Note* + *Auto SOP-Gap Detector* + **`mistral.rs` (`candle`)** / `vLLM` / `Ollama` + Langfuse OTel
    * `web/` (`opendesign-web-portal`): Web App Mandiri berbasis OpenDesign (intranet kantor — terpisah penuh dari `ncxall.my.id/dashboard`)
 2. **Fase 2 (Continuous Self-Evaluation — Self-Hosted):** `Graphiti` bi-temporal memory, **Golden Benchmark 50–100 Kasus NCX** (`Promptfoo` + opsi `Jev Score`), *Session-Branch Git PR*, & pemisahan `Redis Cache/Queue`.
 3. **Fase 3 (Self-Hosted Knowledge Automation — Non-DB):** `Kestra/Temporal` internal untuk *SOP freshness audit* & pelaporan berkala berbasis pengetahuan (tetap **Zero Direct DB / Zero Prod Execution**).

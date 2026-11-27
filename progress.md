@@ -6,7 +6,7 @@
 ## What Was Completed (2026-11-26 — 2026-11-27)
 - **Foundation & Architecture (`F0-foundation-docs`):**
   - Locked **Design 2.5 / PRD 2.5 / ADR-003 (100% Pure Rust Backend)** + **ADR-002 (On-Prem Siebel 16 / Oracle 12c Zero-Direct-DB Advisory)**:
-    - Unified all 3 backend modules into one Rust Cargo Workspace (`crates/sop-core`, `crates/sop-ingestion`, `crates/sop-memory-rag`, `crates/triage-engine`) backed by verified open-source Rust repos (`zip-rs/zip2`, `tafia/quick-xml`, `tafia/calamine`, `J-F-Liu/lopdf`, `qdrant/rust-client`, `0xPlaygrounds/rig`, `Anush008/fastembed-rs`, `tokio-rs/axum`, `launchbadge/sqlx`).
+    - Unified all 3 backend modules into one Rust Cargo Workspace (`crates/sop-core`, `crates/sop-ingestion`, `crates/sop-memory-rag`, `crates/triage-engine`) backed by verified top-star Rust repos (`zip-rs/zip2`, `tafia/quick-xml`, `tafia/calamine`, `J-F-Liu/lopdf`, `qdrant/rust-client`, `0xPlaygrounds/rig`, `Anush008/fastembed-rs`, `tokio-rs/axum`, `launchbadge/sqlx`, `modelcontextprotocol/rust-sdk` `rmcp`, plus Pure-Rust inference option `EricLBuehler/mistral.rs` / `huggingface/candle`).
     - Zero Python runtime required on office server; unified `CONSTRAINTS.md` blocking gates (`cargo fmt`, `cargo clippy -D warnings`, `cargo test`, `cargo llvm-cov >= 80%`, `zero_db_policy`, `jev_redaction`, `gitleaks`).
     - Converted `spec/SPEC-sop-ingestion.md`, `tasks/plan.md`, and `tasks/todo.md` to 100% Pure Rust while preserving all 14 hardened adversarial security/correctness findings.
     - Regenerated Archify Design 2.5 Architecture dual-theme SVGs & HTML (`showcase`, 0 diagnostics).

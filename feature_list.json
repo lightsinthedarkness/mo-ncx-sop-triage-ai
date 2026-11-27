@@ -33,7 +33,7 @@
     {
       "id": "F3-triage-engine-api",
       "name": "On-Prem 4-Stage Triage Engine & Non-DB Knowledge Automation (Rust Axum/Rig)",
-      "description": "Rust crates/triage-engine (Axum + Rig + sqlx) 4-Stage State Machine (INTERVIEW -> ANALYZE -> CONFIRM -> VERDICT) with Offline-First Local Guided Router (+ optional Jev E1), Zero Direct DB guard, Office 2-Tier RBAC + Immutable Audit Log, Auto Handover Note, Auto SOP-Gap Detector, LiteLLM (Ollama/vLLM), & Langfuse OTel.",
+      "description": "Rust crates/triage-engine (Axum + Rig + rmcp + sqlx) 4-Stage State Machine (INTERVIEW -> ANALYZE -> CONFIRM -> VERDICT) with Offline-First Local Guided Router (+ optional Jev E1), Zero Direct DB guard, Office 2-Tier RBAC + Immutable Audit Log, Non-DB MCP Tools (Auto Handover Note, Auto SOP-Gap Detector), mistral.rs/vLLM/Ollama, & Langfuse OTel.",
       "module": "triage-engine-api",
       "status": "pending",
       "dependencies": ["F2-sop-memory-rag"],

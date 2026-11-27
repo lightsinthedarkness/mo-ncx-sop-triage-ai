@@ -22,7 +22,7 @@ Seluruh komponen berjalan dalam jaringan internal kantor (`docker-compose.yml` d
 
 | Service | Teknologi | Port Internal | Kebutuhan Resource | Catatan Keamanan |
 | :--- | :--- | :---: | :--- | :--- |
-| **Inference Engine** | `vLLM` (OpenAI-compatible + Guided JSON) | `8000` | GPU VRAM (lihat tabel di atas) | Hanya bind ke `127.0.0.1` / jaringan Docker internal |
+| **Inference Engine** | **`mistral.rs` (`huggingface/candle`, Pure Rust)** *atau* `vLLM` (OpenAI-compatible + Guided JSON) | `8000` | GPU VRAM (lihat tabel di atas) | Hanya bind ke `127.0.0.1` / jaringan Docker internal; `mistral.rs` berjalan sebagai 1 binary Rust tanpa Python/PyTorch |
 | **LLM Gateway** | `LiteLLM` (Prod vs Eval quota isolation) | `4000` | 1 vCPU, 512 MB RAM | Routing 100% ke `vLLM` lokal; Jev (`E1`) opsional & off secara default di mode *air-gapped* |
 | **Vector Hybrid DB** | `Qdrant` (Dense `bge-m3` + Sparse BM25) | `6333` | 2–4 vCPU, 4–8 GB RAM | Volume persisten + snapshot backup harian |
 | **Relational & Audit DB** | `PostgreSQL 16` | `5432` | 2 vCPU, 2–4 GB RAM | Menyimpan session state, user RBAC, SOP Gap log, & Immutable Audit Log |

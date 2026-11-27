@@ -85,7 +85,7 @@ Tim operasional **MO NCX** (internal kantor berbasis **Siebel CRM 16 + Oracle Da
 * **Fase 1 — Core RAG, Advisory Triage, Domain Pack & Standalone Web Portal (Prioritas Utama)**
   1. `crates/sop-core` + `crates/sop-ingestion` *(Rust)*: Parser OOXML/XLSX/PDF/Scripts (`zip`, `quick-xml`, `calamine`, `lopdf`) + Vision Captioner (`reqwest`) + Command-Safe Chunker + `knowledge/domain-pack/` + LocalFS/MinIO → `IngestResult`.
   2. `crates/sop-memory-rag` *(Rust)*: `qdrant-client` + `rig-qdrant` + `fastembed` Hybrid `bge-m3` + BM25 + Reranker + Temporal Versioning.
-  3. `crates/triage-engine` *(Rust)*: `Axum` + `Rig` + `sqlx` 4-Stage Triage State Machine + Offline-First Local Router (+ Jev opsional `E1`) + Office RBAC & Immutable Audit Log + *Auto Handover Note* + *Auto SOP-Gap Detector* + LiteLLM (`Ollama` ↔ `vLLM`) + Langfuse OTel.
+  3. `crates/triage-engine` *(Rust)*: `Axum` + `Rig` + `rmcp` (`modelcontextprotocol/rust-sdk`) + `sqlx` 4-Stage Triage State Machine + Offline-First Local Router (+ Jev opsional `E1`) + Office RBAC & Immutable Audit Log + *Auto Handover Note* + *Auto SOP-Gap Detector* + **`mistral.rs` (`candle`)** / `vLLM` / `Ollama` + Langfuse OTel.
   4. `web/` (`opendesign-web-portal`): Web App Mandiri berbasis **OpenDesign** (intranet, terpisah penuh dari `ncxall.my.id/dashboard`) + Login Kantor + Paste Log + Handover Note + Panel Admin SOP/SOP-Gap + SSE Streaming.
 * **Fase 2 — Continuous Self-Evaluation & Bi-Temporal Memory (Self-Hosted)**
   * Integrasi **Graphiti**, **Golden Benchmark 50–100 Kasus NCX** (`Promptfoo` + opsi `Jev Score`), *Session-Branch Git PR*, & pemisahan **Redis Cache/Queue**.
