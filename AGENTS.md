@@ -5,7 +5,7 @@ Read `CONSTRAINTS.md` before writing code. Do not weaken it to make a change pas
 
 ## Authoritative Docs
 - Intent: [docs/intent/sop-triage-ai.md](docs/intent/sop-triage-ai.md)
-- Architecture (Design 2.2): [DESIGN.md](DESIGN.md)
+- Architecture (Design 2.3): [DESIGN.md](DESIGN.md) & [ADR-001](docs/adr/ADR-001-hybrid-python-rust-and-jev-orchestrator.md)
 - Product Requirements (PRD 2.2): [PRD.md](PRD.md)
 - Quality Contract: [CONSTRAINTS.md](CONSTRAINTS.md)
 - Module Map: [spec/capability-map.md](spec/capability-map.md)
@@ -41,6 +41,8 @@ powershell -ExecutionPolicy Bypass -File .\init.ps1
 ruff check src tests
 mypy src
 pytest --cov=src --cov-fail-under=80
+cargo clippy --all-targets -- -D warnings   # Modules 2-3 (Rust)
+cargo test --workspace                      # Modules 2-3 (Rust)
 gitleaks detect --source . --redact --no-banner
 ```
 

@@ -1,12 +1,12 @@
 {
   "project": "ykztir-ncx-ai",
-  "design_version": "2.2",
+  "design_version": "2.3",
   "active_phase": "Pre-Coding Complete — Stopped at Coding Gate (Module 1: sop-ingestion)",
   "features": [
     {
       "id": "F0-foundation-docs",
-      "name": "Foundation Docs, Harness, Constraints, Skills & Archify Diagrams",
-      "description": "Design 2.2, PRD 2.2, CONSTRAINTS.md, AGENTS.md, Capability Map, 24 project skills, Archify dual-theme SVGs, and GitHub sync.",
+      "name": "Foundation Docs, Harness, Constraints, ADR-001, Skills & Archify Diagrams",
+      "description": "Design 2.3 (Hybrid Python+Rust+Jev), PRD 2.2, ADR-001, CONSTRAINTS.md, AGENTS.md, Capability Map, 24 project skills, Archify dual-theme SVGs.",
       "module": "foundation",
       "status": "done",
       "dependencies": [],
@@ -14,8 +14,8 @@
     },
     {
       "id": "F1-sop-ingestion",
-      "name": "Multimodal SOP Ingestion Pipeline",
-      "description": "Docling + Local Vision Captioner (strict private allowlist) + Command/Table-Safe Chunker + Versioned AssetStore (LocalFS/MinIO) + dry-run CLI.",
+      "name": "Multimodal SOP Ingestion Pipeline (Python + Docling)",
+      "description": "Python 3.12 Docling + Local Vision Captioner (strict private allowlist) + Command/Table-Safe Chunker + Versioned AssetStore (LocalFS/MinIO) + JSON IngestResult CLI.",
       "module": "sop-ingestion",
       "status": "in_progress",
       "dependencies": ["F0-foundation-docs"],
@@ -23,8 +23,8 @@
     },
     {
       "id": "F2-sop-memory-rag",
-      "name": "Hybrid SOP Memory & Retrieval Engine",
-      "description": "Qdrant Native Hybrid Search (Dense BAAI/bge-m3 + Sparse BM25) + bge-reranker-v2-m3 + Temporal Versioning & ACL.",
+      "name": "Hybrid SOP Memory & Retrieval Engine (Rust + Qdrant)",
+      "description": "Rust (qdrant-client + rig-qdrant) Native Hybrid Search (Dense BAAI/bge-m3 + Sparse BM25) + Reranker + Temporal Versioning & ACL consuming IngestResult JSON.",
       "module": "sop-memory-rag",
       "status": "pending",
       "dependencies": ["F1-sop-ingestion"],
@@ -32,8 +32,8 @@
     },
     {
       "id": "F3-triage-engine-api",
-      "name": "Deterministic 4-Stage Triage Engine & FastAPI Gateway",
-      "description": "LangGraph 4-Stage State Machine (INTERVIEW -> ANALYZE -> CONFIRM -> VERDICT) + FastAPI SSE + LiteLLM (Ollama/vLLM) + PostgreSQL + Langfuse OTel + Admin Auth.",
+      "name": "Deterministic 4-Stage Triage Engine & API (Rust Axum/Rig + Jev Router/Judge)",
+      "description": "Rust Axum + Rig 4-Stage State Machine (INTERVIEW -> ANALYZE -> CONFIRM -> VERDICT) with Jev (TypeSafe AI Choice/Score redacted router & judge + local fallback), LiteLLM (Ollama/vLLM), PostgreSQL sqlx, Langfuse OTel, & Admin Auth.",
       "module": "triage-engine-api",
       "status": "pending",
       "dependencies": ["F2-sop-memory-rag"],

@@ -12,7 +12,7 @@ Last reviewed: 2026-11-26 by Owner + Agent (`constraint-driven-development`)
 - **No unimplemented stubs** in production paths: no `raise NotImplementedError`, `pass` placeholders, or empty `except: pass`.
 - **No skipped or deleted tests** without an explicit reason approved by Owner.
 - **Zero secrets in source, logs, docs, or tests:** Never commit API keys, storepass/keystore passwords, tokens, PINs, or `.env` files. Use synthetic fixtures in tests.
-- **Zero external cloud LLM calls with real SOP data:** All SOP ingestion, embedding, vision captioning, and triage inference must route through private/local endpoints (`Ollama` / `vLLM` via `LiteLLM`).
+- **Zero external cloud LLM calls with raw SOP data:** All full SOP ingestion, embedding, vision captioning, and answer generation must route through private/local endpoints (`Ollama` / `vLLM` via `LiteLLM`). Any cloud decision call to **Jev (`TypeSafe AI`)** is governed strictly by Exception `E1` below (redacted/metadata-only payloads; zero raw SOP text, IPs, or credentials).
 - **This file cannot be weakened** to get a build or test suite to green.
 
 ---
@@ -21,12 +21,13 @@ Last reviewed: 2026-11-26 by Owner + Agent (`constraint-driven-development`)
 
 | Dimension | Rule / Threshold | Checked By | Runs At |
 | :--- | :--- | :--- | :--- |
-| **Lint & Format (Python)** | Zero lint/format errors | `ruff check src tests` | every edit / task end |
-| **Static Types (Python)** | Zero type errors | `mypy src` | every edit / task end |
-| **Unit & Integration Tests** | 100% tests pass, changed lines ≥ 80% coverage | `pytest --cov=src --cov-fail-under=80` | task end & CI |
-| **Secrets Scan** | Zero detected secrets | `gitleaks dir . --redact --no-banner` *(or regex pre-commit check)* | every commit / task end |
-| **Triage State Guard** | 100% premature-verdict tests blocked (`INTERVIEW → ANALYZE → CONFIRM → VERDICT`) | `pytest tests/test_triage_state_machine.py` | task end & CI |
-| **Temporal SOP Isolation** | 0% expired (`is_active=false`) SOP chunks returned in retrieval | `pytest tests/test_memory_temporal.py` | task end & CI |
+| **Lint & Format (Python — Mod 1)** | Zero lint/format errors | `ruff check src tests` | every edit / task end |
+| **Static Types (Python — Mod 1)** | Zero type errors | `mypy src` | every edit / task end |
+| **Unit & Integration Tests (Python)** | 100% tests pass, changed lines ≥ 80% coverage | `pytest --cov=src --cov-fail-under=80` | task end & CI |
+| **Lint & Types (Rust — Mod 2–3)** | Zero compiler/clippy warnings | `cargo clippy --all-targets -- -D warnings` | every edit / task end |
+| **Unit & Integration Tests (Rust)** | 100% tests pass (incl. Triage State Guard & Temporal Isolation) | `cargo test --workspace` | task end & CI |
+| **Secrets Scan** | Zero detected secrets (incl. `TYPESAFE_API_KEY`) | `gitleaks detect --source . --redact --no-banner` | every commit / task end |
+| **Jev Privacy Redaction Guard** | 0% raw SOP/IP/credential leakage in Jev payloads | `cargo test jev_redaction` | task end & CI |
 | **Frontend UI (`opendesign-web-portal`)** | Standalone OpenDesign Web App build + responsive desktop & mobile 390px + a11y PASS | E2E / Playwright check | Module 4 (`opendesign-web-portal`) |
 
 ---
@@ -46,4 +47,4 @@ Last reviewed: 2026-11-26 by Owner + Agent (`constraint-driven-development`)
 
 | ID | Rule | Path | Reason | Owner | Expires |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| *(none)* | — | — | — | — | — |
+| `E1` | Zero external cloud API calls | `crates/triage-engine/src/jev/**` & `evals/**` | Owner-approved **Jev (`TypeSafe AI` `/v1/systemone`, `TYPESAFE_API_KEY`)** as calibrated `Choice` state-router & `Score` eval judge per [ADR-001](docs/adr/ADR-001-hybrid-python-rust-and-jev-orchestrator.md). Strictly restricted to **redacted metadata/slot state or synthetic eval payloads** (never raw SOP text, IPs, or credentials) with local-LLM fallback. | Owner | 2027-11-27 |

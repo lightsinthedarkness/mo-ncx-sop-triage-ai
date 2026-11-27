@@ -1,12 +1,12 @@
-# DESIGN.md — Enterprise Self-Evolving Autonomous AI & SOP Triage Architecture (Design 2.2)
+# DESIGN.md — Enterprise Self-Evolving Autonomous AI & SOP Triage Architecture (Design 2.3)
 
 > [!IMPORTANT]
-> Dokumen ini merupakan **Design 2.2** — penyempurnaan dari Design 2.1 (adopsi pola terbaik **Kortix AI**, pola *Two-Loop* **Hermes Agent**, dan mitigasi 6 celah kritis *adversarial review*) yang telah di-upgrade untuk:
-> 1. **Multimodal Technical SOP Grounding** (teks + CLI/XML utuh + puluhan *screenshot* `before/after` via Vision-LLM lokal).
-> 2. **Deterministic 4-Stage SOP Triage State Machine** (*Interview → Analisa → Konfirmasi → Loop Pengerucutan → Vonis SOP*).
-> 3. **Qdrant Hybrid Search + Reranker** (Dense `bge-m3` + Sparse BM25 + `bge-reranker-v2-m3`).
+> Dokumen ini merupakan **Design 2.3** (memperbarui Design 2.2 per [ADR-001](docs/adr/ADR-001-hybrid-python-rust-and-jev-orchestrator.md)):
+> 1. **Hybrid Language Stack:** **Python 3.12 (`Docling` + Local Vision-LLM)** untuk Modul #1 (`sop-ingestion`), dan **Rust (`Axum` + `Rig` + `qdrant-client` + `sqlx`)** untuk Modul #2 (`sop-memory-rag`) & Modul #3 (`triage-engine-api`).
+> 2. **Jev (`TypeSafe AI`) Decision Router & Evaluation Judge:** Menggunakan Jev (`/v1/systemone`, `TYPESAFE_API_KEY`) dengan **Redacted-Payload Privacy Boundary** (`CONSTRAINTS.md` Exception `E1`) untuk keputusan transisi state (`Choice`) & penilaian kualitas (`Score`), dengan *fallback* ke Local LLM.
+> 3. **Qdrant Hybrid Search + Reranker** (Dense `bge-m3` + Sparse BM25 + `bge-reranker-v2-m3` + Temporal ACL).
 > 4. **Standalone OpenDesign Web Portal (`opendesign-web-portal`)** yang berdiri sendiri (mis. `ai.ncxall.my.id` atau langsung dari VPS — terpisah penuh dari `https://ncxall.my.id/dashboard`) dengan protokol SSE Streaming.
-> 5. **3-Tier Progressive Rollout** menuju *Autonomous AI* modular berbasis stack *open-source top-star* terbaik per lapisan (**LangGraph**, **Docling**, **Qdrant**, **LiteLLM/vLLM**, **Langfuse/Promptfoo/DeepEval**, **OpenHands**, **Browser-Use**) tanpa ketergantungan vendor tunggal.
+> 5. **3-Tier Progressive Rollout** menuju *Autonomous AI* modular berbasis stack *open-source top-star* terbaik per lapisan (**Rust Axum/Rig**, **Docling**, **Qdrant**, **LiteLLM/vLLM**, **Jev**, **Langfuse/Promptfoo/DeepEval**, **OpenHands**, **Browser-Use**) tanpa ketergantungan vendor tunggal.
 
 ---
 
@@ -14,20 +14,20 @@
 
 1. **Multi-File Multimodal Job Context Grounding (Fase 1):** Menyerap dokumen SOP operasional MO NCX (`SOP EBIS`, `SOP RETAIL`, `SOP WIBS` dalam format `.docx`, `.pdf`, `.xlsx`, `.pptx`, dan kode/skrip) termasuk isi *screenshot* konfigurasi *before/after* tanpa kontradiksi antar versi.
 2. **Deterministic Triage & Continuous Self-Evaluation — Pola Hermes (Fase 1–2):**
-   - **Loop 1 (Execution / Triage):** LangGraph mengunci alur wawancara-analisa-konfirmasi-vonis agar AI tidak pernah menebak solusi di pesan pertama.
-   - **Loop 2 (Continuous Evaluation):** Mengevaluasi kualitas jawaban & *skill*, memperbarui memori bi-temporal (**Graphiti**), serta mengajukan perubahan `skills/*.md` lewat **Session-Branch Git PR** yang wajib lolos **Promptfoo Regression Gate** + persetujuan manusia.
+   - **Loop 1 (Execution / Triage):** **Rust Triage Engine (`Axum` + `Rig`)** bersama **Jev (`TypeSafe AI`)** sebagai *calibrated Choice router* (payload teredaksi `E1`) mengunci alur wawancara-analisa-konfirmasi-vonis agar AI tidak pernah menebak solusi di pesan pertama.
+   - **Loop 2 (Continuous Evaluation):** Mengevaluasi kualitas jawaban & *skill* (menggunakan **Jev `Score` judge** + Promptfoo/DeepEval), memperbarui memori bi-temporal (**Graphiti**), serta mengajukan perubahan `skills/*.md` lewat **Session-Branch Git PR** yang wajib lolos **Promptfoo Regression Gate** + persetujuan manusia.
 3. **Autonomous Multi-Worker Execution — Pola Kortix (Fase 3):** Berkembang menuju eksekusi otonom *end-to-end* (coding sandbox **OpenHands**, otomasi web **Browser Use**, 1.000+ konektor **Composio/MCP**, *durable trigger* **Kestra/Temporal**, serta gerbang `Allow / Ask / Block` **AgentGateway + HumanLayer**).
 
 ---
 
 ## 2. Diagram Arsitektur
 
-### 2.1 Arsitektur Menyeluruh (Two-Loop System — Design 2.2)
+### 2.1 Arsitektur Menyeluruh (Two-Loop System — Design 2.3)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/diagrams/sop-triage-architecture-dark.svg">
   <source media="(prefers-color-scheme: light)" srcset="docs/diagrams/sop-triage-architecture-light.svg">
-  <img alt="NCX Triage & Self-Evolving Autonomous AI (Design 2.2) Architecture" src="docs/diagrams/sop-triage-architecture-dark.svg" width="100%">
+  <img alt="NCX Triage & Self-Evolving Autonomous AI (Design 2.3 — Hybrid Python + Rust + Jev)" src="docs/diagrams/sop-triage-architecture-dark.svg" width="100%">
 </picture>
 
 > Versi interaktif **Archify** (zoom, pan, dark/light toggle): [`docs/diagrams/sop-triage-architecture.html`](docs/diagrams/sop-triage-architecture.html)
@@ -44,20 +44,21 @@ flowchart TD
         EVALS["evals/golden_dataset (Benchmark Regresi SOP)"]
     end
 
-    subgraph INGEST["Ingestion & Multimodal Context Layer (Fase 1)"]
+    subgraph INGEST["Ingestion & Multimodal Context Layer (Fase 1 — Python Mod 1 + Rust Mod 2)"]
         FILES["File SOP MO NCX (EBIS / RETAIL / WIBS: DOCX, PDF, XLSX, PPTX, Code)"]
-        DOC["Docling (Docs/Tables + Command-Safe Chunker)"]
+        DOC["Docling (Python 3.12 · Docs/Tables + Command-Safe Chunker)"]
         VLM["Local Vision-LLM (Qwen2.5-VL / Qwen3-VL Screenshot Captioner)"]
         AST["AST / Tree-sitter (Code/Scripts/XML)"]
         ART["MinIO / S3 (SOP Screenshot Assets & Shared Artifact Bus)"]
-        QDRANT["Qdrant Hybrid DB (Dense bge-m3 + Sparse BM25 + Reranker + Temporal ACL)"]
+        QDRANT["Qdrant Hybrid DB (Rust qdrant-client · bge-m3 + BM25 + Reranker + Temporal ACL)"]
         GRAPHITI["Graphiti (Bi-Temporal Knowledge Graph — Fase 2)"]
     end
 
-    subgraph LOOP1["LOOP 1: TRIAGE & DURABLE EXECUTION"]
+    subgraph LOOP1["LOOP 1: TRIAGE & DURABLE EXECUTION (Rust Mod 3 + Jev)"]
         UI["OpenDesign Web Portal (Standalone — ai.ncxall.my.id / VPS · Chat Triage + Admin SOP)"]
         PROXY["HTTPS Reverse Proxy / Tunnel (Admin Auth & SSE Stream)"]
-        LG["LangGraph Orchestrator (4-Stage Triage State Machine + Idempotency Key)"]
+        LG["Rust Triage Orchestrator (Axum + Rig · 4-Stage State Machine + Idempotency Key)"]
+        JEV["Jev Router & Judge (TypeSafe AI /v1/systemone · Redacted E1 Choice/Score + Local Fallback)"]
         TRIG["Kestra / Temporal (Cron, Webhook, Durable Jobs — Fase 3)"]
         GW["AgentGateway (MCP / A2A + CEL RBAC — Fase 3)"]
         HL["HumanLayer (Allow / Ask / Block Queue — Fase 3)"]
@@ -69,7 +70,7 @@ flowchart TD
     subgraph INFRA["Private LLM, Cache & Observability"]
         LITE["LiteLLM Gateway (OpenAI-Compatible + Quota Isolation Prod vs Eval)"]
         LLM["Hugging Face Local LLM (Ollama Lokal ↔ vLLM GPU VPS: Qwen3 / Gemma 4)"]
-        PG["PostgreSQL (LangGraph Checkpointer + Metadata + Audit Log)"]
+        PG["PostgreSQL (sqlx Session Checkpointer + Metadata + Audit Log)"]
         RC["Redis Cache (allkeys-lru — Fase 2)"]
         RQ["Redis Queue (noeviction — Fase 2)"]
         LF["Langfuse + OpenTelemetry (End-to-End Trace)"]
@@ -95,6 +96,7 @@ flowchart TD
     ART --> UI
 
     UI <--> PROXY <--> LG
+    LG <-->|"Redacted State (E1)"| JEV
     TRIG --> LG
     LG --> GW --> HL
     HL --> OH
@@ -111,6 +113,7 @@ flowchart TD
     LG -.-> LF
     GW -.-> LF
     LF --> EV
+    EV -->|"Synthetic Eval (E1)"| JEV
     EV -->|"Provenance + Snapshot"| GRAPHITI
     EV --> DSPY --> CR --> PF
     EVALS --> PF
@@ -119,12 +122,12 @@ flowchart TD
 
 </details>
 
-### 2.2 Alur Wajib 4-Tahap SOP Triage State Machine (LangGraph — Fase 1)
+### 2.2 Alur Wajib 4-Tahap SOP Triage State Machine (Rust Axum/Rig + Jev — Fase 1)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/diagrams/sop-triage-lifecycle-dark.svg">
   <source media="(prefers-color-scheme: light)" srcset="docs/diagrams/sop-triage-lifecycle-light.svg">
-  <img alt="NCX 4-Stage SOP Triage State Machine (LangGraph)" src="docs/diagrams/sop-triage-lifecycle-dark.svg" width="100%">
+  <img alt="NCX 4-Stage SOP Triage State Machine (Rust Axum/Rig + Jev)" src="docs/diagrams/sop-triage-lifecycle-dark.svg" width="100%">
 </picture>
 
 > Versi interaktif **Archify** (zoom, pan, dark/light toggle): [`docs/diagrams/sop-triage-lifecycle.html`](docs/diagrams/sop-triage-lifecycle.html)
@@ -150,7 +153,7 @@ stateDiagram-v2
 
 ## 3. Adopsi Pola Terbaik dari Kortix AI & OpenDesign
 
-| Pola / Referensi | Implementasi di Design 2.2 | Manfaat |
+| Pola / Referensi | Implementasi di Design 2.3 | Manfaat |
 | :--- | :--- | :--- |
 | **`kortix.yaml` Manifest** | `workspace.yaml` di root Git repo | Konfigurasi agent, segmen SOP, model, dan *policy* terpusat & *version-controlled*. |
 | **Deny-by-Default (`Allow/Ask/Block`)** | Fase 1: Admin Auth untuk mutasi SOP + Triage Guard; Fase 3: **AgentGateway** (CEL RBAC) + **HumanLayer** | Mencegah vonis prematur di Fase 1 dan aksi berisiko tanpa izin manusia di Fase 3. |
@@ -168,8 +171,8 @@ stateDiagram-v2
 | **Manifest & Harness** | `workspace.yaml`, `soul.md`, `skills/*.md`, `CONSTRAINTS.md`, `AGENTS.md` | Git | Aturan tetap, kualitas terukur, dan *session continuity*. |
 | **Document Ingestion** | **Docling** + **Vision-LLM** (`Qwen2.5-VL` / `Qwen3-VL`) + **Tree-sitter** | `DS4SD/docling` | Parse `.docx`/`.pdf`/`.xlsx`/`.pptx`, jaga blok CLI/XML utuh, ekstrak & deskripsikan *screenshot* `before/after`. |
 | **Hybrid Memory & RAG** | **Qdrant** (Dense `BAAI/bge-m3` + Sparse BM25 + `bge-reranker-v2-m3`) | `qdrant/qdrant` | Pencarian hibrida akurat + metadata temporal (`doc_version`, `valid_from`, `valid_until`, `is_active`, `segment`, `role_acl`). |
-| **State & Assets** | **PostgreSQL** + **MinIO** | `minio/minio` | Checkpointer sesi LangGraph, audit log, & penyimpanan gambar SOP. |
-| **Triage Orchestrator** | **FastAPI** + **LangGraph** | `langchain-ai/langgraph` | State machine 4-tahap (`INTERVIEW → ANALYZE → CONFIRM → VERDICT`) + SSE Streaming API. |
+| **State & Assets** | **PostgreSQL** + **MinIO** | `minio/minio` | Checkpointer sesi Rust (`sqlx`), audit log, & penyimpanan gambar SOP. |
+| **Triage Orchestrator & API** | **Rust (`Axum` + `Rig` + `sqlx`)** + **Jev (`TypeSafe AI`)** | `tokio-rs/axum`, `0xPlaygrounds/rig` | State machine 4-tahap (`INTERVIEW → ANALYZE → CONFIRM → VERDICT`), **Jev** *redacted Choice router & Score judge* (`E1`), & SSE Streaming API. |
 | **Private LLM Gateway** | **LiteLLM** → **Ollama** (lokal) / **vLLM** (GPU VPS) | `BerriAI/litellm`, `vllm-project/vllm` | Model Hugging Face privat (`Qwen3-8B/14B/32B` atau `Gemma 4`), pindah lokal ↔ GPU cukup ubah 1 env. |
 | **Observability** | **Langfuse** + OpenTelemetry | `langfuse/langfuse` | Trace *end-to-end* tiap sesi *triage* & latensi retrieval. |
 | **Frontend UI** | **OpenDesign** Standalone Web Portal (`opendesign-web-portal`) | Standalone di repo ini | Portal Web AI mandiri (mis. `ai.ncxall.my.id` / VPS — terpisah dari `ncxall.my.id/dashboard`): Chat Triage 4-tahap, penampil CLI/screenshot SOP, & Panel Admin Upload SOP. |
@@ -187,14 +190,14 @@ stateDiagram-v2
 
 ---
 
-## 5. Mitigasi 7 Celah Kritis (Design 2.1 + Upgrade 2.2)
+## 5. Mitigasi 7 Celah Kritis (Design 2.1 + Upgrade 2.3)
 
-1. **Split Orchestration:** Maksimal 1 *infra orchestrator* (Kestra/Temporal di Fase 3); LangGraph khusus *reasoning/triage loop* + *Idempotency Key*.
-2. **Split-Brain Context (SOP Basi):** Satu *ingestion pipeline* (Docling + Vision + AST); semua chunk Qdrant wajib membawa `doc_version`, `valid_from`, `valid_until`, `is_active`, `segment`, `role_acl`. Upload revisi SOP otomatis menandai versi lama `is_active=false`.
+1. **Split Orchestration:** Maksimal 1 *infra orchestrator* (Kestra/Temporal di Fase 3); **Rust Triage Engine (`Axum` + `Rig`)** + **Jev `Choice` router** khusus *reasoning/triage loop* + *Idempotency Key*.
+2. **Split-Brain Context (SOP Basi):** Satu *ingestion pipeline* (Python `Docling` + Vision + AST); semua chunk Qdrant wajib membawa `doc_version`, `valid_from`, `valid_until`, `is_active`, `segment`, `role_acl`. Upload revisi SOP otomatis menandai versi lama `is_active=false`.
 3. **Multimodal SOP Blind Spot *(Baru di 2.2)*:** Setiap gambar tertanam di `.docx`/`.pdf` diekstrak ke MinIO dengan ID unik, dideskripsikan oleh Vision-LLM lokal, dan ditautkan ke *chunk* langkah terkait agar tidak hilang saat retrieval.
-4. **Premature Verdict / Hallucinated Command *(Baru di 2.2)*:** Transisi ke `VERDICT` dikunci oleh *state guard* LangGraph (wajib melewati `CONFIRM` dengan persetujuan eksplisit pengguna) dan blok CLI/XML dilindungi oleh *command-safe chunker* + *Hybrid BM25+Vector*.
-5. **Auto-Merge & Judge Gaming (Loop Hermes):** `soul.md` *immutable*; perubahan `skills/*.md` wajib via Git PR + *Promptfoo Golden Dataset* + *Human Approval*; sampling evaluasi 100% fail / 10–20% pass + *token circuit breaker*.
-6. **Sandbox Egress & PII Redaction (Fase 3):** *Strict egress firewall* di sandbox + *Reversible Deterministic Tokenization* sebelum keluar ke LLM eksternal (jika dipakai).
+4. **Premature Verdict / Hallucinated Command *(Diperkuat di 2.3)*:** Transisi ke `VERDICT` dikunci oleh *compile-time & runtime state guard* Rust + verifikasi terkalibrasi **Jev** (wajib melewati `CONFIRM` dengan persetujuan eksplisit pengguna) dan blok CLI/XML dilindungi oleh *command-safe chunker* + *Hybrid BM25+Vector*.
+5. **Auto-Merge & Judge Gaming (Loop Hermes):** `soul.md` *immutable*; perubahan `skills/*.md` wajib via Git PR + *Promptfoo Golden Dataset* + **Jev `Score` judge** + *Human Approval*; sampling evaluasi 100% fail / 10–20% pass + *token circuit breaker*.
+6. **Redacted-Payload Boundary (`E1`) & Sandbox Egress:** Panggilan cloud **Jev** (`/v1/systemone`) dibatasi keras oleh `CONSTRAINTS.md` Exception `E1` (hanya menerima *redacted slot state / synthetic eval*, nol dokumen SOP mentah/IP/kredensial + *fallback* LLM lokal); di Fase 3 ditambah *strict egress firewall* & *Presidio Reversible PII Tokenization*.
 7. **Redis Dual-Use & Blind Observability:** Pisahkan `redis-cache` vs `redis-queue`; isolasi kuota LiteLLM *Prod vs Eval*; propagasi `trace_id` OpenTelemetry ke Langfuse.
 
 ---
@@ -204,9 +207,9 @@ stateDiagram-v2
 ```text
 LLM/
 ├── AGENTS.md                   # Peta kerja & harness rules untuk AI coding agent
-├── CONSTRAINTS.md              # Kontrak kualitas terukur (Floor + RAG/Code metrics)
-├── DESIGN.md                   # Dokumen ini (Design 2.2)
-├── PRD.md                      # Product Requirements Document (PRD 2.2)
+├── CONSTRAINTS.md              # Kontrak kualitas terukur (Floor + Python/Rust + E1 Jev)
+├── DESIGN.md                   # Dokumen ini (Design 2.3 — Hybrid Python + Rust + Jev)
+├── PRD.md                      # Product Requirements Document (PRD 2.2 + ADR-001)
 ├── feature_list.json           # Pelacakan fitur & bukti verifikasi per slice
 ├── progress.md                 # Log progres & status terakhir lintas sesi
 ├── init.ps1                    # Skrip baseline health-check Windows/PowerShell
@@ -214,7 +217,7 @@ LLM/
 ├── soul.md                     # Aturan tetap & batasan keras SOP Triage (Immutable)
 ├── docs/
 │   ├── intent/sop-triage-ai.md # Statement of Intent terkonfirmasi
-│   └── adr/                    # Architecture Decision Records
+│   └── adr/                    # Architecture Decision Records (ADR-001 Hybrid Rust + Jev)
 ├── spec/
 │   ├── capability-map.md       # Peta 4 modul & urutan build (Phase 0)
 │   └── SPEC-<module>.md        # Spesifikasi detail per modul (Phase 1)
@@ -222,8 +225,10 @@ LLM/
 │   ├── plan.md                 # Rencana teknis (Phase 2)
 │   └── todo.md                 # Daftar tugas vertical-slice (Phase 3)
 ├── skills/                     # Playbook SOP dinamis (Pola Hermes)
-├── src/                        # Kode modular Python (ingestion, memory, triage, api)
+├── src/                        # Kode Python (Modul #1: sop-ingestion — Docling + Vision)
+├── crates/                     # Workspace Rust (Modul #2: sop-memory-rag, Modul #3: triage-engine-api + Jev)
+├── web/                        # Standalone OpenDesign Web Portal (Modul #4: opendesign-web-portal)
 ├── tests/                      # Unit, integration, & RAG eval tests (TDD)
-├── evals/                      # Golden Holdout Dataset & Promptfoo config
+├── evals/                      # Golden Holdout Dataset & Promptfoo/Jev eval config
 └── infra/                      # Docker Compose (Qdrant, Postgres, MinIO, LiteLLM, Langfuse)
 ```

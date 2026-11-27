@@ -1,6 +1,6 @@
 # NCX Triage & Self-Evolving Autonomous AI (`ykztir-ncx-ai`)
 
-Sistem **Private Local LLM + Multimodal RAG** untuk tim operasional **NCX** (`SOP EBIS`, `SOP RETAIL`, `SOP WIBS`), dirancang bertahap dengan arsitektur **Design 2.2** — menggabungkan komponen *open-source top-star* terbaik per lapisan (**LangGraph**, **Docling**, **Qdrant Hybrid**, **LiteLLM/vLLM**, **Langfuse/Promptfoo/DeepEval**, **OpenHands**, **Browser-Use**) serta **Web App Mandiri berbasis OpenDesign** (terpisah penuh dari `ncxall.my.id/dashboard`).
+Sistem **Private Local LLM + Multimodal RAG** untuk tim operasional **NCX** (`SOP EBIS`, `SOP RETAIL`, `SOP WIBS`), dirancang bertahap dengan arsitektur **Design 2.3** ([ADR-001](docs/adr/ADR-001-hybrid-python-rust-and-jev-orchestrator.md)) — memadukan **Python (`Docling`)** untuk Modul #1, **Rust (`Axum` + `Rig` + `qdrant-client`)** untuk Modul #2–#3, **Jev (`TypeSafe AI`)** sebagai *calibrated Choice router & Score judge* (*redacted payload*, Exception `E1`), **LiteLLM/vLLM** untuk Private LLM, serta **Web App Mandiri berbasis OpenDesign** (terpisah penuh dari `ncxall.my.id/dashboard`).
 
 ---
 
@@ -73,9 +73,9 @@ pytest --cov=src --cov-fail-under=80
 ## Urutan Build 3 Fase
 
 1. **Fase 1 (Aktif — Core RAG, Triage & Standalone Portal):**
-   * `sop-ingestion` (Docling + Vision Captioner + Command-Safe Chunker + MinIO/LocalFS)
-   * `sop-memory-rag` (Qdrant Hybrid `bge-m3` + BM25 + Reranker + Temporal Versioning)
-   * `triage-engine-api` (FastAPI + LangGraph 4-Stage Triage + LiteLLM `Ollama`/`vLLM` + Langfuse)
-   * `opendesign-web-portal` (Web App Mandiri berbasis OpenDesign, mis. `ai.ncxall.my.id` / VPS — terpisah dari `ncxall.my.id/dashboard`)
+   * `sop-ingestion` *(Python)*: Docling + Vision Captioner + Command-Safe Chunker + MinIO/LocalFS → JSON `IngestResult`
+   * `sop-memory-rag` *(Rust)*: `qdrant-client` + `rig-qdrant` Hybrid `bge-m3` + BM25 + Reranker + Temporal Versioning
+   * `triage-engine-api` *(Rust + Jev)*: `Axum` + `Rig` 4-Stage Triage + **Jev** *redacted Choice/Score* (`ADR-001`) + LiteLLM `Ollama`/`vLLM` + Langfuse
+   * `opendesign-web-portal`: Web App Mandiri berbasis OpenDesign, mis. `ai.ncxall.my.id` / VPS — terpisah dari `ncxall.my.id/dashboard`
 2. **Fase 2 (Continuous Self-Evaluation):** `Graphiti` bi-temporal memory, `Promptfoo` + `DeepEval` *Golden Holdout Dataset*, `DSPy`, *Session-Branch Git PR*, & pemisahan `Redis Cache/Queue`.
 3. **Fase 3 (Best-of-Breed Autonomous Workers):** `Kestra/Temporal`, `AgentGateway (CEL RBAC)`, `HumanLayer`, `OpenHands`, `Browser-Use`, & *Reversible PII Tokenization*.

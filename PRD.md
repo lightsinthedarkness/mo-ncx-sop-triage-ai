@@ -79,9 +79,9 @@ Tim operasional **MO NCX** membutuhkan sistem AI internal privat (berbasis model
 ## 5. Roadmap Implementasi 3 Fase
 
 * **Fase 1 — Multimodal SOP RAG, Triage Core & Standalone Web Portal (Prioritas Utama / Proyek RAG Pertama)**
-  1. Modul `sop-ingestion`: Parser Docling + Vision Captioner + Command-Safe Chunker + MinIO/LocalFS Assets.
-  2. Modul `sop-memory-rag`: Qdrant Native Hybrid (`bge-m3` + BM25) + Reranker + Temporal Versioning.
-  3. Modul `triage-engine-api`: FastAPI + LangGraph 4-Stage Triage + LiteLLM (`Ollama` ↔ `vLLM`) + PostgreSQL + Langfuse OTel + Admin Auth.
+  1. Modul `sop-ingestion` *(Python 3.12)*: Parser Docling + Vision Captioner + Command-Safe Chunker + MinIO/LocalFS Assets → JSON `IngestResult`.
+  2. Modul `sop-memory-rag` *(Rust — `qdrant-client` + `rig-qdrant`)*: Qdrant Native Hybrid (`bge-m3` + BM25) + Reranker + Temporal Versioning.
+  3. Modul `triage-engine-api` *(Rust — `Axum` + `Rig` + `sqlx` + **Jev Router/Judge**)*: 4-Stage Triage State Machine + Jev *redacted Choice/Score* (`ADR-001` / `E1`) + LiteLLM (`Ollama` ↔ `vLLM`) + PostgreSQL + Langfuse OTel + Admin Auth.
   4. Modul `opendesign-web-portal`: Web App Mandiri berbasis **OpenDesign** (terpisah penuh dari `ncxall.my.id/dashboard`) + SSE Streaming + QA E2E.
 * **Fase 2 — Continuous Self-Evaluation & Bi-Temporal Memory**
   * Integrasi **Graphiti**, **Promptfoo + DeepEval Golden Dataset**, **DSPy**, *Session-Branch Git PR*, & pemisahan **Redis Cache/Queue**.
