@@ -24,6 +24,17 @@
 
 ### 2.1 Arsitektur Menyeluruh (Two-Loop System — Design 2.2)
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/diagrams/sop-triage-architecture-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="docs/diagrams/sop-triage-architecture-light.svg">
+  <img alt="NCX Triage & Self-Evolving Autonomous AI (Design 2.2) Architecture" src="docs/diagrams/sop-triage-architecture-dark.svg" width="100%">
+</picture>
+
+> Versi interaktif **Archify** (zoom, pan, dark/light toggle): [`docs/diagrams/sop-triage-architecture.html`](docs/diagrams/sop-triage-architecture.html)
+
+<details>
+<summary>Detail Topologi Lengkap (Mermaid Two-Loop Source)</summary>
+
 ```mermaid
 flowchart TD
     subgraph GIT["Git Repository (Single Source of Truth — Pola Kortix)"]
@@ -106,7 +117,20 @@ flowchart TD
     PF -->|"Lolos Regression + Human Approval"| SKILLS
 ```
 
+</details>
+
 ### 2.2 Alur Wajib 4-Tahap SOP Triage State Machine (LangGraph — Fase 1)
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/diagrams/sop-triage-lifecycle-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="docs/diagrams/sop-triage-lifecycle-light.svg">
+  <img alt="NCX 4-Stage SOP Triage State Machine (LangGraph)" src="docs/diagrams/sop-triage-lifecycle-dark.svg" width="100%">
+</picture>
+
+> Versi interaktif **Archify** (zoom, pan, dark/light toggle): [`docs/diagrams/sop-triage-lifecycle.html`](docs/diagrams/sop-triage-lifecycle.html)
+
+<details>
+<summary>Detail State Machine (Mermaid Source)</summary>
 
 ```mermaid
 stateDiagram-v2
@@ -119,6 +143,8 @@ stateDiagram-v2
     CONFIRM --> VERDICT: User jawab "Ya, Sesuai"
     VERDICT --> [*]: Keluarkan Langkah Resmi SOP +\nBlok Command Utuh + Sitasi File & Screenshot
 ```
+
+</details>
 
 ---
 

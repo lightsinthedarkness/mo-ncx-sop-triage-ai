@@ -20,18 +20,13 @@ Sistem **Private Local LLM + Multimodal RAG** untuk tim operasional **NCX** (`SO
 
 AI **dilarang** langsung menebak solusi di pesan pertama. Setiap kendala operasional dipandu melalui *state machine* 4 tahap di **LangGraph**:
 
-```text
-① INTERVIEW (Gali segmen EBIS/RETAIL/WIBS, environment Prod/CONS, gejala)
-       │
-       ▼
-② ANALYZE   (Qdrant Native Hybrid Search bge-m3 + BM25 + Reranker + Screenshot SOP)
-       │
-       ▼
-③ CONFIRM   (Konfirmasi ketepatan analisa — jika belum pas, balik ke ① INTERVIEW)
-       │
-       ▼
-④ VERDICT   (Langkah resmi SOP + blok command CLI/XML utuh + sitasi file & gambar)
-```
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/diagrams/sop-triage-lifecycle-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="docs/diagrams/sop-triage-lifecycle-light.svg">
+  <img alt="NCX 4-Stage SOP Triage State Machine (LangGraph)" src="docs/diagrams/sop-triage-lifecycle-dark.svg" width="100%">
+</picture>
+
+> Versi interaktif: [`docs/diagrams/sop-triage-lifecycle.html`](docs/diagrams/sop-triage-lifecycle.html)
 
 ---
 
