@@ -15,8 +15,9 @@
   4. Lulus **Golden Benchmark 80–100 Kasus Nyata NCX** sebelum dipakai sekantor.
 - **Constraint:**
   1. **Zero Direct DB / Zero Prod Execution (`ADR-002`):** AI **TIDAK terhubung ke Oracle 12c** (baik `SELECT` maupun `UPDATE`/`DDL` dilarang) dan **TIDAK mengeksekusi perintah ke server Siebel 16**. AI hanya memberi informasi, analisa, panduan *"bagaimana caranya"*, dan referensi query/command untuk dieksekusi manual oleh Engineer.
-  2. **100% Intranet / On-Prem First:** Seluruh dokumen SOP mentah & inferensi LLM/Vision/Qdrant dijalankan mandiri di server GPU internal kantor (`vLLM`/`Ollama`). Pengecualian opsional tunggal yang disetujui Owner diatur di [ADR-001](../adr/ADR-001-hybrid-python-rust-and-jev-orchestrator.md) & `CONSTRAINTS.md` Exception `E1`: **Jev (`TypeSafe AI`)** hanya boleh menerima *redacted metadata/slot state atau synthetic eval payload* dengan *offline local-LLM fallback* penuh.
+  2. **100% Intranet / On-Prem First:** Seluruh dokumen SOP mentah & inferensi LLM/Vision/Qdrant dijalankan mandiri di server GPU internal kantor (`mistral.rs` default; `vLLM`/`Ollama` opsional). Pengecualian opsional tunggal yang disetujui Owner diatur di [ADR-001](../adr/ADR-001-hybrid-python-rust-and-jev-orchestrator.md) & `CONSTRAINTS.md` Exception `E1`: **Jev (`TypeSafe AI`)** hanya boleh menerima *redacted metadata/slot state atau synthetic eval payload* dengan *offline local-LLM fallback* penuh.
   3. Antarmuka dibangun sebagai **Standalone Web App Mandiri (OpenDesign)** di repo ini, mendukung desktop & mobile `390px` tanpa *overflow*, serta bebas *secret* ter-commit (`gitleaks` 0 leaks).
+- **Autonomy scope:** Fase 1 = advisory chat berpemandu; otonomi (self-evaluation, automasi terjadwal) baru di Fase 2–3 dan selalu lewat persetujuan manusia.
 - **Out of scope (Strictly Prohibited / Deferred):**
   1. **Koneksi langsung ke Database Oracle 12c (`SELECT` / `UPDATE` / `DDL`) maupun eksekusi SSH langsung ke server Siebel 16 produksi** — **DILARANG secara arsitektural (`ADR-002`)**.
   2. Pipeline *QLoRA fine-tuning* bobot model di V1 (digantikan RAG + `knowledge/domain-pack/`).

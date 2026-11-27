@@ -30,7 +30,7 @@ Proyek `ykztir-ncx-ai` (Design 2.4 → **Design 2.5**) ditujukan **khusus untuk 
    - Seluruh komponen automasi Fase 2–3 wajib **self-hosted on-prem** (tanpa ketergantungan SaaS cloud seperti E2B/Composio/Steel).
 5. **Office User Identity, 2-Tier RBAC, & Immutable Chat Audit Log:**
    - Autentikasi user internal kantor (LDAP/AD kantor atau akun internal JWT) dengan 2 role jelas: **`user_kantor`** (`User Kantor`: Chat Triage, paste log, generate Handover Note) dan **`admin_sop`** (`Admin SOP`: Upload/Update/Arsip SOP, kelola backlog *SOP Gap*, review PR playbook).
-   - Setiap sesi chat, sitasi SOP, dan status `VERDICT`/`NO SOP MATCH` dicatat ke *Immutable Audit Log* di PostgreSQL.
+   - Setiap sesi chat, sitasi SOP, dan status `VERDICT`/`NO SOP MATCH` dicatat ke *Immutable Audit Log* di PostgreSQL. "Immutable" berarti tabel *append-only* (hak `UPDATE`/`DELETE` dicabut dari role aplikasi) dengan rantai hash (`prev_hash`), dan konten sudah melewati Secret Scrubber.
 6. **Office GPU Hardware Sizing (`infra/HARDWARE-SIZING.md`):**
    - Mengunci standar minimal server kantor untuk model reasoning/advisory lokal (`14B–32B`): minimum **1× 24 GB VRAM** (`Qwen3-14B`), ideal **48 GB / 2×24 GB VRAM** (`Qwen3-32B` + `Qwen2.5-VL-7B`).
 7. **Golden Benchmark Dataset 80–100 Kasus NCX (`evals/README.md`):**

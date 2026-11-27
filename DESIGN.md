@@ -12,7 +12,7 @@
 
 ## 1. Tujuan Arsitektur (3 Pilar Utama — 100% On-Prem Pure Rust)
 
-1. **Multimodal SOP & Siebel 16 / Oracle 12c Domain Grounding (Fase 1):** Menyerap dokumen SOP operasional MO NCX (`SOP EBIS`, `SOP RETAIL`, `SOP WIBS` dalam format `.docx`, `.pdf`, `.xlsx`, `.pptx`, `.md`, `.sh`, `.sql`, `.xml`) termasuk *screenshot* konfigurasi *before/after* + **Domain Context Pack** (`knowledge/domain-pack/`) secara native di **Rust** (`zip`, `quick-xml`, `calamine`, `lopdf`, `reqwest` → local `Qwen2.5-VL`) tanpa kontradiksi antar versi.
+1. **Multimodal SOP & Siebel 16 / Oracle 12c Domain Grounding (Fase 1):** Menyerap dokumen SOP operasional MO NCX (`SOP EBIS`, `SOP RETAIL`, `SOP WIBS` dalam format `.docx`, `.pdf`, `.xlsx`, `.pptx`, `.md`, `.sh`, `.sql`, `.xml`) termasuk *screenshot* konfigurasi *before/after* + **Domain Context Pack** (`knowledge/domain-pack/`) secara native di **Rust** (`zip`, `quick-xml`, `calamine`, `oxidize-pdf`/`pdf-extract` + `lopdf` + `image`, `reqwest` → local `Qwen2.5-VL`) tanpa kontradiksi antar versi.
 2. **Deterministic 4-Stage Triage & Non-DB Knowledge Automation (Fase 1 – 1.5):**
    - **Loop 1 (Triage & Advisory):** **Rust Triage Engine (`Axum` + `Rig` + `sqlx`)** dengan *Offline-First Structured Router* (serta **Jev `Choice`** opsional via Exception `E1`) mengunci alur `INTERVIEW → ANALYZE → CONFIRM → VERDICT` agar AI tidak pernah menebak solusi di pesan pertama.
    - **Non-DB Automation:** Auto-ingestion & versioning SOP (`v1 → v2`), analisa potongan log yang di-paste/upload user di chat, **Auto Handover / Escalation Note Generator**, serta **Auto SOP-Gap Detector** ke backlog Admin saat `NO SOP MATCH`.
@@ -49,7 +49,7 @@ flowchart TD
 
     subgraph INGEST["Ingestion & Multimodal Context Layer (Fase 1 — 100% Rust Crates)"]
         FILES["File SOP MO NCX (EBIS / RETAIL / WIBS: DOCX, PDF, XLSX, PPTX, Scripts)"]
-        DOC["crates/sop-ingestion (Rust: zip + quick-xml + calamine + lopdf + Command-Safe Chunker)"]
+        DOC["crates/sop-ingestion (Rust: zip + quick-xml + calamine + oxidize-pdf/lopdf + image + Command-Safe Chunker)"]
         VLM["Local Vision-LLM (Qwen2.5-VL via reqwest Private Allowlist)"]
         ART["MinIO / LocalFS (SOP Screenshot Assets — Intranet)"]
         QDRANT["crates/sop-memory-rag → Qdrant Hybrid (qdrant-client + rig-qdrant + fastembed-rs)"]
@@ -65,8 +65,8 @@ flowchart TD
     end
 
     subgraph INFRA["100% On-Prem GPU Inference, State & Observability"]
-        LITE["LiteLLM Gateway (Quota Isolation Prod vs Eval)"]
-        LLM["Local Hugging Face LLM (vLLM GPU Kantor / Ollama Dev: Qwen3-14B / 32B)"]
+        LITE["LiteLLM Gateway (Opsional - quota isolation; default: langsung ke mistral.rs)"]
+        LLM["Local LLM (mistral.rs default - vLLM/Ollama opsional: Qwen3-14B / 32B)"]
         PG["PostgreSQL 16 (sqlx Session Checkpointer + Office RBAC + SOP-Gap + Immutable Audit Log)"]
         RC["Redis Cache / Queue (Self-Hosted — Fase 2)"]
         LF["Langfuse Self-Hosted + OpenTelemetry (opentelemetry-rust)"]
@@ -124,7 +124,7 @@ flowchart TD
 
 | Prinsip / Pola | Implementasi di Design 2.5 | Manfaat |
 | :--- | :--- | :--- |
-| **100% Pure Rust Backend (`ADR-003`)** | 1 Cargo Workspace (`sop-core`, `sop-ingestion`, `sop-memory-rag`, `triage-engine`) tanpa Python runtime | 1 binary statis (< 50 MB RAM idle), *compile-time type safety* lintas modul, mudah di-deploy di intranet tanpa *virtualenv/wheel hell*. |
+| **100% Pure Rust Backend (`ADR-003`)** | 1 Cargo Workspace (`sop-core`, `sop-ingestion`, `sop-memory-rag`, `triage-engine`) tanpa Python runtime | 1 binary statis (idle ringan; batas atas < 256 MB RAM per PRD NFR), *compile-time type safety* lintas modul, mudah di-deploy di intranet tanpa *virtualenv/wheel hell*. |
 | **Zero Direct DB / Prod Touch (`ADR-002`)** | Nol driver Oracle 12c (`SELECT`/`UPDATE` dilarang), nol SSH exec ke server Siebel 16 | 0% risiko merusak/membebani database & server produksi kantor; AI aman dipakai seluruh tim operasional. |
 | **On-Prem / Intranet First** | Semua layanan inti (`vLLM`, `Qdrant`, `MinIO`, `PostgreSQL`, `Langfuse`, `OpenDesign`) jalan 100% lokal di LAN kantor; **Jev (`E1`)** opsional dengan *local fallback* penuh | Sistem tetap 100% fungsional di jaringan kantor tanpa akses internet keluar (*air-gapped ready*). |
 | **Domain Context Pack (`knowledge/domain-pack/`)** | Katalog statis tabel `S_*`/`CX_*`, komponen Siebel 16, kamus NCX, & template referensi | Menjawab *"bagaimana caranya..."* secara presisi tanpa halusinasi sintaks Oracle 12c atau komponen Siebel 16. |
@@ -133,6 +133,8 @@ flowchart TD
 ---
 
 ## 4. Stack Teknologi Bertahap (100% Pure Rust Backend — Verified GitHub Repos)
+
+> **Sumber tunggal stack:** tabel pada bagian ini adalah acuan resmi. PRD, ADR, spec, dan infra harus konsisten dengannya; bila stack berubah, ubah di sini lebih dulu agar dokumen tidak drift.
 
 ### Fase 1 — Multimodal SOP RAG, Advisory Triage & Standalone Portal (Intranet Kantor)
 | Lapisan | Komponen / Crate | Repositori Terverifikasi | Peran |
@@ -161,11 +163,11 @@ flowchart TD
 
 1. **Zero Direct DB / Prod Execution (`ADR-002`):** Nol crate driver Oracle 12c & nol SSH runner di `Cargo.toml`; AI hanya memberi referensi query/command siap salin lengkap dengan peringatan verifikasi manual.
 2. **Split-Brain Context (SOP Basi):** Satu *ingestion pipeline* Rust (`crates/sop-ingestion`); semua chunk Qdrant wajib membawa `doc_version`, `valid_from`, `valid_until`, `is_active`, `segment`, `role_acl`. Upload revisi otomatis menandai versi lama `is_active=false`.
-3. **Multimodal SOP & Siebel/Oracle Blind Spot:** Gambar tertanam diekstrak deterministik dari XML/PDF ke MinIO + dideskripsikan Vision-LLM lokal; ditambah `knowledge/domain-pack/` agar istilah & struktur Siebel 16 / Oracle 12c selalu akurat.
+3. **Multimodal SOP & Siebel/Oracle Blind Spot:** Gambar tertanam diekstrak deterministik dari XML/PDF ke MinIO + dideskripsikan Vision-LLM lokal; ditambah `knowledge/domain-pack/` agar istilah & struktur Siebel 16 / Oracle 12c selalu akurat. Screenshot baru berstatus `pending_review` dan baru dilayani setelah Admin menyetujui (mencegah kredensial tampak di gambar).
 4. **Premature Verdict / Hallucinated Command:** Transisi ke `VERDICT` dikunci oleh *compile-time enum state machine* Rust + *Local Guided JSON* (atau Jev opsional `E1`) dan blok CLI/XML/SQL dilindungi *command-safe chunker* + *Hybrid BM25+Vector*.
 5. **Auto-Merge & Judge Gaming (Loop Hermes):** `soul.md` *immutable*; perubahan `skills/*.md` wajib via Git PR + *Golden Benchmark* + *Admin Approval*.
 6. **On-Prem Privacy & Optional Cloud Boundary (`E1`):** Default 100% offline/intranet; panggilan Jev opsional dibatasi keras oleh `CONSTRAINTS.md` Exception `E1` (hanya *redacted slot state / synthetic eval*, nol SOP mentah/IP/kredensial).
-7. **Indirect Prompt Injection & Blind Observability:** Potongan log yang di-paste user diperlakukan sebagai *untrusted data*; semua sesi & `NO SOP MATCH` tercatat di *Immutable Audit Log* PostgreSQL + `trace_id` OTel ke Langfuse lokal.
+7. **Indirect Prompt Injection & Blind Observability:** Potongan log yang di-paste user diperlakukan sebagai *untrusted data*, di-scrub (Secret Scrubber `sop-core`) sebelum masuk LLM/audit log/trace; semua sesi & `NO SOP MATCH` tercatat di *Immutable Audit Log* PostgreSQL + `trace_id` OTel ke Langfuse lokal.
 
 ---
 

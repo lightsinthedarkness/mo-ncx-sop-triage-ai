@@ -40,25 +40,25 @@
 ### Task 1: Cargo Workspace, `crates/sop-core` Contracts, `crates/sop-test-support`, & `zero_db_policy`
 **Files:**
 - Create: `Cargo.toml` (workspace root: `members = ["crates/sop-core", "crates/sop-test-support", "crates/sop-ingestion"]`, `edition = "2021"`)
-- Create: `crates/sop-core/{Cargo.toml,src/lib.rs,src/models.rs,src/error.rs}`
+- Create: `crates/sop-core/{Cargo.toml,src/lib.rs,src/models.rs,src/error.rs,src/scrubber.rs}`
 - Create: `crates/sop-test-support/{Cargo.toml,src/lib.rs}`
 - Create: `crates/sop-ingestion/{Cargo.toml,src/lib.rs,tests/models_test.rs}`
 
 - [ ] **Step 1:** Scaffold Cargo workspace & crate manifests (zero Oracle/SSH dependencies).
-- [ ] **Step 2:** Write failing tests in `models_test.rs` pinning serde round-trips (incl. `ParsedDocument` with `#[serde(skip)]` on `data`), `schemars::schema_for!(IngestResult)`, `NonZeroU32` `doc_version`, `SourceType::DomainPack`, `role_acl = ["user_kantor", "admin_sop"]`, `SCREAMING_SNAKE_CASE` error Display, `make_doc_id()` non-collision (`deploy.docx` vs `deploy.sh`) & ≤ 64 char cap, and `zero_db_policy` workspace scan.
-- [ ] **Step 3:** Run `cargo test --test models_test` — verify FAIL.
+- [ ] **Step 2:** Write failing tests in `models_test.rs` pinning serde round-trips (incl. `ParsedDocument` with `#[serde(skip)]` on `data`), `schemars::schema_for!(IngestResult)`, `NonZeroU32` `doc_version`, `AssetReviewStatus::PendingReview` default, `SourceType::DomainPack`, `role_acl = ["user_kantor", "admin_sop"]`, `SCREAMING_SNAKE_CASE` error Display, `make_doc_id()` non-collision (`deploy.docx` vs `deploy.sh`) & ≤ 64 char cap, and `zero_db_policy` workspace scan.
+- [ ] **Step 3:** Run `cargo test -p sop-ingestion --test models_test` — verify FAIL.
 - [ ] **Step 4:** Implement `crates/sop-core` and `crates/sop-test-support` (synthetic `.docx`, `.pdf` incl. scanned 0-text PDF, `.xlsx`, `.pptx`, `.yaml`, `.sh` cp1252 & UTF-16LE, binary file, `.md`, 0-byte, corrupt, and zip-bomb fixtures — zero real credentials).
-- [ ] **Step 5:** Run `cargo test --test models_test && cargo fmt --all -- --check && cargo clippy --workspace --all-targets -- -D warnings` — verify PASS.
+- [ ] **Step 5:** Run `cargo test -p sop-ingestion --test models_test && cargo fmt --all -- --check && cargo clippy --workspace --all-targets -- -D warnings` — verify PASS.
 
 ### Task 2: Secret Scrubber & Async Windows-Safe Versioned Asset Storage
 **Files:**
-- Create: `crates/sop-ingestion/src/{scrubber.rs,assets.rs}`
-- Test: `crates/sop-ingestion/tests/{scrubber_test.rs,assets_test.rs}`
+- Create: `crates/sop-core/src/scrubber.rs` (shared), `crates/sop-ingestion/src/assets.rs`
+- Test: `crates/sop-core/tests/scrubber_test.rs`, `crates/sop-ingestion/tests/assets_test.rs`
 
-- [ ] **Step 1:** Write failing tests in `scrubber_test.rs` (redacting `-storepass`, `-keypass`, `password=`, `passwd=`, Bearer tokens, PEM private keys while preserving surrounding CLI flags) and `assets_test.rs` (async `LocalFsAssetStore` writing Windows-safe `img<idx>.<ext>`, blocking `..`, `:`, drive prefixes, `CON`/`NUL`, trailing dots, symlinks BEFORE `create_dir_all`, atomic temp-file rename, `v1` vs `v2` isolation, re-ingest cleanup, `delete_version_dir()` rollback, and async `MinioAssetStore` via mock `S3PutObject`).
-- [ ] **Step 2:** Run `cargo test --test scrubber_test --test assets_test` — verify FAIL.
+- [ ] **Step 1:** Write failing tests in `scrubber_test.rs` (redacting `-storepass`, `-keypass`, `password=`, `passwd=`, `pwd=`, `--password`, `export *_PASS/SECRET/TOKEN/KEY=`, XML `<Password>`, `identified by`, `user/pass@tns`, JDBC URL, Bearer tokens, PEM private keys while preserving surrounding CLI flags; plus negative tests proving non-secret commands stay intact) and `assets_test.rs` (async `LocalFsAssetStore` writing Windows-safe `img<idx>.<ext>`, blocking `..`, `:`, drive prefixes, `CON`/`NUL`, trailing dots, symlinks BEFORE `create_dir_all`, atomic temp-file rename, `v1` vs `v2` isolation, re-ingest cleanup, `delete_version_dir()` rollback, and async `MinioAssetStore` via mock `S3PutObject`; new assets default to `AssetReviewStatus::PendingReview`).
+- [ ] **Step 2:** Run `cargo test -p sop-core --test scrubber_test && cargo test -p sop-ingestion --test assets_test` — verify FAIL.
 - [ ] **Step 3:** Implement `scrubber.rs` and `assets.rs`.
-- [ ] **Step 4:** Run `cargo test --test scrubber_test --test assets_test && cargo clippy --workspace --all-targets -- -D warnings` — verify PASS.
+- [ ] **Step 4:** Run `cargo test -p sop-core --test scrubber_test && cargo test -p sop-ingestion --test assets_test && cargo clippy --workspace --all-targets -- -D warnings` — verify PASS.
 
 ### Task 3: Hardened Async Vision Captioning (`Noop` + `OpenAiCompatibleVisionCaptioner`)
 **Files:**
@@ -66,32 +66,33 @@
 - Test: `crates/sop-ingestion/tests/vision_test.rs`
 
 - [ ] **Step 1:** Write failing tests in `vision_test.rs` using injected `VisionConfig` + `wiremock` (zero `std::env::set_var`!): `NoopVisionCaptioner` → `CaptionStatus::Noop`; `OpenAiCompatibleVisionCaptioner` enforces `.no_proxy()`, `redirect::Policy::none()`, scheme `http`/`https`-only, DNS resolution & IP validation blocking public IPs, IPv4-mapped IPv6 `::ffff:8.8.8.8`, IMDS `169.254.169.254`, `0.0.0.0` with `VisionHostBlocked`; retries 1x ONLY on `5xx`/network (not `400`/`401`); enforces `max_tokens=300` & output length cap; treats empty 200 body as `Failed`; trips circuit breaker after 3 consecutive failures.
-- [ ] **Step 2:** Run `cargo test --test vision_test` — verify FAIL.
+- [ ] **Step 2:** Run `cargo test -p sop-ingestion --test vision_test` — verify FAIL.
 - [ ] **Step 3:** Implement `crates/sop-ingestion/src/vision.rs`.
-- [ ] **Step 4:** Run `cargo test --test vision_test && cargo clippy --workspace --all-targets -- -D warnings` — verify PASS.
+- [ ] **Step 4:** Run `cargo test -p sop-ingestion --test vision_test && cargo clippy --workspace --all-targets -- -D warnings` — verify PASS.
 
 ### Checkpoint 1 (After Tasks 1–3)
 - [ ] `cargo fmt --all -- --check`, `cargo clippy --workspace --all-targets -- -D warnings`, and `cargo test --workspace` all PASS.
 
 ### Task 4: Multimodal Pure-Rust Document, PDF, OOXML & Script Parser
+> **Dipecah menjadi 4 sub-slice TDD berurutan, masing-masing dengan siklus RED→GREEN sendiri:** **4a** `.docx` + `ResourceLimits`/bomb guard → **4b** `.pptx` + `.xlsx` → **4c** `.pdf` (teks + XObject + scan) → **4d** script/domain-pack (`.md`/`.yaml`/`.yml`/`.sh`/`.sql`/`.xml`). Task 5 hanya bergantung pada **4a**; 4b–4d boleh menyusul. Daftar tes di bawah dibagi sesuai sub-slice.
 **Files:**
 - Create: `crates/sop-ingestion/src/parser/{mod,docx,pptx,xlsx,pdf,script}.rs`
 - Test: `crates/sop-ingestion/tests/parser_test.rs`
 
 - [ ] **Step 1:** Write failing tests in `parser_test.rs`: parses `.docx` (run concat, `<w:br/>`/`<w:tab/>`, `styles.xml` `<w:outlineLvl>`, DrawingML + VML images, rejects `TargetMode="External"`, tables, raw CLI `--` & XML `<Connector/>`), `.pptx` (`<p:sldIdLst>` slide order + `../media/`), `.xlsx` (`calamine` + `xl/media/*`), `.pdf` (born-digital text + XObject PNG re-encode + 0-text scanned PDF), `.yaml`/`.yml`, `.md`, `.sh` (UTF-8, UTF-16LE BOM, cp1252, rejects binary NUL file as `CorruptFile`), uppercase `.DOCX`; enforces all decompression-bomb & resource limits (`ResourceLimitExceeded`).
-- [ ] **Step 2:** Run `cargo test --test parser_test` — verify FAIL.
+- [ ] **Step 2:** Run `cargo test -p sop-ingestion --test parser_test` — verify FAIL.
 - [ ] **Step 3:** Implement `crates/sop-ingestion/src/parser/*`.
-- [ ] **Step 4:** Run `cargo test --test parser_test && cargo clippy --workspace --all-targets -- -D warnings` — verify PASS.
+- [ ] **Step 4:** Run `cargo test -p sop-ingestion --test parser_test && cargo clippy --workspace --all-targets -- -D warnings` — verify PASS.
 
 ### Task 5: UTF-8 Safe Command/Table Chunker & Positional Asset Linker
 **Files:**
 - Create: `crates/sop-ingestion/src/chunker.rs`
 - Test: `crates/sop-ingestion/tests/chunker_test.rs`
 
-- [ ] **Step 1:** Write failing tests in `chunker_test.rs`: deterministic `CodeCli` classification on `.docx` paragraphs; never splits CLI/XML/SQL/table blocks with `overlap_chars`; UTF-8 char-boundary safe slicing on `→`/curly quotes; oversized atomic block (> 4800) splits cleanly on `\n` with `oversized_atomic_split = true`; links `asset_ids` + `asset_captions` by `block_index` without cross-linking repeated `"Before Changes"` headings; attaches leading/trailing/image-only assets with 0 orphans; receives single `valid_from` from caller; `content_sha256` independent of Vision mode.
-- [ ] **Step 2:** Run `cargo test --test chunker_test` — verify FAIL.
+- [ ] **Step 1 (Dependencies: Task 1, Task 4a):** Write failing tests in `chunker_test.rs`: deterministic `CodeCli` classification on `.docx` paragraphs; never splits CLI/XML/SQL/table blocks with `overlap_chars`; UTF-8 char-boundary safe slicing on `→`/curly quotes; oversized atomic block (> 4800) splits cleanly on `\n` with `oversized_atomic_split = true`; links `asset_ids` + `asset_captions` by `block_index` without cross-linking repeated `"Before Changes"` headings; attaches leading/trailing/image-only assets with 0 orphans; receives single `valid_from` from caller; `content_sha256` independent of Vision mode.
+- [ ] **Step 2:** Run `cargo test -p sop-ingestion --test chunker_test` — verify FAIL.
 - [ ] **Step 3:** Implement `crates/sop-ingestion/src/chunker.rs`.
-- [ ] **Step 4:** Run `cargo test --test chunker_test && cargo clippy --workspace --all-targets -- -D warnings` — verify PASS.
+- [ ] **Step 4:** Run `cargo test -p sop-ingestion --test chunker_test && cargo clippy --workspace --all-targets -- -D warnings` — verify PASS.
 
 ### Task 6: Async Streaming Pipeline (`ingest_document`) & CLI (`clap`)
 **Files:**
@@ -99,7 +100,7 @@
 - Test: `crates/sop-ingestion/tests/pipeline_test.rs`
 
 - [ ] **Step 1:** Write failing integration tests in `pipeline_test.rs`: end-to-end `ingest_document()` on synthetic `.docx` (with plaintext `-storepass` scrubbed from chunks/captions/JSON!), scanned PDF, and `knowledge/domain-pack/` `.yaml`/`.md` (`SourceType::DomainPack`); verifies stable `doc_id` across `v1`/`v2`, Windows-safe `img<idx>.<ext>`, uniform `valid_from`, mid-doc failure triggers `delete_version_dir()` rollback, and CLI writes scrubbed `ingest_result.json`.
-- [ ] **Step 2:** Run `cargo test --test pipeline_test` — verify FAIL.
+- [ ] **Step 2:** Run `cargo test -p sop-ingestion --test pipeline_test` — verify FAIL.
 - [ ] **Step 3:** Implement `pipeline.rs` and `main.rs`.
 - [ ] **Step 4:** Run full verification suite:
   - `cargo fmt --all -- --check`

@@ -36,6 +36,8 @@ Tim operasional **MO NCX** (internal kantor berbasis **Siebel CRM 16 + Oracle Da
   * `.xlsx` via `calamine` (`tafia/calamine`) + `xl/media/*`; `.pdf` via `oxidize-pdf`/`pdf-extract` (teks) + `lopdf` & crate `image` (normalisasi objek gambar ke PNG + dukungan PDF scan 0-teks); skrip/Markdown/YAML via `encoding_rs` (UTF-8/UTF-16 BOM + tolak biner korup) + *Command-Safe Chunker*.
   * **Secret Scrubber Wajib:** Kredensial plaintext operasional (`-storepass`, `password=`, PEM, Bearer) otomatis diredaksi menjadi `<REDACTED_SECRET>` sebelum disimpan ke chunk, caption Vision, atau JSON output.
   * Gambar *screenshot* tertanam disimpan secara async (nama file aman Windows bebas `:`) ke **MinIO / LocalFS** dan dideskripsikan oleh **Vision-LLM lokal (`Qwen2.5-VL`)** via `reqwest` (`.no_proxy()`, DNS IP pinning, `redirect::Policy::none()`, & *circuit breaker*).
+* **Asset Review Gate:** Setiap screenshot baru berstatus `pending_review` dan hanya dilayani ke user setelah Admin SOP menyetujuinya (scrubber tidak dapat menyaring kredensial yang tampak di gambar).
+* **Revisi eksplisit:** Revisi SOP terikat ke dokumen yang sama lewat `doc_id` eksplisit (Admin memilih dokumen yang direvisi; CLI `--doc-id`), bukan hanya dari nama file; Panel Admin memperingatkan "kemungkinan revisi" bila judul mirip dokumen aktif.
 * Output berupa struct tipe-aman `IngestResult` di `crates/sop-core` (dengan `schemars::JsonSchema`) yang langsung dikonsumsi oleh Modul #2 (`crates/sop-memory-rag`).
 * Ketika Admin mengunggah revisi SOP (`v1 → v2`), versi lama otomatis ditandai `is_active = false` (`valid_until = now`) di **Qdrant** sehingga aturan basi tidak pernah muncul lagi.
 
@@ -45,11 +47,14 @@ Tim operasional **MO NCX** (internal kantor berbasis **Siebel CRM 16 + Oracle Da
 * Jika tidak ditemukan bukti SOP yang relevan di atas ambang skor, AI **wajib menyatakan tidak menemukan SOP terkait (`NO SOP MATCH`)**, dilarang mengarang langkah/command, dan otomatis mencatat laporan **SOP-Gap**.
 
 ### FR-3: Deterministic 4-Stage SOP Triage Loop (Fase 1 — Rust `crates/triage-engine`)
-* Diatur oleh **Rust Triage State Machine (`Axum` + `Rig` + `sqlx`)** dengan **Local Structured-Output Router (`vLLM` Guided JSON)** sebagai *primary offline-ready engine* (plus **Jev `Choice`** opsional via Exception `E1` bila jaringan mengizinkan):
+* Diatur oleh **Rust Triage State Machine (`Axum` + `Rig` + `sqlx`)** dengan **Local Structured-Output Router (`mistral.rs` `response_format`/`llguidance` sebagai default; `vLLM` Guided JSON opsional)** sebagai *primary offline-ready engine* (plus **Jev `Choice`** opsional via Exception `E1` bila jaringan mengizinkan):
   1. **`INTERVIEW`:** Menggali konteks wajib yang belum lengkap (segmen `EBIS/RETAIL/WIBS`, *environment* `Prod/CONS/SIT`, gejala/potongan log, prasyarat komponen). AI **dilarang** memberi vonis di tahap ini.
   2. **`ANALYZE`:** Melakukan *Hybrid Retrieval* ke memori SOP + *Domain Context Pack* (dan menganalisa potongan log yang di-paste user), memetakan akar masalah & kandidat prosedur resmi.
   3. **`CONFIRM`:** Menyajikan ringkasan analisa dan menanyakan konfirmasi pengguna (*"Apakah analisa ini sudah sesuai dengan kondisi di lapangan?"*). Jika pengguna menjawab **"Belum/Tidak sesuai"**, sistem kembali ke **`INTERVIEW`** untuk mengerucutkan konteks.
   4. **`VERDICT`:** Hanya dapat dicapai setelah konfirmasi **"Ya/Sesuai"**. Menampilkan langkah resmi berurutan, blok *command* / referensi query utuh (tombol *copy* + label peringatan eksekusi manual), gambar referensi SOP dari MinIO, dan sitasi dokumen resmi.
+
+* **Fast Path:** Bila pesan pertama sudah memuat semua slot wajib (segmen, environment, gejala/log), tahap `INTERVIEW` boleh dilewati, tetapi `ANALYZE` → `CONFIRM` tetap wajib; `VERDICT` tidak pernah dicapai sebelum konfirmasi "Ya/Sesuai". `CONFIRM` pada fast path berupa satu pertanyaan ringkas.
+* **Input Scrub:** Teks chat dan log yang di-paste/upload di-scrub (Secret Scrubber `sop-core`) sebelum masuk LLM, *Immutable Audit Log*, dan trace OTel/Langfuse.
 
 ### FR-4: Non-DB Knowledge Automation & Standalone OpenDesign Web Portal (`web/` — Fase 1 / 1.5)
 * Antarmuka dibangun sebagai **Web App Mandiri berbasis OpenDesign** di intranet kantor (mis. `ai.ncxall.my.id` / VPS — **terpisah penuh dan tidak menyentuh `https://ncxall.my.id/dashboard`**).
@@ -75,7 +80,8 @@ Tim operasional **MO NCX** (internal kantor berbasis **Siebel CRM 16 + Oracle Da
 | :--- | :--- |
 | **Zero Direct DB & On-Prem Privacy** | **0** crate/koneksi ke Oracle 12c (`SELECT`/`UPDATE`/`DDL`) & **0** eksekusi ke server Siebel 16; 100% dokumen SOP mentah diproses lokal oleh binary Rust di intranet kantor; **Jev (`E1`)** opsional & hanya menerima *redacted state/synthetic eval* dengan *local fallback*; *zero hardcoded secrets* (`gitleaks` = 0). |
 | **Akurasi Triage & RAG** | *Zero-Premature-Verdict* = **100%**; *Citation Grounding / Faithfulness* ≥ **95%**; *Expired SOP Leakage* = **0%**; lolos **Golden Benchmark 80–100 Kasus NCX** sebelum go-live kantor. |
-| **Identitas & Audit** | 100% sesi chat & mutasi SOP terikat ke `user_id` kantor (RBAC 2-tier: `user_kantor` / `admin_sop`) dan tercatat di *Immutable Audit Log* PostgreSQL. |
+| **Identitas & Audit** | 100% sesi chat & mutasi SOP terikat ke `user_id` kantor (RBAC 2-tier: `user_kantor` / `admin_sop`) dan tercatat di *Immutable Audit Log* PostgreSQL berupa tabel *append-only* (hak `UPDATE`/`DELETE` dicabut dari role aplikasi) dengan rantai hash (`prev_hash`) dan konten yang sudah ter-scrub. |
+| **Autentikasi & Sesi** | TLS 1.2+ (CA internal kantor) untuk seluruh akses portal/API; password di-hash `argon2id`; JWT access token ≤ 15 menit + refresh ≤ 8 jam; *lockout* setelah percobaan login gagal berulang; logout/rotasi token tercatat di audit log. |
 | **Performa & Jejak Memori** | Aplikasi backend Rust < **256 MB RAM** (Worker ingestion streaming < **128 MB RAM**, nol runtime Python untuk aplikasi inti); TTFT ≤ **3 detik** di GPU Server (`mistral.rs` / `vLLM` — lihat [infra/HARDWARE-SIZING.md](infra/HARDWARE-SIZING.md)); respons retrieval hybrid ≤ **800 ms**. |
 | **Aksesibilitas & Responsive** | **Standalone OpenDesign Web Portal** wajib bebas *overflow* di desktop dan mobile `390px`, mendukung navigasi keyboard (`Esc`, `Enter`) & kontras WCAG 2.2 AA. |
 

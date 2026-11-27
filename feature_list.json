@@ -17,7 +17,7 @@
       "name": "Multimodal SOP & Domain Pack Ingestion Pipeline (100% Pure Rust)",
       "description": "Rust crates/sop-core + crates/sop-ingestion (zip + quick-xml + calamine + lopdf + encoding_rs + reqwest Local Vision private allowlist + Command/Table-Safe Chunker + Versioned AssetStore LocalFS/MinIO + clap CLI).",
       "module": "sop-ingestion",
-      "status": "in_progress",
+      "status": "pending",
       "dependencies": ["F0-foundation-docs"],
       "verification": "SPEC, tasks/plan.md, & tasks/todo.md converted to Rust 2021 & hardened via doubt-driven-development (19/19 adversarial findings + source-driven crate research reconciled; cross-model skipped per Owner); paused at Coding Gate pending rustup installation."
     },

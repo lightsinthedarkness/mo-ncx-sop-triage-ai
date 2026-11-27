@@ -36,6 +36,9 @@ Proyek `ykztir-ncx-ai` (Design 2.2 → 2.3) membutuhkan:
 - **Rejected:** Memaksa parsing dokumen di Rust akan memperlambat Fase 1 secara drastis.
 
 ## Consequences
+
+> [!WARNING]
+> Poin "Modul #1" dan "Kontrak Antar-Bahasa" di bawah **usang** — digantikan [ADR-003](ADR-003-pure-rust-backend-workspace.md) (Modul #1 kini Rust; tidak ada kontrak lintas bahasa). Poin Modul #2/#3 dan kontrak Jev `E1` tetap berlaku.
 - **Modul #1 (`sop-ingestion`):** Spec (`spec/SPEC-sop-ingestion.md`) & Plan (`tasks/plan.md`) tetap 100% utuh dan langsung siap masuk Phase 4 TDD (Python 3.12.10 sudah terpasang).
 - **Modul #2 & #3:** Prasyarat `rustup` (`rustc` + `cargo` + `clippy`) perlu dipasang saat memulai Modul #2; kualitas kode Rust dikunci lewat `cargo clippy --all-targets -- -D warnings` dan `cargo test`.
 - **Kontrak Antar-Bahasa:** JSON `IngestResult` (didefinisikan di `SPEC-sop-ingestion.md` §5) menjadi kontrak resmi lintas Python → Rust (diverifikasi via JSON Schema / `serde` structs).

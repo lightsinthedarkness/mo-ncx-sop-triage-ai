@@ -54,3 +54,11 @@ Direktori ini menyimpan **Golden Holdout Benchmark (80–100 skenario uji nyata 
 * **Local / Offline Eval:** `Promptfoo` (Node.js) + `cargo test` harness terhadap *Local LLM Judge* (jalan 100% di intranet kantor tanpa Python runtime).
 * **Optional Calibrated Judge:** **Jev (`TypeSafe AI` `Score` primitive — Exception `E1`)** hanya pada kasus sintetis/ter-anonymize di `evals/` bila koneksi eksternal tersedia.
 * **Regression Gate:** Setiap perubahan model lokal (`Qwen3-14B` ↔ `Qwen3-32B`), prompt sistem, atau PR `skills/*.md` (Fase 2) wajib melampaui seluruh ambang keras di atas sebelum di-deploy ke server kantor.
+
+---
+
+## 4. Kalibrasi Judge & Pelabelan Retrieval
+
+* **Kalibrasi judge:** minimal **20–30%** kasus dinilai manusia (Admin/Engineer) untuk mengkalibrasi skor *LLM judge* (menghindari penilaian sirkular oleh model yang sama).
+* **Pelabelan Recall@5:** setiap kasus `sop_qa` wajib memiliki label *ground-truth* (`expected_source_doc` + bagian/langkah relevan) yang ditetapkan Admin, sehingga `retrieval_recall` terukur.
+* **Alat dev-only:** `Promptfoo` (Node.js) hanya untuk eval/CI, bukan runtime produksi.

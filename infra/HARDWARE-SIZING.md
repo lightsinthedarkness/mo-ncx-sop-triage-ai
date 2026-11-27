@@ -16,6 +16,9 @@ Panduan sizing server internal kantor (100% *intranet / on-prem first*) untuk me
 
 ---
 
+> [!NOTE]
+> Angka VRAM, kapasitas user, dan latensi pada tabel ini adalah **estimasi yang wajib diukur** di hardware kantor. Kuantisasi bergantung engine: `mistral.rs` memakai ISQ/GGUF/UQFF; AWQ/FP8 relevan untuk `vLLM`. Reranker `bge-reranker-v2-m3` di CPU dapat melampaui target 800 ms; gunakan GPU atau kurangi jumlah kandidat bila terukur lambat.
+
 ## 2. Alokasi Layanan Self-Hosted (100% Intranet / LAN Kantor)
 
 Seluruh komponen berjalan dalam jaringan internal kantor (`docker-compose.yml` di `infra/` saat tahap deployment):
@@ -30,7 +33,7 @@ Seluruh komponen berjalan dalam jaringan internal kantor (`docker-compose.yml` d
 | **Triage API & Orchestrator** | **Rust** (`Axum` + `Rig` + `sqlx`) | `8080` | 2 vCPU, < 256 MB RAM | **Zero Oracle 12c DB driver / Zero SSH exec** |
 | **Ingestion Worker** | **Rust** (`crates/sop-ingestion`: `zip`/`quick-xml`/`calamine`/`oxidize-pdf`/`lopdf`/`image`) | Internal job / CLI | 2 vCPU, < 128 MB RAM | Streaming asset persistence + decompression-bomb limits (nol runtime Python) |
 | **Web Portal UI** | **OpenDesign** Static Assets (`web/`, disajikan langsung oleh **Rust `Axum`**) | `443` (Reverse Proxy) | Static embedded/served | HTTPS internal kantor (nol server Node.js di produksi, terpisah penuh dari `ncxall.my.id/dashboard`) |
-| **Observability** | `Langfuse` (Self-Hosted) + OTel | `3000` | 2 vCPU, 2–4 GB RAM | Trace 100% lokal di intranet kantor |
+| **Observability** | `Langfuse` (Self-Hosted) + OTel | `3000` | 4+ vCPU, 8–16 GB RAM (Langfuse v3 butuh ClickHouse + Redis + blob storage; ukur ulang saat deploy) | Trace 100% lokal di intranet kantor |
 
 ---
 

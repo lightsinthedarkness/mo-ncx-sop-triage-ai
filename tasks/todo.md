@@ -11,17 +11,17 @@ Source plan: [tasks/plan.md](plan.md)
 
 - [ ] **Task 1: Cargo Workspace, `crates/sop-core` Contracts, `crates/sop-test-support`, & `zero_db_policy`** *(Size: M)*
   - Acceptance: Rust 2021 workspace compiles with zero warnings; all public models derive `serde` + `schemars::JsonSchema`, `NonZeroU32` `doc_version`, `SourceType` (`Sop`/`DomainPack`), `role_acl = ["user_kantor", "admin_sop"]`, `SCREAMING_SNAKE_CASE` error Display; `make_doc_id()` non-colliding & ≤ 64 chars; `zero_db_policy` scans all workspace `Cargo.toml`/`Cargo.lock` & source; synthetic fixtures in `crates/sop-test-support` produce zero `dead_code` warnings.
-  - Verify: `cargo test --test models_test && cargo fmt --all -- --check && cargo clippy --workspace --all-targets -- -D warnings`
+  - Verify: `cargo test -p sop-ingestion --test models_test && cargo fmt --all -- --check && cargo clippy --workspace --all-targets -- -D warnings`
   - Dependencies: Step 0
 
 - [ ] **Task 2: Secret Scrubber & Async Windows-Safe Versioned Asset Storage** *(Size: M)*
-  - Acceptance: `secret_scrubber` redacts `-storepass`, `-keypass`, `password=`, `passwd=`, Bearer tokens, PEM keys; async `AssetStore` + `S3PutObject` write Windows-safe `<doc_id>/v<ver>/img<idx>.<ext>` (no `:`) via atomic temp-file rename; blocks traversal, drive prefixes, `CON`/`NUL`, trailing dots, symlinks BEFORE `create_dir_all`; supports `delete_version_dir()` rollback.
-  - Verify: `cargo test --test scrubber_test --test assets_test && cargo clippy --workspace --all-targets -- -D warnings`
+  - Acceptance: shared `sop-core` `secret_scrubber` redacts `-storepass`, `-keypass`, `password=`/`passwd=`/`pwd=`, `--password`, `export *_PASS=`, XML `<Password>`, `identified by`, `user/pass@tns`, JDBC, Bearer tokens, PEM keys (+ negative tests); new assets default `PendingReview`; async `AssetStore` + `S3PutObject` write Windows-safe `<doc_id>/v<ver>/img<idx>.<ext>` (no `:`) via atomic temp-file rename; blocks traversal, drive prefixes, `CON`/`NUL`, trailing dots, symlinks BEFORE `create_dir_all`; supports `delete_version_dir()` rollback.
+  - Verify: `cargo test -p sop-core --test scrubber_test && cargo test -p sop-ingestion --test assets_test && cargo clippy --workspace --all-targets -- -D warnings`
   - Dependencies: Task 1
 
 - [ ] **Task 3: Hardened Async Vision Captioning (`Noop` + `OpenAiCompatibleVisionCaptioner`)** *(Size: S)*
   - Acceptance: Uses injected `VisionConfig` (zero `std::env::set_var` in tests); enforces `.no_proxy()`, `redirect::Policy::none()`, `http`/`https`-only, DNS pre-resolve + IP pinning blocking public/IPv4-mapped IPv6/IMDS `169.254.0.0/16`/`0.0.0.0`; retries `5xx`/network only; caps `max_tokens=300`; 3-failure circuit breaker.
-  - Verify: `cargo test --test vision_test && cargo clippy --workspace --all-targets -- -D warnings`
+  - Verify: `cargo test -p sop-ingestion --test vision_test && cargo clippy --workspace --all-targets -- -D warnings`
   - Dependencies: Task 1
 
 ### Checkpoint 1 (After Tasks 1–3)
@@ -29,15 +29,15 @@ Source plan: [tasks/plan.md](plan.md)
 
 ## Phase 2: Multimodal Rust Parsing & UTF-8 Safe Chunking (Tasks 4–5)
 
-- [ ] **Task 4: Multimodal Pure-Rust Document, PDF, OOXML & Script Parser** *(Size: L)*
+- [ ] **Task 4: Multimodal Pure-Rust Document, PDF, OOXML & Script Parser** *(Size: L → dipecah: 4a `.docx` + limits, 4b `.pptx`+`.xlsx`, 4c `.pdf`, 4d script/domain-pack; kerjakan berurutan, masing-masing RED→GREEN sendiri)*
   - Acceptance: Parses `.docx`, `.pptx`, `.xlsx`, `.pdf`, `.md`, `.yaml`, `.yml`, `.sh`, `.sql`, `.xml` (case-insensitive); handles `.docx` run concat/`styles.xml`/DrawingML+VML, `.pptx` `<p:sldIdLst>`/`../media/`, `.xlsx` `xl/media/*`, `.pdf` text + `lopdf` XObjects re-encoded to PNG via `image` + 0-text scanned PDFs, `encoding_rs` UTF-8/UTF-16 BOM + binary reject; enforces all decompression-bomb & resource limits (`ResourceLimitExceeded`).
-  - Verify: `cargo test --test parser_test && cargo clippy --workspace --all-targets -- -D warnings`
+  - Verify: `cargo test -p sop-ingestion --test parser_test && cargo clippy --workspace --all-targets -- -D warnings`
   - Dependencies: Task 1
 
 - [ ] **Task 5: UTF-8 Safe Command/Table Chunker & Positional Asset Linker** *(Size: M)*
   - Acceptance: Deterministic `CodeCli` classification; UTF-8 char-boundary safe slicing; `overlap_chars` never slices atomic blocks; >4800 atomic blocks split cleanly on `\n` (`oversized_atomic_split = true`); `asset_ids` + `asset_captions` linked by `block_index` with zero orphans (incl. leading/trailing/image-only); single `valid_from` passed from pipeline; `content_sha256` independent of Vision mode.
-  - Verify: `cargo test --test chunker_test && cargo clippy --workspace --all-targets -- -D warnings`
-  - Dependencies: Task 1, Task 4
+  - Verify: `cargo test -p sop-ingestion --test chunker_test && cargo clippy --workspace --all-targets -- -D warnings`
+  - Dependencies: Task 1, Task 4a
 
 ## Phase 3: Async Streaming Pipeline, CLI & Final Gate (Task 6)
 

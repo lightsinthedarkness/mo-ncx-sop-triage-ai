@@ -33,7 +33,8 @@ Membangun crate *ingestion* multimodal **100% Pure Rust** (`crates/sop-core` + `
     - Ekstraksi objek gambar `XObject` memakai `lopdf`, lalu seluruh gambar non-PNG/non-JPEG (`/FlateDecode` raw pixel buffer, BMP, TIFF) dinormalisasi & di-encode ke **PNG valid** memakai crate **`image`** (`image-rs/image`) sebelum disimpan ke `AssetStore` atau dikirim ke Vision-LLM (format tak didukung seperti `.emf`/`.wmf` dicatat aman sebagai *skipped/failed* tanpa crash),
     - PDF hasil scan (**0 teks + N gambar**) diproses valid sebagai *image-backed chunks* (bukan `EmptyFile`); PDF terenkripsi yang tidak terbaca mengembalikan `CorruptFile`.
   - **Scripts & Domain Pack (`.md`, `.yaml`, `.yml`, `.sh`, `.sql`, `.xml`):** Deteksi BOM (`UTF-8-BOM`, `UTF-16LE`, `UTF-16BE`) via `encoding_rs` + pemeriksaan byte NUL/biner sebelum fallback `Windows-1252` (file biner yang menyamar sebagai `.sh`/`.sql` wajib ditolak sebagai `CorruptFile`) + *deterministic structured block splitter*.
-- **Secret Scrubber (`secret_scrubber.rs`):** Dijalankan secara wajib pada setiap `SopChunk.content` dan `ExtractedAsset.caption` sebelum disimpan/diekspor — mengganti pola kredensial plaintext (`-storepass <val>`, `-keypass <val>`, `password=<val>`, `passwd=<val>`, `Authorization: Bearer ...`, `-----BEGIN ... PRIVATE KEY-----`) dengan `<REDACTED_SECRET>` tanpa merusak struktur flag CLI (`-storepass <REDACTED_SECRET>`).
+- **Secret Scrubber (`crates/sop-core/src/scrubber.rs`, dipakai ulang oleh `sop-ingestion` dan `triage-engine`):** Dijalankan secara wajib pada setiap `SopChunk.content` dan `ExtractedAsset.caption` sebelum disimpan/diekspor, serta (Modul #3) pada input chat/paste log, *Immutable Audit Log*, dan payload trace OTel/Langfuse. Pola minimum: `-storepass`/`-keypass <val>`, `password=`/`passwd=`/`pwd=<val>`, `--password <val>`, `export <NAMA_PASS|SECRET|TOKEN|KEY>=<val>`, elemen/atribut XML `<Password>...</Password>` & `password="..."`, `identified by <val>`, `user/pass@tns` & URL JDBC berkredensial, `Authorization: Bearer ...`, `-----BEGIN ... PRIVATE KEY-----`. Semuanya diganti `<REDACTED_SECRET>` tanpa merusak struktur flag CLI. Pola bersifat *best-effort*: wajib ada tes negatif (perintah non-rahasia tidak boleh rusak) dan Admin tetap meninjau hasil ingest (lihat *Asset Review Gate*).
+- **Asset Review Gate (screenshot):** Scrubber hanya bekerja pada teks, sedangkan gambar bisa memperlihatkan kredensial. Setiap `ExtractedAsset` baru berstatus `AssetReviewStatus::PendingReview` dan **tidak boleh dilayani ke user** sebelum Admin SOP menyetujui (`Approved`) lewat Panel Admin (Modul #3/#4); aset `Rejected` tidak pernah ditampilkan. Caption Vision tetap melalui scrubber.
 - **Chunking (`CommandSafeChunker`):**
   - `max_chars = 1200`, `overlap_chars = 150` (dihitung berdasarkan **char boundary UTF-8**, bukan byte index, agar tidak pernah panic pada karakter `→` atau kutip melengkung), `max_atomic_chars = 4800`.
   - Klasifikasi deterministik `BlockType::CodeCli` pada paragraf `.docx`/`.pdf` (mendeteksi awalan command/path `/opt/`, `keytool`, `chmod`, `systemctl`, `srvrmgr`, `export `, SQL `SELECT`/`ALTER`, atau tag XML `<...>`).
@@ -45,13 +46,14 @@ Membangun crate *ingestion* multimodal **100% Pure Rust** (`crates/sop-core` + `
   - `OpenAiCompatibleVisionCaptioner` (`reqwest`):
     - Dibangun dengan `reqwest::Client::builder().no_proxy().redirect(reqwest::redirect::Policy::none())` (menutup celah bypass lewat `HTTP_PROXY`/`HTTPS_PROXY` & HTTP 30x).
     - Validasi ketat skema `http`/`https` saja + **resolusi DNS di muka lalu validasi IP** (izinkan hanya loopback `127.0.0.1`/`::1` & RFC1918 privat; **tolak keras** IP publik, IPv4-mapped IPv6 `::ffff:...`, link-local/cloud IMDS `169.254.0.0/16` & `fe80::/10`, serta `0.0.0.0`/`::`), kemudian pin alamat IP tervalidasi ke `ClientBuilder::resolve()` untuk mencegah **DNS rebinding (TOCTOU)**.
-    - `VisionConfig.allowed_hosts`: daftar host/IP eksak (tanpa wildcard, tanpa item kosong) yang tetap wajib lolos validasi IP non-IMDS/non-publik kecuali diizinkan eksplisit oleh IP privat.
+    - `VisionConfig.allowed_hosts`: daftar host/IP eksak (tanpa wildcard, tanpa item kosong). Aturan: (1) IP hasil resolusi harus loopback atau RFC1918; (2) IMDS/link-local/publik/`0.0.0.0` selalu ditolak dan **tidak bisa** di-override oleh `allowed_hosts`; (3) bila `allowed_hosts` non-kosong, host target harus ada di daftar **dan** lolos aturan (1)-(2); bila kosong, hanya aturan (1)-(2) yang berlaku.
     - Resilience: `timeout = 30s` per gambar, `max_tokens = 300` & batas panjang output `2000` char (anti prompt-injection bloat), retry 1x **hanya** untuk error jaringan / HTTP `5xx` (tidak retry `4xx`), respons HTTP 200 kosong dianggap `CaptionStatus::Failed`, dan **circuit breaker** (setelah 3 kegagalan beruntun, sisa gambar pada dokumen tersebut langsung ditandai `CaptionStatus::Failed` agar tidak hang 100 menit saat VLM mati).
 - **Asset Storage Trait (`#[async_trait]`):** `pub trait AssetStore: Send + Sync` + `pub trait S3PutObject: Send + Sync`:
   - **Pemisahan ID Logis vs Nama File Fisik (Windows-Safe):** `asset_id` logis tetap `"{doc_id}:v{doc_version}:img{order_index}"`, sedangkan jalur penyimpanan fisik memakai nama file aman bebas `:` yaitu `<doc_id>/v<doc_version>/img<order_index>.<ext>`.
   - `LocalFsAssetStore` (async via `tokio::fs`): memvalidasi `doc_id` & ekstensi secara ketat **sebelum membuat direktori apa pun** (menolak `..`, `/`, `\`, `:`, prefix drive `C:`, nama device Windows `CON`/`PRN`/`AUX`/`NUL`/`COM1..9`/`LPT1..9`, titik/spasi akhir, dan symlink lewat `symlink_metadata`), menulis lewat **temp-file + atomic rename**, membersihkan direktori versi target sebelum re-ingest `(doc_id, doc_version)` yang sama, serta menyediakan `delete_version_dir()` untuk rollback jika pipeline gagal di tengah dokumen.
   - `MinioAssetStore`: `storage_uri = "s3://<bucket>/<doc_id>/v<doc_version>/img<order_index>.<ext>"`.
-- **CLI Binary:** `clap` (`clap-rs/clap`) — `cargo run -p sop-ingestion -- ingest --file ... --segment EBIS --version 1 --source-type sop --output-dir .scratch/ingest-preview`.
+- **CLI Binary:** `clap` (`clap-rs/clap`) — `cargo run -p sop-ingestion -- ingest --file ... --segment EBIS --version 1 --source-type sop [--doc-id <ID>] --output-dir .scratch/ingest-preview`.
+- **Aturan `doc_id` & Versioning:** `doc_id` default diturunkan dari nama file, tetapi **revisi wajib terikat eksplisit ke dokumen yang sama**: bila `--doc-id` diberikan (atau Admin memilih dokumen yang direvisi di Panel Admin), nilai itu dipakai apa adanya dan versi lama dengan `doc_id` tersebut dinonaktifkan oleh Modul #2. Tanpa `--doc-id`, nama file berbeda menghasilkan `doc_id` baru, sehingga Modul #3 wajib menampilkan peringatan "kemungkinan revisi" ke Admin bila judul mirip dokumen aktif (mencegah SOP basi tetap aktif).
 
 ---
 
@@ -86,7 +88,7 @@ cargo test --workspace
 cargo llvm-cov --workspace --fail-under-lines 80
 
 # Mandatory Security & Policy Guards
-cargo test -p sop-ingestion secret_scrubber
+cargo test -p sop-core secret_scrubber
 cargo test zero_db_policy
 gitleaks detect --source . --redact --no-banner
 
@@ -107,6 +109,7 @@ c:/Users/Administrator/LLM/
     │   └── src/
     │       ├── lib.rs             # Re-exports & make_doc_id / sha256_bytes / sha256_text
     │       ├── models.rs          # Public serde + schemars::JsonSchema contracts
+    │       ├── scrubber.rs        # Shared Secret Scrubber (tests: crates/sop-core/tests/scrubber_test.rs)
     │       └── error.rs           # SopIngestionErrorCode (Display SCREAMING_SNAKE_CASE) & SopIngestionError
     ├── sop-test-support/          # Dev-only fixture crate (zero dead_code clippy warnings)
     │   ├── Cargo.toml
@@ -115,7 +118,6 @@ c:/Users/Administrator/LLM/
         ├── Cargo.toml
         ├── src/
         │   ├── lib.rs
-        │   ├── scrubber.rs        # Deterministic Secret Scrubber (-storepass, password=, PEM, Bearer)
         │   ├── assets.rs          # Async AssetStore, S3PutObject, LocalFsAssetStore (Windows-safe atomic), MinioAssetStore
         │   ├── vision.rs          # Async VisionCaptioner, VisionConfig, Noop, OpenAiCompatible (DNS-pinning + no_proxy + circuit breaker)
         │   ├── parser/
@@ -130,7 +132,6 @@ c:/Users/Administrator/LLM/
         │   └── main.rs            # CLI binary (clap)
         └── tests/
             ├── models_test.rs     # + zero_db_policy (scans all Cargo.toml/Cargo.lock + subprocess ban)
-            ├── scrubber_test.rs
             ├── assets_test.rs
             ├── vision_test.rs
             ├── parser_test.rs
@@ -229,6 +230,15 @@ pub enum CaptionStatus {
     Failed,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "snake_case")]
+pub enum AssetReviewStatus {
+    #[default]
+    PendingReview, // Not served to users until admin_sop approves
+    Approved,
+    Rejected,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct SopMetadata {
     pub doc_id: String,               // Deterministic, capped <= 64 chars: "{seg}-{slug_trunc}-{ext}-{hash6}"
@@ -285,6 +295,8 @@ pub struct ExtractedAsset {
     pub storage_uri: String,          // "local://<doc_id>/v<ver>/img<idx>.<ext>" or "s3://<bucket>/..."
     pub caption: String,              // Scrubbed by Secret Scrubber
     pub caption_status: CaptionStatus,
+    #[serde(default)]
+    pub review_status: AssetReviewStatus, // Default PendingReview (Asset Review Gate)
     pub section_path: Vec<String>,
     pub section_heading: String,
     pub block_index: usize,
@@ -334,7 +346,8 @@ pub struct IngestResult {
 2. **Command, XML, SQL, Table & Secret Scrubbing Integrity:** Blok CLI, XML, SQL, dan tabel tidak pernah terpotong oleh `overlap_chars`, aman pada UTF-8 multi-byte, dan seluruh pola kredensial (`-storepass`, `password=`, PEM, Bearer) ter-redaksi di chunk, caption, dan JSON output.
 3. **Deterministic Versioning & Windows Path Defense:** `make_doc_id` stabil lintas `v1`/`v2`, tidak kolisi antara `deploy.docx` vs `deploy.sh`, panjang ≤ 64 char, dan `LocalFsAssetStore` memblokir traversal, drive prefix, device names (`CON`/`NUL`), serta symlink sebelum membuat direktori apa pun.
 4. **Hardened SSRF, Bomb Defense & Zero-DB:** `OpenAiCompatibleVisionCaptioner` menerapkan `.no_proxy()` + `redirect::Policy::none()` + DNS IP pinning (blokir publik, IPv4-mapped IPv6, IMDS `169.254.0.0/16`) + circuit breaker; parser memblokir decompression bomb; `zero_db_policy` memverifikasi 0 crate Oracle/SSH di seluruh workspace & 0 panggilan `sqlplus`/`ssh`.
-5. **Quality Gates:** `cargo fmt --check`, `cargo clippy --workspace --all-targets -- -D warnings`, `cargo test --workspace`, `cargo llvm-cov --workspace --fail-under-lines 80`, dan `gitleaks` semuanya **PASS (exit 0)**.
+5. **Asset Review Gate & Explicit doc_id:** Semua `ExtractedAsset` baru berstatus `PendingReview`; `--doc-id` eksplisit mengikat revisi ke dokumen yang sama; scrubber di `sop-core` lolos tes pola minimum + tes negatif.
+6. **Quality Gates:** `cargo fmt --check`, `cargo clippy --workspace --all-targets -- -D warnings`, `cargo test --workspace`, `cargo llvm-cov --workspace --fail-under-lines 80`, dan `gitleaks` semuanya **PASS (exit 0)**.
 
 ---
 
