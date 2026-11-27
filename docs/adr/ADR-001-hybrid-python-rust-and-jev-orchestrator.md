@@ -1,7 +1,7 @@
 # ADR-001: Hybrid Python (Module 1) + Rust (Modules 2–3) & Jev (`TypeSafe AI`) Orchestrator/Judge
 
 ## Status
-Accepted (Approved by Owner, 2026-11-27)
+Partially Superseded by [ADR-003](ADR-003-pure-rust-backend-workspace.md) (2026-11-27: Module #1 migrated from Python to 100% Pure Rust; Rust Modules #2–#3 & optional Jev `E1` contract remain active, refined as offline-first by [ADR-002](ADR-002-internal-siebel16-oracle12c-zero-db-advisory-and-knowledge-automation.md))
 
 ## Date
 2026-11-27

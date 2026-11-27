@@ -1,12 +1,12 @@
 {
   "project": "ykztir-ncx-ai",
-  "design_version": "2.4",
-  "active_phase": "Pre-Coding Complete — Stopped at Coding Gate (Module 1: sop-ingestion)",
+  "design_version": "2.5",
+  "active_phase": "Pre-Coding Complete — Stopped at Coding Gate (Module 1: crates/sop-core + crates/sop-ingestion in Pure Rust)",
   "features": [
     {
       "id": "F0-foundation-docs",
-      "name": "Foundation Docs, Harness, Constraints, ADR-001/002, Domain Pack, Infra Sizing, Evals & Archify",
-      "description": "Design 2.4 (On-Prem Internal Siebel 16 / Oracle 12c Zero-Direct-DB Advisory), PRD 2.4, ADR-001, ADR-002, CONSTRAINTS.md, AGENTS.md, infra/HARDWARE-SIZING.md, knowledge/domain-pack/README.md, evals/README.md, 24 skills, Archify dual-theme SVGs.",
+      "name": "Foundation Docs, Harness, Constraints, ADR-001/002/003, Domain Pack, Infra Sizing, Evals & Archify",
+      "description": "Design 2.5 (100% Pure Rust Backend + On-Prem Siebel 16 / Oracle 12c Zero-Direct-DB Advisory), PRD 2.5, ADR-001/002/003, CONSTRAINTS.md, AGENTS.md, infra/HARDWARE-SIZING.md, knowledge/domain-pack/README.md, evals/README.md, 24 skills, Archify dual-theme SVGs.",
       "module": "foundation",
       "status": "done",
       "dependencies": [],
@@ -14,17 +14,17 @@
     },
     {
       "id": "F1-sop-ingestion",
-      "name": "Multimodal SOP & Domain Pack Ingestion Pipeline",
-      "description": "Docling + Local Vision Captioner (strict private allowlist) + Command/Table-Safe Chunker + knowledge/domain-pack/ + Versioned AssetStore (LocalFS/MinIO) + JSON IngestResult CLI.",
+      "name": "Multimodal SOP & Domain Pack Ingestion Pipeline (100% Pure Rust)",
+      "description": "Rust crates/sop-core + crates/sop-ingestion (zip + quick-xml + calamine + lopdf + encoding_rs + reqwest Local Vision private allowlist + Command/Table-Safe Chunker + Versioned AssetStore LocalFS/MinIO + clap CLI).",
       "module": "sop-ingestion",
       "status": "in_progress",
       "dependencies": ["F0-foundation-docs"],
-      "verification": "SPEC approved & hardened (14/14 doubt-driven findings reconciled); tasks/plan.md & tasks/todo.md ready; paused at Coding Gate."
+      "verification": "SPEC, tasks/plan.md, & tasks/todo.md converted to 100% Pure Rust preserving all 14 hardened findings; paused at Coding Gate pending rustup installation."
     },
     {
       "id": "F2-sop-memory-rag",
-      "name": "Hybrid SOP Memory & Retrieval Engine (Rust + Qdrant)",
-      "description": "Rust (qdrant-client + rig-qdrant) Native Hybrid Search (Dense BAAI/bge-m3 + Sparse BM25) + Reranker + Temporal Versioning & ACL consuming IngestResult JSON.",
+      "name": "Hybrid SOP Memory & Retrieval Engine (Rust + Qdrant + fastembed)",
+      "description": "Rust crates/sop-memory-rag (qdrant-client + rig-qdrant + fastembed-rs) Native Hybrid Search (Dense BAAI/bge-m3 + Sparse BM25) + Reranker + Temporal Versioning & ACL consuming sop-core IngestResult.",
       "module": "sop-memory-rag",
       "status": "pending",
       "dependencies": ["F1-sop-ingestion"],
@@ -33,7 +33,7 @@
     {
       "id": "F3-triage-engine-api",
       "name": "On-Prem 4-Stage Triage Engine & Non-DB Knowledge Automation (Rust Axum/Rig)",
-      "description": "Rust Axum + Rig 4-Stage State Machine (INTERVIEW -> ANALYZE -> CONFIRM -> VERDICT) with Offline-First Local Guided Router (+ optional Jev E1), Zero Direct DB guard, Office 2-Tier RBAC + Immutable Audit Log, Auto Handover Note, Auto SOP-Gap Detector, LiteLLM (Ollama/vLLM), PostgreSQL sqlx, & Langfuse OTel.",
+      "description": "Rust crates/triage-engine (Axum + Rig + sqlx) 4-Stage State Machine (INTERVIEW -> ANALYZE -> CONFIRM -> VERDICT) with Offline-First Local Guided Router (+ optional Jev E1), Zero Direct DB guard, Office 2-Tier RBAC + Immutable Audit Log, Auto Handover Note, Auto SOP-Gap Detector, LiteLLM (Ollama/vLLM), & Langfuse OTel.",
       "module": "triage-engine-api",
       "status": "pending",
       "dependencies": ["F2-sop-memory-rag"],
@@ -42,7 +42,7 @@
     {
       "id": "F4-opendesign-web-portal",
       "name": "Standalone OpenDesign Intranet Web Portal",
-      "description": "Standalone OpenDesign Web App (intranet, separate from ncxall.my.id/dashboard) featuring Office Login, Guided SOP Empty State, 4-Stage Triage Chat, Paste Log, Auto Handover Note, CLI/Query Reference & Screenshot Viewer, & Admin SOP/SOP-Gap Panel.",
+      "description": "Standalone OpenDesign Web App (web/, intranet, separate from ncxall.my.id/dashboard) featuring Office Login, Guided SOP Empty State, 4-Stage Triage Chat, Paste Log, Auto Handover Note, CLI/Query Reference & Screenshot Viewer, & Admin SOP/SOP-Gap Panel.",
       "module": "opendesign-web-portal",
       "status": "pending",
       "dependencies": ["F3-triage-engine-api"],

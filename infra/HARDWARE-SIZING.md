@@ -1,6 +1,6 @@
 # Hardware Sizing & On-Prem Deployment Guide (`infra/HARDWARE-SIZING.md`)
 
-Panduan sizing server internal kantor (100% *intranet / on-prem first*) untuk menjalankan **NCX Triage & Internal Autonomous AI (Design 2.4)** bagi tim operasional **Siebel 16 + Oracle 12c**.
+Panduan sizing server internal kantor (100% *intranet / on-prem first*) untuk menjalankan **NCX Triage & Internal Autonomous AI (Design 2.5 — 100% Pure Rust)** bagi tim operasional **Siebel 16 + Oracle 12c**.
 
 > [!IMPORTANT]
 > PC pengembangan lokal (`AMD Ryzen 5 5500U`, `16 GB RAM`, tanpa GPU NVIDIA) **hanya untuk development & unit test Modul #1–#4**. Untuk melayani user sekantor secara paralel (*concurrent chat + Vision captioning + hybrid RAG*), wajib menggunakan server/VM GPU internal kantor.
@@ -28,7 +28,7 @@ Seluruh komponen berjalan dalam jaringan internal kantor (`docker-compose.yml` d
 | **Relational & Audit DB** | `PostgreSQL 16` | `5432` | 2 vCPU, 2–4 GB RAM | Menyimpan session state, user RBAC, SOP Gap log, & Immutable Audit Log |
 | **Screenshot Asset Store** | `MinIO` (S3-compatible) | `9000` | 1–2 vCPU, 1–2 GB RAM | Menyimpan *screenshot `before/after`* SOP |
 | **Triage API & Orchestrator** | **Rust** (`Axum` + `Rig` + `sqlx`) | `8080` | 2 vCPU, < 256 MB RAM | **Zero Oracle 12c DB driver / Zero SSH exec** |
-| **Ingestion Worker** | **Python 3.12** (`Docling` + Vision client) | Internal job | 4 vCPU, 4–8 GB RAM | Dipicu saat Admin upload/revisi SOP |
+| **Ingestion Worker** | **Rust** (`crates/sop-ingestion`: `zip`/`quick-xml`/`calamine`/`lopdf`) | Internal job / CLI | 2 vCPU, < 128 MB RAM | Dipicu saat Admin upload/revisi SOP (nol runtime Python) |
 | **Web Portal UI** | **OpenDesign** Standalone Web App | `443` (Reverse Proxy) | Static / Nginx | HTTPS internal kantor (mis. `ai.ncxall.my.id` / intranet DNS), terpisah penuh dari `ncxall.my.id/dashboard` |
 | **Observability** | `Langfuse` (Self-Hosted) + OTel | `3000` | 2 vCPU, 2–4 GB RAM | Trace 100% lokal di intranet kantor |
 

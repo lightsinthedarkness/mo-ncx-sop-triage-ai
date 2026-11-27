@@ -1,12 +1,12 @@
-# AGENTS.md — MO NCX SOP Triage & Autonomous AI (`LLM`)
+# AGENTS.md — MO NCX SOP Triage & Internal Autonomous AI (`LLM` — 100% Pure Rust)
 
 Short operating map for AI coding agents working in `c:/Users/Administrator/LLM`.
 Read `CONSTRAINTS.md` before writing code. Do not weaken it to make a change pass.
 
 ## Authoritative Docs
 - Intent: [docs/intent/sop-triage-ai.md](docs/intent/sop-triage-ai.md)
-- Architecture (Design 2.4): [DESIGN.md](DESIGN.md), [ADR-001](docs/adr/ADR-001-hybrid-python-rust-and-jev-orchestrator.md), & [ADR-002](docs/adr/ADR-002-internal-siebel16-oracle12c-zero-db-advisory-and-knowledge-automation.md)
-- Product Requirements (PRD 2.4): [PRD.md](PRD.md)
+- Architecture (Design 2.5 — 100% Pure Rust): [DESIGN.md](DESIGN.md), [ADR-001](docs/adr/ADR-001-hybrid-python-rust-and-jev-orchestrator.md), [ADR-002](docs/adr/ADR-002-internal-siebel16-oracle12c-zero-db-advisory-and-knowledge-automation.md), & [ADR-003](docs/adr/ADR-003-pure-rust-backend-workspace.md)
+- Product Requirements (PRD 2.5): [PRD.md](PRD.md)
 - Infra & Evals: [infra/HARDWARE-SIZING.md](infra/HARDWARE-SIZING.md), [knowledge/domain-pack/README.md](knowledge/domain-pack/README.md), [evals/README.md](evals/README.md)
 - Quality Contract: [CONSTRAINTS.md](CONSTRAINTS.md)
 - Module Map: [spec/capability-map.md](spec/capability-map.md)
@@ -15,7 +15,7 @@ Read `CONSTRAINTS.md` before writing code. Do not weaken it to make a change pas
 ## Startup Workflow (Every Session)
 1. Read `progress.md` and `feature_list.json` to identify the **single** active feature/module.
 2. Read `CONSTRAINTS.md` and the active module spec in `spec/SPEC-<module>.md`.
-3. Run `powershell -ExecutionPolicy Bypass -File .\init.ps1` to verify baseline health.
+3. Run `powershell -ExecutionPolicy Bypass -File .\init.ps1` (or `./init.sh`) to verify baseline health.
 4. Follow the gated skill pipeline strictly — never skip from Spec to Code without Plan & Tasks approval.
 
 ## Mandatory Skill Pipeline (`superpowers` + `addyosmani/agent-skills`)
@@ -29,27 +29,27 @@ Read `CONSTRAINTS.md` before writing code. Do not weaken it to make a change pas
 ## Project Domain Skills (`.agents/skills/` — 24 Installed)
 - **Discovery:** `find-skills`
 - **Visual Documentation:** `archify`, `archify-pr`
-- **Module 1 (`sop-ingestion`):** `docling`
-- **Module 2 (`sop-memory-rag`):** `qdrant-search-quality`, `rag-implementation`, `hybrid-search-implementation`, `langchain-rag`, `deep-agents-memory`
-- **Module 3 (`triage-engine-api` — Rust `Axum`/`Rig`/`sqlx` + Jev):** `vllm-deploy-docker` *(plus legacy Python pattern refs: `langgraph-fundamentals`, `langgraph-persistence`, `langgraph-human-in-the-loop`, `fastapi`)*
-- **Module 4 (`opendesign-web-portal`):** `frontend-design`, `web-design-guidelines`, `design-brief`, `workers-best-practices`
-- **Observability, Testing & Eval:** `langfuse`, `python-testing-patterns`, `llm-evaluation`, `deepeval`, `agent-self-evaluation`, `promptfoo-evals`
+- **Module 1 (`crates/sop-core` + `crates/sop-ingestion` — Rust):** `zip`, `quick-xml`, `calamine`, `lopdf`, `reqwest` *(legacy doc parsing pattern ref: `docling`)*
+- **Module 2 (`crates/sop-memory-rag` — Rust `qdrant-client` + `rig-qdrant` + `fastembed`):** `qdrant-search-quality`, `rag-implementation`, `hybrid-search-implementation` *(plus pattern refs: `langchain-rag`, `deep-agents-memory`)*
+- **Module 3 (`crates/triage-engine` — Rust `Axum`/`Rig`/`sqlx` + Offline Router / Optional Jev):** `vllm-deploy-docker` *(plus pattern refs: `langgraph-fundamentals`, `langgraph-persistence`, `langgraph-human-in-the-loop`, `fastapi`)*
+- **Module 4 (`web/` — `opendesign-web-portal`):** `frontend-design`, `web-design-guidelines`, `design-brief`, `workers-best-practices`
+- **Observability, Testing & Eval:** `langfuse`, `llm-evaluation`, `agent-self-evaluation`, `promptfoo-evals` *(plus legacy Python refs: `python-testing-patterns`, `deepeval`)*
 
 ## Verification Commands
 ```powershell
 ./init.sh
 powershell -ExecutionPolicy Bypass -File .\init.ps1
-ruff check src tests
-mypy src
-pytest --cov=src --cov-fail-under=80
-cargo clippy --all-targets -- -D warnings   # Modules 2-3 (Rust)
-cargo test --workspace                      # Modules 2-3 (Rust)
+cargo fmt --all -- --check
+cargo clippy --workspace --all-targets -- -D warnings
+cargo test --workspace
+cargo llvm-cov --workspace --fail-under-lines 80
 gitleaks detect --source . --redact --no-banner
 ```
 
 ## Scope Rules
 - **One feature at a time:** Work strictly on one unfinished feature in `feature_list.json` following `spec/capability-map.md` build order.
 - **Stay in scope:** Never mix unrelated refactors, skip Spec/Plan gates, or touch `C:/Users/Administrator/web`.
+- **Zero Direct DB / Zero Prod Execution (`ADR-002`):** Never add Oracle 12c DB drivers (`oracle`/`sibyl`/`oci`) or Siebel 16 SSH exec crates to `Cargo.toml`.
 - **Never commit secrets or real customer/server credentials** (including passwords found inside sample SOP docs) into code, tests, docs, or git.
 - **Never weaken `CONSTRAINTS.md`** or skip failing tests to reach green.
 - **No production deploy without explicit Owner approval.**
@@ -57,7 +57,7 @@ gitleaks detect --source . --redact --no-banner
 ## Definition of Done
 A feature is **done only when**:
 - Target behavior meets all acceptance criteria in its `spec/SPEC-<module>.md`.
-- Required verification (`./init.sh` / `init.ps1`, `ruff`, `mypy`, `pytest --cov >= 80%`, `gitleaks`) actually ran and passed.
+- Required verification (`./init.sh` / `init.ps1`, `cargo fmt --check`, `cargo clippy -D warnings`, `cargo test --workspace`, `cargo llvm-cov >= 80%`, `gitleaks`) actually ran and passed.
 - **Verification Evidence** (command and output) is recorded in `feature_list.json` and `progress.md`.
 - The repository remains clean and restartable from `./init.sh` / `init.ps1`.
 

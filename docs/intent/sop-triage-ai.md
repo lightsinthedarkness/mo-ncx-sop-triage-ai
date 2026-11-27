@@ -1,6 +1,6 @@
 # Statement of Intent: NCX Triage & Internal Self-Evolving Autonomous AI (`ykztir-ncx-ai`)
 
-- **Status:** Confirmed & Updated by Owner (2026-11-27 — Design 2.4: Standalone OpenDesign Portal + Internal Siebel 16 / Oracle 12c Zero-Direct-DB Advisory Boundary)
+- **Status:** Confirmed & Updated by Owner (2026-11-27 — Design 2.5: 100% Pure Rust Backend + Standalone OpenDesign Portal + Internal Siebel 16 / Oracle 12c Zero-Direct-DB Advisory)
 - **Workspace (Full-Stack Standalone):** `c:/Users/Administrator/LLM` (terpisah penuh dari `https://ncxall.my.id/dashboard`)
 
 ## Confirmed Intent

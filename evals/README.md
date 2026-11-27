@@ -51,6 +51,6 @@ Direktori ini menyimpan **Golden Holdout Benchmark (50–100 skenario uji nyata 
 ---
 
 ## 3. Cara Menjalankan Evaluasi (Setelah Modul #2–#3 Aktif)
-* **Local / Offline Eval:** `Promptfoo` + `DeepEval` terhadap *Local LLM Judge* (jalan 100% di intranet kantor).
+* **Local / Offline Eval:** `Promptfoo` (Node.js) + `cargo test` harness terhadap *Local LLM Judge* (jalan 100% di intranet kantor tanpa Python runtime).
 * **Optional Calibrated Judge:** **Jev (`TypeSafe AI` `Score` primitive — Exception `E1`)** hanya pada kasus sintetis/ter-anonymize di `evals/` bila koneksi eksternal tersedia.
 * **Regression Gate:** Setiap perubahan model lokal (`Qwen3-14B` ↔ `Qwen3-32B`), prompt sistem, atau PR `skills/*.md` (Fase 2) wajib melampaui seluruh ambang keras di atas sebelum di-deploy ke server kantor.

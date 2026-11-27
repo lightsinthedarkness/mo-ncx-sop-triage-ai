@@ -1,25 +1,26 @@
 # Session Handoff — `ykztir-ncx-ai`
 
-- **Last Updated:** `2026-11-27T22:10:00+07:00`
-- **Current Objective:** Design 2.4 / PRD 2.4 / ADR-002 (On-Prem Internal Siebel 16 + Oracle 12c, Zero-Direct-DB Advisory & Non-DB Knowledge Automation, Domain Context Pack, Office 2-Tier RBAC, Hardware Sizing, Golden Benchmark 50–100 NCX) locked & verified; holding cleanly at Coding Gate pending Owner decision on whether Module #1 stays Python (`Docling`) or unifies into 100% Pure Rust.
+- **Last Updated:** `2026-11-27T22:18:00+07:00`
+- **Current Objective:** Complete 100% conversion to **Design 2.5 / PRD 2.5 / ADR-003 (100% Pure Rust Backend Workspace + On-Prem Siebel 16 / Oracle 12c Zero-Direct-DB Advisory)**, verify all audit gates, and hold cleanly at Coding Gate until Owner initiates `rustup` setup & Phase 4 TDD.
 - **Active Branch:** `feat/sop-ingestion` (synced with `main`)
 
-## Architecture Lock (Design 2.4 — `ADR-001` & `ADR-002`)
-- **Hard Boundary:** Zero direct Oracle 12c DB connections (`SELECT`/`UPDATE`/`DDL` prohibited) and zero SSH execution on Siebel 16 production servers.
+## Architecture Lock (Design 2.5 — `ADR-001`, `ADR-002`, & `ADR-003`)
+- **100% Pure Rust Backend (`ADR-003`):** Single Cargo Workspace (`crates/sop-core`, `crates/sop-ingestion`, `crates/sop-memory-rag`, `crates/triage-engine`) — zero Python production runtime.
+- **Hard Boundary (`ADR-002`):** Zero direct Oracle 12c DB connections (`SELECT`/`UPDATE`/`DDL` prohibited) and zero SSH execution on Siebel 16 production servers.
 - **100% Intranet / On-Prem First:** Offline-ready local LLM (`vLLM` Guided JSON / `Ollama`), optional Jev (`E1` redacted only + local fallback), Office 2-Tier RBAC (`User Kantor` / `Admin SOP`) + Immutable Audit Log.
-- **Standalone UI (Module #4):** `opendesign-web-portal` completely separate from `https://ncxall.my.id/dashboard` (`C:/Users/Administrator/web` untouched).
+- **Standalone UI (Module #4):** `web/` (`opendesign-web-portal`) completely separate from `https://ncxall.my.id/dashboard` (`C:/Users/Administrator/web` untouched).
 
 ## Files Ready for Next Session
-- Intent & ADRs: `docs/intent/sop-triage-ai.md`, `docs/adr/ADR-001-*.md`, `docs/adr/ADR-002-*.md`, `DESIGN.md`, `PRD.md`, `README.md`
+- Intent & ADRs: `docs/intent/sop-triage-ai.md`, `docs/adr/ADR-001-*.md`, `docs/adr/ADR-002-*.md`, `docs/adr/ADR-003-*.md`, `DESIGN.md`, `PRD.md`, `README.md`
 - Domain, Infra & Evals: `knowledge/domain-pack/README.md`, `infra/HARDWARE-SIZING.md`, `evals/README.md`
 - Quality & Harness: `CONSTRAINTS.md`, `AGENTS.md`, `feature_list.json`, `progress.md`, `init.sh`, `init.ps1`, `session-handoff.md`
-- Module 1 Spec & Plan: `spec/capability-map.md`, `spec/SPEC-sop-ingestion.md`, `tasks/plan.md`, `tasks/todo.md`
+- Module 1 Rust Spec & Plan: `spec/capability-map.md`, `spec/SPEC-sop-ingestion.md`, `tasks/plan.md`, `tasks/todo.md`
 
 ## Blockers
 - Coding intentionally paused at Coding Gate per Owner instruction.
-- `rustup` (`rustc` / `cargo`) not yet installed locally (required for Modules #2–#3, or for Module #1 too if Owner chooses 100% Pure Rust).
+- `rustup` (`rustc`, `cargo`, `rustfmt`, `clippy`, `cargo-llvm-cov`) must be installed on this Windows PC before executing Step 0 / Task 1 in `tasks/plan.md`.
 
 ## Recommended Next Step
-1. Confirm Owner's choice: **100% Pure Rust (Mod 1+2+3)** vs **Hybrid (Python Mod 1 + Rust Mod 2–3)**.
-2. If 100% Pure Rust → write `ADR-003`, update `SPEC-sop-ingestion.md` & `tasks/plan.md` to Rust (`crates/sop-core` + `crates/sop-ingestion`), install `rustup`, then start Phase 4 TDD.
-3. If Hybrid → immediately begin Phase 4 TDD on Python Module #1 (`tasks/plan.md`).
+1. Install Rust toolchain (`winget install Rustlang.Rustup` + `rustup component add rustfmt clippy llvm-tools-preview` + `cargo install cargo-llvm-cov`).
+2. Run `powershell -ExecutionPolicy Bypass -File .\init.ps1` and verify `[OK] Rust detected`.
+3. Begin **Phase 4 TDD** on branch `feat/sop-ingestion`: Tasks 1–3 in `tasks/plan.md` (`Cargo.toml` workspace, `crates/sop-core`, `assets.rs`, `vision.rs`).

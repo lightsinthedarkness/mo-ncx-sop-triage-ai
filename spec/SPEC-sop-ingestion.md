@@ -1,251 +1,291 @@
-# Spec: Multimodal SOP Ingestion Pipeline (`sop-ingestion`) — V1
+# Spec: Multimodal SOP & Domain Pack Ingestion Pipeline (`crates/sop-core` + `crates/sop-ingestion`) — V1 (100% Pure Rust)
 
 - **Module ID:** `sop-ingestion` (ref: [capability-map.md](capability-map.md))
-- **Design Reference:** [DESIGN.md](../DESIGN.md) (Design 2.4 — [ADR-001](../docs/adr/ADR-001-hybrid-python-rust-and-jev-orchestrator.md) & [ADR-002](../docs/adr/ADR-002-internal-siebel16-oracle12c-zero-db-advisory-and-knowledge-automation.md))
-- **PRD Reference:** [PRD.md](../PRD.md) (PRD 2.4 — FR-1)
+- **Design Reference:** [DESIGN.md](../DESIGN.md) (Design 2.5 — [ADR-001](../docs/adr/ADR-001-hybrid-python-rust-and-jev-orchestrator.md), [ADR-002](../docs/adr/ADR-002-internal-siebel16-oracle12c-zero-db-advisory-and-knowledge-automation.md), & [ADR-003](../docs/adr/ADR-003-pure-rust-backend-workspace.md))
+- **PRD Reference:** [PRD.md](../PRD.md) (PRD 2.5 — FR-1)
 - **Quality Contract:** [CONSTRAINTS.md](../CONSTRAINTS.md)
-- **Status:** Approved & Hardened via `doubt-driven-development` (2026-11-26 — all 14 adversarial findings reconciled; ready for coding gate)
+- **Status:** Approved & Hardened via `doubt-driven-development` (all 14 adversarial findings preserved in Pure Rust conversion; ready for coding gate once `rustup` is installed)
 
 ---
 
 ## 1. Objective
 
-Membangun modul *ingestion* multimodal (`sop-ingestion`) yang mengubah file dokumen SOP mentah milik tim MO NCX (`.docx`, `.pdf`, `.xlsx`, `.pptx`, `.md`, `.sh`, `.sql`, `.xml`, `.py` — *case-insensitive*) dari segmen **`EBIS`**, **`RETAIL`**, **`WIBS`**, atau **`GENERAL`** *(SOP lintas segmen yang dapat diakses oleh seluruh segmen pada Modul #2)* menjadi kumpulan **Structured SOP Chunks** (`SopChunk`) dan **Stored Screenshot Assets** (`ExtractedAsset`) yang siap diindeks oleh modul `sop-memory-rag`.
+Membangun crate *ingestion* multimodal **100% Pure Rust** (`crates/sop-core` + `crates/sop-ingestion`) yang mengubah file dokumen SOP mentah milik tim MO NCX (`.docx`, `.pdf`, `.xlsx`, `.pptx`, `.md`, `.sh`, `.sql`, `.xml` — *case-insensitive*) serta file pengetahuan statis di `knowledge/domain-pack/` dari segmen **`EBIS`**, **`RETAIL`**, **`WIBS`**, atau **`GENERAL`** *(SOP lintas segmen & domain pack yang dapat diakses oleh seluruh segmen pada Modul #2)* menjadi kumpulan **Structured SOP Chunks** (`SopChunk`) dan **Stored Screenshot Assets** (`ExtractedAsset`) yang langsung dikonsumsi secara *compile-time type-safe* oleh `crates/sop-memory-rag`.
 
 **Masalah nyata yang diselesaikan:**
-1. Dokumen SOP teknis MO NCX berisi **puluhan gambar *screenshot* terminal/UI `before changes` & `after changes`** di sela-sela teks pendek, sering kali dengan sub-judul berulang antar langkah. Gambar harus diekstrak berurutan dan ditautkan ke chunk lewat **posisi blok (`block_index` + `section_path`)**, bukan hanya mencocokkan nama sub-judul.
-2. Blok perintah CLI Linux (`/opt/Siebel16/...`, `keytool`, `chmod`), konfigurasi XML (`<Connector .../>`), variabel `export`, serta tabel **tidak boleh terpotong di tengah** atau berubah karakternya (mis. `--` berubah menjadi em-dash, atau karakter CLI terkena *Markdown escaping* `\_`, `\<`, `\-`).
-3. Setiap dokumen wajib membawa **ID deterministik & metadata temporal** (`doc_id` stabil lintas versi, `chunk_id`/`asset_id` menyertakan `doc_version`, 1 stempel `valid_from` seragam per proses *ingest*, `valid_until`, `is_active`, `segment`, `role_acl`) agar Modul #2 (`sop-memory-rag`) bisa menonaktifkan versi SOP lama tanpa *split-brain*.
+1. Dokumen SOP teknis MO NCX berisi **puluhan gambar *screenshot* terminal/UI `before changes` & `after changes`** di sela-sela teks pendek, sering kali dengan sub-judul berulang antar langkah. Gambar diekstrak berurutan dari relasi XML (`word/_rels/document.xml.rels` / `ppt/slides/_rels/`) dan ditautkan ke chunk lewat **posisi blok (`block_index` + `section_path`)**, bukan hanya mencocokkan nama sub-judul.
+2. Blok perintah CLI Linux (`/opt/Siebel16/...`, `keytool`, `chmod`), referensi query Oracle 12c, konfigurasi XML (`<Connector .../>`), variabel `export`, serta tabel **tidak boleh terpotong di tengah** atau berubah karakternya (nol *Markdown escaping* `\_`, `\<`, `\-`).
+3. Setiap dokumen wajib membawa **ID deterministik & metadata temporal** (`doc_id` stabil lintas versi, `chunk_id`/`asset_id` menyertakan `doc_version`, 1 stempel `valid_from` seragam per proses *ingest*, `valid_until`, `is_active`, `segment`, `role_acl`) agar Modul #2 (`crates/sop-memory-rag`) bisa menonaktifkan versi SOP lama tanpa *split-brain*.
 
 ---
 
-## 2. Tech Stack
+## 2. Tech Stack (100% Pure Rust — Verified Crates)
 
-- **Language:** Python 3.12+ (strict type hints, `mypy` clean tanpa `# type: ignore`)
-- **Schema & Validation:** `pydantic>=2.10`
-- **Document Parsing:** `docling>=2.81` (`DocumentConverter`, `PdfFormatOption`, `PdfPipelineOptions(do_ocr=True, do_table_structure=True, generate_picture_images=True, enable_remote_services=False)`, `PdfBackendOptions(do_char_normalization=False)`). Untuk `.docx`, teks blok CLI/XML diambil dari teks blok mentah agar terhindar dari *Markdown escaping* (`\_`, `\<`, `\-`).
-- **Code/Script Parsing (V1):** Python `ast` (untuk `.py`) + *deterministic structured block splitter* (untuk `.md`, `.sh`, `.sql`, `.xml`) dengan *encoding fallback* (`utf-8-sig` → `cp1252`).
-- **Chunking:** `CommandSafeChunker` (`max_chars=1200` ~300–400 token aman untuk `BAAI/bge-m3`, `overlap_chars=150` dilarang memotong blok CLI/XML/tabel, `max_atomic_chars=4800` agar blok CLI/tabel besar tetap utuh).
-- **Vision Captioning Interface:** `VisionCaptioner` (`typing.Protocol`) dengan 2 implementasi:
-  - `OpenAICompatibleVisionCaptioner`: menghubungi endpoint Vision lokal via LiteLLM/Ollama/vLLM dengan **strict host allowlist** (hanya loopback `localhost`/`127.0.0.1`/`::1`, IP privat RFC1918, atau env `VISION_ALLOWED_HOSTS`), `follow_redirects=False`, `timeout_seconds=30.0`, retry 1x, dan *non-destructive fallback* (`caption_status="failed"`) jika gagal.
-  - `NoopVisionCaptioner`: mode default dev lokal tanpa GPU (`VISION_MODE=noop`, `caption_status="noop"`).
-- **Asset Storage Interface:** `AssetStore` (`typing.Protocol`) + `S3ClientProtocol` (`typing.Protocol`) agar `mypy` lulus tanpa mewajibkan paket `minio` terpasang saat dev lokal:
-  - `LocalFsAssetStore` (default dev lokal → `.data/assets/`, `storage_uri="local://<relpath>"`, wajib sanitasi `doc_id` & `filename` + cek `resolved.is_relative_to(root.resolve())`).
-  - `MinioAssetStore` (staging/produksi → `storage_uri="s3://<bucket>/<key>"`).
+- **Language & Toolchain:** Rust 2021/2024 edition (`rustc` stable, `cargo fmt`, `cargo clippy -- -D warnings`, `cargo test`, `cargo llvm-cov`) — **nol `unsafe`**, **nol `.unwrap()` pada input eksternal**.
+- **Shared Models & Serialization (`crates/sop-core`):** `serde` + `serde_json` (`serde-rs/serde`), `chrono` (`chronotope/chrono`), `sha2` (`RustCrypto/hashes`), `thiserror` (`dtolnay/thiserror`), `schemars` (`GREsau/schemars`).
+- **Document Parsing (`crates/sop-ingestion`):**
+  - **OOXML (`.docx`, `.pptx`):** `zip` (`zip-rs/zip2`) + `quick-xml` (`tafia/quick-xml`) — membaca `word/document.xml`, tabel `<w:tbl>`, paragraf CLI/XML verbatim, dan `word/media/*` sesuai urutan bacaan eksak (`block_index`).
+  - **Spreadsheets (`.xlsx`, `.xls`, `.ods`):** `calamine` (`tafia/calamine`).
+  - **PDF (`.pdf`):** `lopdf` (`J-F-Liu/lopdf`) — pure-Rust zero-C-dependency ekstraksi teks & objek gambar tertanam.
+  - **Scripts & Domain Pack (`.md`, `.sh`, `.sql`, `.xml`):** `encoding_rs` (`hsivonen/encoding_rs`) untuk fallback encoding (`UTF-8` / `UTF-8-BOM` → `Windows-1252`) + *deterministic structured block splitter*.
+- **Chunking:** `CommandSafeChunker` (`max_chars: 1200` ~300–400 token aman untuk `BAAI/bge-m3`, `overlap_chars: 150` dilarang memotong blok CLI/XML/SQL/tabel, `max_atomic_chars: 4800` agar blok CLI/tabel besar tetap utuh).
+- **Vision Captioning Trait:** `#[async_trait] pub trait VisionCaptioner: Send + Sync` dengan 2 implementasi:
+  - `OpenAiCompatibleVisionCaptioner` (`seanmonstar/reqwest`): menghubungi endpoint Vision lokal (`vLLM`/`Ollama` `Qwen2.5-VL`) dengan **strict host allowlist** (hanya loopback `localhost`/`127.0.0.1`/`::1`, IP privat RFC1918, atau env `VISION_ALLOWED_HOSTS`), `reqwest::redirect::Policy::none()`, `timeout = 30s`, retry 1x pada transient error, dan *non-destructive fallback* (`CaptionStatus::Failed`) jika gagal.
+  - `NoopVisionCaptioner`: mode default dev lokal tanpa GPU (`VISION_MODE=noop`, `CaptionStatus::Noop`).
+- **Asset Storage Trait:** `pub trait AssetStore: Send + Sync` + `pub trait S3PutObject: Send + Sync` agar seluruh test berjalan 100% offline:
+  - `LocalFsAssetStore` (default dev lokal → `.data/assets/`, `storage_uri = "local://<relpath>"`, wajib sanitasi `doc_id` & `filename` + validasi canonical path berada di bawah root).
+  - `MinioAssetStore` (staging/produksi → `storage_uri = "s3://<bucket>/<key>"`).
+- **CLI Binary:** `clap` (`clap-rs/clap`, derive API) — `cargo run -p sop-ingestion -- ingest --file ... --segment EBIS --version 1 --output-dir .scratch/ingest-preview`.
 
 ---
 
 ## 3. Commands
 
 ```powershell
-# Setup virtual environment & install module dependencies
-py -3.12 -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -e ".[dev]"
+# Format, Lint, & Strict Clippy (Blocking Gates — CONSTRAINTS.md)
+cargo fmt --all -- --check
+cargo clippy --workspace --all-targets -- -D warnings
 
-# Lint, Typecheck & Secrets Scan (Blocking Gates — CONSTRAINTS.md)
-ruff check src tests
-mypy src
-gitleaks dir . --redact --no-banner
+# Unit & Integration Tests + Coverage >= 80%
+cargo test --workspace
+cargo llvm-cov --workspace --fail-under-lines 80
 
-# Unit & Integration Tests (Coverage >= 80%)
-pytest tests/sop_ingestion --cov=src/sop_ingestion --cov-fail-under=80
+# Secrets Scan & Zero-DB Policy Guard
+gitleaks detect --source . --redact --no-banner
+cargo test zero_db_policy
 
 # Dry-run CLI ingest 1 file SOP (output ke .scratch/ yang ter-gitignore)
-py -m sop_ingestion.cli ingest --file "path/to/sample.docx" --segment EBIS --version 1 --output-dir .scratch/ingest-preview
+cargo run -p sop-ingestion -- ingest --file "path/to/sample.docx" --segment EBIS --version 1 --output-dir .scratch/ingest-preview
 ```
 
 ---
 
-## 4. Project Structure
+## 4. Workspace Structure
 
 ```text
 c:/Users/Administrator/LLM/
-├── pyproject.toml
-├── src/
-│   └── sop_ingestion/
-│       ├── __init__.py
-│       ├── models.py        # Seluruh kontrak data publik & SopIngestionError
-│       ├── assets.py        # AssetStore Protocol, S3ClientProtocol, LocalFsAssetStore, MinioAssetStore
-│       ├── vision.py        # VisionCaptioner Protocol, NoopVisionCaptioner, OpenAICompatibleVisionCaptioner
-│       ├── parser.py        # DoclingSopParser (.docx/.pdf/.xlsx/.pptx) + ScriptSopParser (.md/.sh/.sql/.xml/.py)
-│       ├── chunker.py       # CommandSafeChunker (CLI/XML/tabel utuh + positional asset linking)
-│       ├── pipeline.py      # SopIngestionPipeline.ingest_document() → IngestResult
-│       └── cli.py           # CLI dry-run (`py -m sop_ingestion.cli ingest ...`)
-└── tests/
-    └── sop_ingestion/
-        ├── conftest.py      # Synthetic fixtures (.docx, .pdf, .xlsx, .pptx, .sh, .py, .md, corrupt, empty — zero real credentials!)
-        ├── test_models.py
-        ├── test_assets.py
-        ├── test_vision.py
-        ├── test_parser.py
-        ├── test_chunker.py
-        └── test_pipeline.py
+├── Cargo.toml                     # Workspace root (members = ["crates/sop-core", "crates/sop-ingestion"])
+└── crates/
+    ├── sop-core/
+    │   ├── Cargo.toml
+    │   └── src/
+    │       ├── lib.rs             # Re-exports & helper make_doc_id / sha256_bytes / sha256_text
+    │       ├── models.rs          # Seluruh kontrak data publik (serde + schemars)
+    │       └── error.rs           # SopIngestionErrorCode & SopIngestionError (thiserror, zero raw SOP leak)
+    └── sop-ingestion/
+        ├── Cargo.toml
+        ├── src/
+        │   ├── lib.rs             # Re-exports public API
+        │   ├── assets.rs          # AssetStore trait, S3PutObject trait, LocalFsAssetStore, MinioAssetStore
+        │   ├── vision.rs          # VisionCaptioner trait, NoopVisionCaptioner, OpenAiCompatibleVisionCaptioner
+        │   ├── parser/
+        │   │   ├── mod.rs         # Dispatcher parse_sop_file() + resource caps
+        │   │   ├── docx.rs        # zip + quick-xml (.docx paragraphs, tables, CLI/XML verbatim, ordered media)
+        │   │   ├── pptx.rs        # zip + quick-xml (.pptx slides & media)
+        │   │   ├── xlsx.rs        # calamine (.xlsx sheets -> markdown tables)
+        │   │   ├── pdf.rs         # lopdf (.pdf text & embedded image objects)
+        │   │   └── script.rs      # encoding_rs + structured block splitter (.md/.sh/.sql/.xml)
+        │   ├── chunker.rs         # CommandSafeChunker (CLI/XML/SQL/table-safe + positional asset linking)
+        │   ├── pipeline.rs        # SopIngestionPipeline::ingest_document() -> IngestResult
+        │   └── main.rs            # CLI binary (clap)
+        └── tests/
+            ├── fixtures.rs        # Synthetic fixture builders (.docx, .pdf, .xlsx, .pptx, .sh cp1252, .md, corrupt, empty)
+            ├── models_test.rs
+            ├── assets_test.rs
+            ├── vision_test.rs
+            ├── parser_test.rs
+            ├── chunker_test.rs
+            └── pipeline_test.rs
 ```
 
 ---
 
-## 5. Code Style & Complete Public Data Contracts
+## 5. Complete Public Data Contracts (`crates/sop-core/src/models.rs`)
 
-Seluruh kontrak data publik didefinisikan eksplisit di `src/sop_ingestion/models.py`:
+```rust
+use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
+use thiserror::Error;
 
-```python
-from datetime import datetime
-from enum import StrEnum
-from typing import Literal
-from pydantic import BaseModel, Field
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(rename_all = "UPPERCASE")]
+pub enum SopSegment {
+    Ebis,
+    Retail,
+    Wibs,
+    General, // Cross-segment SOP & knowledge/domain-pack visible to all segments in Module 2
+}
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum SopIngestionErrorCode {
+    FileNotFound,
+    InvalidPath,
+    UnsupportedFormat,
+    EmptyFile,
+    CorruptFile,
+    AssetStoreFailed,
+    VisionHostBlocked,
+    VisionFailed,
+    ResourceLimitExceeded,
+}
 
-class SopSegment(StrEnum):
-    EBIS = "EBIS"
-    RETAIL = "RETAIL"
-    WIBS = "WIBS"
-    GENERAL = "GENERAL"  # Cross-segment SOP visible to EBIS, RETAIL, and WIBS in Module 2
+#[derive(Debug, Error)]
+#[error("[{code:?}] {message}")]
+pub struct SopIngestionError {
+    pub code: SopIngestionErrorCode,
+    pub message: String, // MUST NEVER contain raw SOP body or credentials
+}
 
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum BlockType {
+    Heading,
+    Paragraph,
+    CodeCli,
+    Table,
+}
 
-class SopIngestionErrorCode(StrEnum):
-    FILE_NOT_FOUND = "FILE_NOT_FOUND"
-    INVALID_PATH = "INVALID_PATH"
-    UNSUPPORTED_FORMAT = "UNSUPPORTED_FORMAT"
-    EMPTY_FILE = "EMPTY_FILE"
-    CORRUPT_FILE = "CORRUPT_FILE"
-    ASSET_STORE_FAILED = "ASSET_STORE_FAILED"
-    VISION_HOST_BLOCKED = "VISION_HOST_BLOCKED"
-    VISION_FAILED = "VISION_FAILED"
-    RESOURCE_LIMIT_EXCEEDED = "RESOURCE_LIMIT_EXCEEDED"
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum CaptionStatus {
+    Ok,
+    Noop,
+    Failed,
+}
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SopMetadata {
+    pub doc_id: String,               // Stable across versions: "{segment_lower}-{slugify(stem)}"
+    pub source_filename: String,
+    pub source_file_sha256: String,   // SHA-256 of raw input bytes
+    pub segment: SopSegment,
+    pub doc_version: u32,             // >= 1
+    pub is_active: bool,              // default: true
+    pub valid_from: DateTime<Utc>,    // Single UTC timestamp stamped once per ingest_document() call
+    pub valid_until: Option<DateTime<Utc>>,
+    pub role_acl: Vec<String>,        // default: vec!["mo-ncx"]
+}
 
-class SopIngestionError(Exception):
-    def __init__(self, code: SopIngestionErrorCode, message: str) -> None:
-        super().__init__(message)
-        self.code = code
-        self.message = message  # MUST NEVER contain raw SOP body/credentials
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ParsedBlock {
+    pub block_index: usize,
+    pub block_type: BlockType,
+    pub section_path: Vec<String>,
+    pub section_heading: String,
+    pub text: String,
+}
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ParsedImage {
+    pub order_index: usize,
+    pub block_index: usize,
+    pub section_path: Vec<String>,
+    pub section_heading: String,
+    pub filename: String,
+    pub mime_type: String,
+    #[serde(skip_serializing)]
+    pub data: Vec<u8>,
+}
 
-class SopMetadata(BaseModel):
-    doc_id: str                  # Stable across versions: f"{segment.lower()}-{slugify(stem)}"
-    source_filename: str
-    source_file_sha256: str      # SHA-256 of raw input bytes
-    segment: SopSegment
-    doc_version: int = Field(ge=1)
-    is_active: bool = True
-    valid_from: datetime         # Single UTC timestamp stamped once per ingest_document() call
-    valid_until: datetime | None = None
-    role_acl: list[str] = Field(default_factory=lambda: ["mo-ncx"])
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ParsedDocument {
+    pub source_filename: String,
+    pub source_file_sha256: String,
+    pub blocks: Vec<ParsedBlock>,
+    pub images: Vec<ParsedImage>,
+}
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ExtractedAsset {
+    pub asset_id: String,             // Deterministic: "{doc_id}:v{doc_version}:img{order_index}"
+    pub doc_id: String,
+    pub doc_version: u32,
+    pub filename: String,
+    pub mime_type: String,
+    pub storage_uri: String,          // Canonical: "local://<relpath>" or "s3://<bucket>/<key>"
+    pub caption: String,
+    pub caption_status: CaptionStatus,
+    pub section_path: Vec<String>,
+    pub section_heading: String,
+    pub block_index: usize,
+    pub order_index: usize,
+}
 
-class ParsedBlock(BaseModel):
-    block_index: int = Field(ge=0)
-    block_type: Literal["heading", "paragraph", "code_cli", "table"]
-    section_path: list[str] = Field(default_factory=list)
-    section_heading: str
-    text: str
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SopChunk {
+    pub chunk_id: String,             // Deterministic: "{doc_id}:v{doc_version}:{chunk_index}"
+    pub chunk_index: usize,
+    pub doc_id: String,
+    pub source_filename: String,
+    pub source_file_sha256: String,
+    pub segment: SopSegment,
+    pub doc_version: u32,
+    pub is_active: bool,
+    pub valid_from: DateTime<Utc>,
+    pub valid_until: Option<DateTime<Utc>>,
+    pub role_acl: Vec<String>,
+    pub section_path: Vec<String>,
+    pub section_heading: String,
+    pub content: String,
+    pub has_code_or_cli: bool,
+    pub asset_ids: Vec<String>,
+    pub asset_captions: Vec<String>,  // Indexed by Module 2 alongside content
+    pub content_sha256: String,       // SHA-256 of chunk `content` (independent of Vision mode)
+}
 
-
-class ParsedImage(BaseModel):
-    order_index: int = Field(ge=0)
-    block_index: int = Field(ge=0)
-    section_path: list[str] = Field(default_factory=list)
-    section_heading: str
-    filename: str
-    mime_type: str
-    data: bytes
-
-
-class ParsedDocument(BaseModel):
-    source_filename: str
-    source_file_sha256: str
-    blocks: list[ParsedBlock]
-    images: list[ParsedImage] = Field(default_factory=list)
-
-
-class ExtractedAsset(BaseModel):
-    asset_id: str                # Deterministic: f"{doc_id}:v{doc_version}:img{order_index}"
-    doc_id: str
-    doc_version: int = Field(ge=1)
-    filename: str
-    mime_type: str
-    storage_uri: str             # Canonical: "local://<relpath>" or "s3://<bucket>/<key>"
-    caption: str
-    caption_status: Literal["ok", "noop", "failed"]
-    section_path: list[str] = Field(default_factory=list)
-    section_heading: str
-    block_index: int = Field(ge=0)
-    order_index: int = Field(ge=0)
-
-
-class SopChunk(BaseModel):
-    chunk_id: str                # Deterministic: f"{doc_id}:v{doc_version}:{chunk_index}"
-    chunk_index: int = Field(ge=0)
-    doc_id: str
-    source_filename: str
-    source_file_sha256: str
-    segment: SopSegment
-    doc_version: int = Field(ge=1)
-    is_active: bool = True
-    valid_from: datetime
-    valid_until: datetime | None = None
-    role_acl: list[str] = Field(default_factory=lambda: ["mo-ncx"])
-    section_path: list[str] = Field(default_factory=list)
-    section_heading: str
-    content: str
-    has_code_or_cli: bool = False
-    asset_ids: list[str] = Field(default_factory=list)
-    asset_captions: list[str] = Field(default_factory=list)  # Indexed by Module 2 alongside content
-    content_sha256: str          # SHA-256 of chunk `content` (independent of Vision mode)
-
-
-class IngestResult(BaseModel):
-    metadata: SopMetadata
-    chunks: list[SopChunk]
-    assets: list[ExtractedAsset]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct IngestResult {
+    pub metadata: SopMetadata,
+    pub chunks: Vec<SopChunk>,
+    pub assets: Vec<ExtractedAsset>,
+}
 ```
 
 **Batas Keamanan Resource & Log:**
-- Maksimal `100` gambar per dokumen (`max_images_per_doc=100`) dan `10 MB` per gambar (`max_image_bytes=10_485_760`); pelanggaran memicu `SopIngestionError(RESOURCE_LIMIT_EXCEEDED)`.
-- Pesan exception & log **dilarang keras** mencetak isi teks mentah chunk SOP (mencegah kebocoran kredensial seperti `-storepass` yang ada pada dokumen operasional).
+- Maksimal `100` gambar per dokumen (`max_images_per_doc = 100`) dan `10 MB` per gambar (`max_image_bytes = 10_485_760`); pelanggaran memicu `SopIngestionErrorCode::ResourceLimitExceeded`.
+- Pesan error & `tracing` log **dilarang keras** mencetak isi teks mentah chunk SOP (mencegah kebocoran kredensial seperti `-storepass` yang ada pada dokumen operasional).
 
 ---
 
 ## 6. Testing Strategy
 
-- **Framework:** `pytest` + `pytest-cov` (offline-safe, tanpa download model internet saat unit test).
-- **Fixtures Sintetis (`conftest.py`):** Membuat file sintetis di `tmp_path` untuk `.docx` (headings berulang `"Before Changes"`/`"After Changes"`, tabel, CLI `--importcert`, XML `<Connector/>`, 2 PNG tertanam), `.pdf`, `.xlsx`, `.pptx`, `.sh` (termasuk non-UTF-8 cp1252), `.py`, `.md`, file 0-byte, file korup, dan ekstensi huruf besar `.DOCX` — **nol kredensial asli**.
+- **Framework:** `cargo test` + `tokio::test` + `tempfile` + `wiremock` (untuk uji HTTP private Vision allowlist & retry 100% offline) + `cargo llvm-cov`.
+- **Fixtures Sintetis (`tests/fixtures.rs`):** Membangun file sintetis di `TempDir` secara programatik untuk `.docx` (ZIP+XML valid dengan sub-judul berulang `"Before Changes"`/`"After Changes"`, tabel, CLI `--importcert`, XML `<Connector/>`, 2 PNG tertanam), `.pdf`, `.xlsx`, `.pptx`, `.sh` (termasuk non-UTF-8 Windows-1252), `.md`, file 0-byte, file korup, dan ekstensi huruf besar `.DOCX` — **nol kredensial asli**.
 - **Test Levels:**
-  1. *Unit (`test_models.py`, `test_assets.py`, `test_vision.py`, `test_chunker.py`):* rumus ID deterministik lintas versi, sanitasi `doc_id` & `filename` anti *path-traversal*, versioned asset key (`v1` vs `v2` tidak saling menimpa), strict allowlist Vision + `follow_redirects=False` + fallback `caption_status="failed"`, chunker tidak memotong CLI/XML/tabel dan `overlap_chars` tidak memotong blok kode, serta penautan aset berdasarkan `block_index` pada sub-judul berulang.
-  2. *Integration (`test_parser.py`, `test_pipeline.py`):* parsing semua format (`.docx`, `.pdf`, `.xlsx`, `.pptx`, `.sh`, `.py`, `.md`), penolakan error terstruktur (`FILE_NOT_FOUND`, `INVALID_PATH`, `UNSUPPORTED_FORMAT`, `EMPTY_FILE`, `CORRUPT_FILE`), dan end-to-end `SopIngestionPipeline.ingest_document()` + CLI.
-- **Coverage Gate:** ≥ 80% pada seluruh `src/sop_ingestion/`.
+  1. *Unit (`models_test`, `assets_test`, `vision_test`, `chunker_test`):* rumus ID deterministik lintas versi, sanitasi `doc_id` & `filename` anti *path-traversal*, versioned asset key (`v1` vs `v2` tidak saling menimpa), strict allowlist Vision + `redirect::Policy::none()` + retry 1x + fallback `CaptionStatus::Failed`, chunker tidak memotong CLI/XML/SQL/tabel dan `overlap_chars` tidak memotong blok kode, serta penautan aset berdasarkan `block_index` pada sub-judul berulang.
+  2. *Integration (`parser_test`, `pipeline_test`):* parsing seluruh format (`.docx`, `.pdf`, `.xlsx`, `.pptx`, `.sh`, `.sql`, `.xml`, `.md`), error terstruktur (`FileNotFound`, `InvalidPath`, `UnsupportedFormat`, `EmptyFile`, `CorruptFile`, `ResourceLimitExceeded`), end-to-end `SopIngestionPipeline::ingest_document()`, CLI output JSON, serta `zero_db_policy` test memastikan nol dependency driver Oracle/SSH di `Cargo.toml`.
+- **Coverage Gate:** ≥ 80% pada seluruh `crates/sop-core` & `crates/sop-ingestion`.
 
 ---
 
 ## 7. Boundaries
 
 - **Always:**
-  - Jalankan `ruff check src tests`, `mypy src`, `pytest tests/sop_ingestion --cov=src/sop_ingestion --cov-fail-under=80`, dan *Secrets Scan* sebelum menandai selesai.
-  - Gunakan `Protocol` untuk `AssetStore`, `S3ClientProtocol`, dan `VisionCaptioner`.
+  - Jalankan `cargo fmt --all -- --check`, `cargo clippy --workspace --all-targets -- -D warnings`, `cargo test --workspace`, `cargo llvm-cov --workspace --fail-under-lines 80`, dan `gitleaks` sebelum menandai selesai.
+  - Gunakan trait (`AssetStore`, `S3PutObject`, `VisionCaptioner`) untuk seluruh I/O eksternal.
   - Redaksi seluruh pesan error agar tidak pernah mencetak konten mentah SOP.
 - **Ask First:**
-  - Menambah dependensi berat di luar Tech Stack atau mengubah kontrak `SopChunk`/`IngestResult` setelah Modul #2 dimulai.
+  - Menambah dependency eksternal berat di luar Tech Stack atau mengubah kontrak `SopChunk`/`IngestResult` setelah Modul #2 dimulai.
 - **Never:**
+  - Menambah driver koneksi Oracle 12c (`oracle`/`sibyl`/`oci`) atau SSH exec ke `Cargo.toml` (`ADR-002`).
   - Mengizinkan panggilan Vision-LLM ke host publik di luar allowlist privat.
-  - Menyimpan password/kredensial dari dokumen SOP nyata ke repo/fixture/log.
-  - Melemahkan `CONSTRAINTS.md` atau memakai `# noqa` / `# type: ignore`.
+  - Memakai `unsafe`, `#[allow(warnings)]`, atau `.unwrap()` pada input eksternal.
 
 ---
 
 ## 8. Success Criteria
 
 1. **Multimodal & Positional Linking:** Ingest `.docx` dengan sub-judul berulang (`"Before Changes"`) dan 2+ gambar tertanam menyimpan seluruh gambar ke `<doc_id>/v<doc_version>/...`, mengisi `caption` + `caption_status`, dan menautkan `asset_ids` + `asset_captions` hanya ke chunk langkah pemiliknya.
-2. **Command, XML & Table Integrity:** Blok CLI, XML `<Connector .../>`, dan tabel tidak pernah terpotong melintasi dua chunk, `overlap_chars` tidak pernah memotong blok kode, dan karakter `--`/`_`/`<` tidak rusak oleh escaping.
+2. **Command, XML, SQL & Table Integrity:** Blok CLI, XML `<Connector .../>`, SQL, dan tabel tidak pernah terpotong melintasi dua chunk, `overlap_chars` tidak pernah memotong blok kode, dan karakter `--`/`_`/`<` utuh verbatim.
 3. **Deterministic Versioning:** Upload `v1` dan `v2` untuk dokumen yang sama menghasilkan `doc_id` identik, `chunk_id` & jalur aset berbeda (`v1` vs `v2`), serta 1 timestamp `valid_from` seragam per proses ingest.
-4. **Privacy & Security:** `OpenAICompatibleVisionCaptioner` menolak seluruh host publik non-allowlist + menonaktifkan redirect; `LocalFsAssetStore` menolak *path traversal* baik dari `doc_id` maupun `filename`.
-5. **Quality Gates:** `ruff check`, `mypy`, `pytest --cov >= 80%`, dan *Secrets Scan* semuanya **PASS (exit 0)**.
+4. **Privacy, Zero-DB & Security:** `OpenAiCompatibleVisionCaptioner` menolak seluruh host publik non-allowlist + menonaktifkan redirect; `LocalFsAssetStore` menolak *path traversal* baik dari `doc_id` maupun `filename`; `zero_db_policy` PASS.
+5. **Quality Gates:** `cargo fmt --check`, `cargo clippy -D warnings`, `cargo test`, `cargo llvm-cov >= 80%`, dan `gitleaks` semuanya **PASS (exit 0)**.
 
 ---
 
 ## 9. Out of Scope (Deferred)
 
-- **Embedding & Qdrant Upsert / Version Invalidation:** Modul #2 (`sop-memory-rag`).
-- **Rust Axum Upload Endpoint & Admin Auth:** Modul #3 (`triage-engine-api`).
-- **Full Tree-sitter Multi-Language AST Parsing:** Ditunda ke V2 (di V1 menggunakan Python `ast` + *structured block splitter* untuk `.sh`, `.sql`, `.xml` guna menjaga kesederhanaan & kecepatan instalasi).
+- **Embedding & Qdrant Upsert / Version Invalidation:** Modul #2 (`crates/sop-memory-rag`).
+- **Rust Axum Upload Endpoint, Office RBAC, & Non-DB Knowledge Automation:** Modul #3 (`crates/triage-engine`).
 - **Auto-Sync SharePoint API & Graphiti Bi-Temporal Sync:** Ditunda ke V2 / Fase 2.
